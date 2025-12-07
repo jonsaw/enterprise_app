@@ -1,0 +1,11 @@
+mutation Register($input: RegistrationInput!) {
+  register(input: $input)
+}
+
+mutation ConfirmRegistration($input: ConfirmRegistrationInput!) {
+  confirmRegistration(input: $input)
+}
+
+mutation ResendConfirmRegistration($input: ResendConfirmRegistrationInput!) {
+  resendConfirmRegistration(input: $input)
+}

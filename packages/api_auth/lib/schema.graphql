@@ -1,0 +1,99 @@
+type AuthenticatedUser {
+  userId: String!
+  name: String!
+  email: String!
+}
+
+input ConfirmRegistrationInput {
+  device: DeviceInput!
+  id: String!
+  email: String!
+  password: String!
+  token: String!
+}
+
+input ConfirmSignInInput {
+  device: DeviceInput!
+  id: String!
+  email: String!
+  password: String!
+  token: String!
+}
+
+input DeviceInput {
+  deviceType: DeviceType!
+  manufacturer: String
+  model: String
+  isPhysical: Boolean
+}
+
+enum DeviceType {
+  I_OS
+  MAC_OS
+  ANDROID
+  WEB
+  WINDOWS
+  LINUX
+  TEST
+  UNKNOWN
+}
+
+type Mutation {
+  """
+  Register will send confirmation otp to email.
+  """
+  register(input: RegistrationInput!): String!
+  confirmRegistration(input: ConfirmRegistrationInput!): String!
+  resendConfirmRegistration(input: ResendConfirmRegistrationInput!): String!
+  signIn(input: SignInInput!): String!
+  confirmSignIn(input: ConfirmSignInInput!): String!
+  resendConfirmSignIn(input: ResendConfirmSignInInput!): String!
+  """
+  Invalidate the current session.
+  """
+  signOut: Boolean!
+}
+
+type Query {
+  apiVersion: String!
+  """
+  Check if email is available for registration.
+  """
+  checkEmailAvailability(email: String!): Boolean!
+  """
+  Check if a user has a valid session and return user information
+  """
+  authenticated: AuthenticatedUser
+}
+
+input RegistrationInput {
+  device: DeviceInput!
+  name: String!
+  email: String!
+}
+
+input ResendConfirmRegistrationInput {
+  device: DeviceInput!
+  id: String!
+  email: String!
+}
+
+input ResendConfirmSignInInput {
+  device: DeviceInput!
+  id: String!
+  email: String!
+  password: String!
+}
+
+input SignInInput {
+  device: DeviceInput!
+  email: String!
+  password: String!
+}
+
+"""
+Indicates that an Input Object is a OneOf Input Object (and thus requires
+                        exactly one of its field be provided)
+"""
+directive @oneOf on INPUT_OBJECT
+

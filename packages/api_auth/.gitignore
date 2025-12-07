@@ -1,0 +1,4 @@
+# Ignore generated files
+**/__generated__/
+**/*.g.dart
+**/*.gql.dart
