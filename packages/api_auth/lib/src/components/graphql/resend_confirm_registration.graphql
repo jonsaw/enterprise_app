@@ -1,0 +1,3 @@
+mutation ResendConfirmRegistration($input: ResendConfirmRegistrationInput!) {
+  resendConfirmRegistration(input: $input)
+}

@@ -1,11 +1,3 @@
 mutation SignIn($input: SignInInput!) {
-  signIn(input: $input)
-}
-
-mutation ConfirmSignIn($input: ConfirmSignInInput!) {
-  confirmSignIn(input: $input)
-}
-
-mutation ResendConfirmSignIn($input: ResendConfirmSignInInput!) {
-  resendConfirmSignIn(input: $input)
+    signIn(input: $input)
 }

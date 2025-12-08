@@ -1,0 +1,3 @@
+mutation ConfirmRegistration($input: ConfirmRegistrationInput!) {
+  confirmRegistration(input: $input)
+}

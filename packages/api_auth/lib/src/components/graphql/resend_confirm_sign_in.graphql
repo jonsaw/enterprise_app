@@ -1,0 +1,3 @@
+mutation ResendConfirmSignIn($input: ResendConfirmSignInInput!) {
+  resendConfirmSignIn(input: $input)
+}
