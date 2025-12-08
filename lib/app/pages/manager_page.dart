@@ -2,37 +2,33 @@ import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 
 /// Manager page with team management features.
 ///
 /// Provides navigation to:
-/// - Dashboard
-/// - Team Members
-/// - Reports
-class ManagerPage extends ConsumerStatefulWidget {
+/// - Home (Dashboard)
+/// - Profile
+class ManagerPage extends ConsumerWidget {
   /// Creates a [ManagerPage].
-  const ManagerPage({super.key});
+  const ManagerPage({required this.navigationShell, super.key});
 
-  @override
-  ConsumerState<ManagerPage> createState() => _ManagerPageState();
-}
+  /// The navigation shell for managing sub-routes
+  final StatefulNavigationShell navigationShell;
 
-class _ManagerPageState extends ConsumerState<ManagerPage> {
-  int _selectedIndex = 0;
-
-  static final List<(String, IconData)> _navigationItems = [
-    ('Dashboard', FIcons.layoutDashboard),
-    ('Team Members', FIcons.users),
-    ('Reports', FIcons.fileText),
+  static final List<(String, IconData, String)> _navigationItems = [
+    ('Home', FIcons.layoutDashboard, '/manager/home'),
+    ('Profile', FIcons.user, '/manager/profile'),
   ];
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildSidebar(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
     final auth = ref.watch(authControllerProvider).value;
 
-    return FScaffold(
-      sidebar: FSidebar(
+    return DecoratedBox(
+      decoration: BoxDecoration(color: theme.colors.background),
+      child: FSidebar(
+        width: 300,
         header: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -50,9 +46,7 @@ class _ManagerPageState extends ConsumerState<ManagerPage> {
               ),
               FDivider(
                 style: theme.dividerStyles.horizontalStyle
-                    .copyWith(
-                      padding: EdgeInsets.zero,
-                    )
+                    .copyWith(padding: EdgeInsets.zero)
                     .call,
               ),
             ],
@@ -132,56 +126,75 @@ class _ManagerPageState extends ConsumerState<ManagerPage> {
         children: [
           FSidebarGroup(
             label: const Text('Overview'),
-            children: _navigationItems
-                .asMap()
-                .entries
-                .map(
-                  (entry) => FSidebarItem(
-                    icon: Icon(entry.value.$2),
-                    label: Text(entry.value.$1),
-                    onPress: () {
-                      setState(() {
-                        _selectedIndex = entry.key;
-                      });
-                    },
-                  ),
-                )
-                .toList(),
+            children: [
+              for (var i = 0; i < _navigationItems.length; i++)
+                FSidebarItem(
+                  icon: Icon(_navigationItems[i].$2),
+                  label: Text(_navigationItems[i].$1),
+                  selected: navigationShell.currentIndex == i,
+                  onPress: () async {
+                    navigationShell.goBranch(i);
+                    await Navigator.of(context).maybePop();
+                  },
+                ),
+            ],
           ),
         ],
       ),
-      child: _buildContent(theme),
     );
   }
 
-  Widget _buildContent(FThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Text(
-            _navigationItems[_selectedIndex].$1,
-            style: theme.typography.xl3.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colors.foreground,
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                'Content for ${_navigationItems[_selectedIndex].$1} '
-                'will be implemented here.',
-                style: theme.typography.base.copyWith(
-                  color: theme.colors.mutedForeground,
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.theme;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 768;
+
+    if (isSmallScreen) {
+      return FScaffold(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: theme.colors.background,
+                border: Border(
+                  bottom: BorderSide(
+                    color: theme.colors.border,
+                  ),
                 ),
-                textAlign: TextAlign.center,
+              ),
+              child: Row(
+                children: [
+                  FButton(
+                    style: FButtonStyle.outline(),
+                    onPress: () => showFSheet<void>(
+                      context: context,
+                      side: FLayout.ltr,
+                      builder: (context) => _buildSidebar(context, ref),
+                    ),
+                    child: const Icon(FIcons.menu),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Enterprise',
+                    style: theme.typography.xl.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colors.primary,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+            Expanded(child: navigationShell),
+          ],
+        ),
+      );
+    }
+
+    return FScaffold(
+      sidebar: _buildSidebar(context, ref),
+      child: navigationShell,
     );
   }
 }

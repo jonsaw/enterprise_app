@@ -1,16 +1,13 @@
 import 'dart:async';
 
 import 'package:enterprise/app/entities/auth.dart';
-import 'package:enterprise/app/entities/user_role.dart';
+import 'package:enterprise/app/pages/app_shell_page.dart';
 import 'package:enterprise/app/pages/home_page.dart';
-import 'package:enterprise/app/pages/manager_page.dart';
-import 'package:enterprise/app/pages/owner_page.dart';
+import 'package:enterprise/app/pages/profile_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
-import 'package:enterprise/app/pages/user_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -67,8 +64,8 @@ GoRouter router(Ref ref) {
 
           return const SignInRoute().location;
         case AsyncData(value: Auth()):
-          if (isSplash) return const HomeRoute().location;
-          if (isSigningIn) return const HomeRoute().location;
+          if (isSplash) return const AppHomeRoute().location;
+          if (isSigningIn) return const AppHomeRoute().location;
 
           return null;
       }
@@ -105,37 +102,39 @@ class SignInRoute extends GoRouteData with $SignInRoute {
   }
 }
 
-@TypedGoRoute<HomeRoute>(
-  path: '/',
-  routes: [
-    TypedGoRoute<OwnerRoute>(path: 'owner'),
-    TypedGoRoute<ManagerRoute>(path: 'manager'),
-    TypedGoRoute<UserRoute>(path: 'user'),
+@TypedStatefulShellRoute<AppShellRoute>(
+  branches: [
+    TypedStatefulShellBranch(
+      routes: [
+        TypedGoRoute<AppHomeRoute>(path: '/home'),
+      ],
+    ),
+    TypedStatefulShellBranch(
+      routes: [
+        TypedGoRoute<AppProfileRoute>(path: '/profile'),
+      ],
+    ),
   ],
 )
-/// home route - redirects based on user role
-class HomeRoute extends GoRouteData with $HomeRoute {
-  /// home route - redirects based on user role
-  const HomeRoute();
+/// App shell route with branches for home and profile navigation
+class AppShellRoute extends StatefulShellRouteData {
+  /// Creates an [AppShellRoute].
+  const AppShellRoute();
 
   @override
-  FutureOr<String?> redirect(BuildContext context, GoRouterState state) async {
-    final container = ProviderScope.containerOf(context, listen: false);
-
-    // Read auth state synchronously to avoid provider disposal
-    final auth = container.read(authControllerProvider).value;
-
-    if (auth == null) {
-      return null;
-    }
-
-    return switch (auth.role) {
-      Owner() => const OwnerRoute().location,
-      User() => const UserRoute().location,
-      Manager() => const ManagerRoute().location,
-      None() => null,
-    };
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    StatefulNavigationShell navigationShell,
+  ) {
+    return AppShellPage(navigationShell: navigationShell);
   }
+}
+
+/// Home route - displays the main home page
+class AppHomeRoute extends GoRouteData with $AppHomeRoute {
+  /// Creates an [AppHomeRoute].
+  const AppHomeRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -143,36 +142,14 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   }
 }
 
-/// owner route - shows the owner page
-class OwnerRoute extends GoRouteData with $OwnerRoute {
-  /// owner route - shows the owner page
-  const OwnerRoute();
+/// Profile route - displays the user profile page
+class AppProfileRoute extends GoRouteData with $AppProfileRoute {
+  /// Creates an [AppProfileRoute].
+  const AppProfileRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const OwnerPage();
-  }
-}
-
-/// user route - shows the user page
-class UserRoute extends GoRouteData with $UserRoute {
-  /// user route - shows the user page
-  const UserRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const UserPage();
-  }
-}
-
-/// manager route - shows the manager page
-class ManagerRoute extends GoRouteData with $ManagerRoute {
-  /// manager route - shows the manager page
-  const ManagerRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const ManagerPage();
+    return const ProfilePage();
   }
 }
 

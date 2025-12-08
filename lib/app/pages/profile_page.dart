@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-/// Home page
-class HomePage extends StatelessWidget {
-  /// Creates a [HomePage].
-  const HomePage({super.key});
+/// Profile page
+class ProfilePage extends StatelessWidget {
+  /// Creates a [ProfilePage].
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-
+    
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
         spacing: 12,
         children: [
           Text(
-            'Home',
+            'Profile',
             style: theme.typography.xl3.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.colors.foreground,
@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                'Content for Home will be implemented here.',
+                'Content for Profile will be implemented here.',
                 style: theme.typography.base.copyWith(
                   color: theme.colors.mutedForeground,
                 ),

@@ -2,55 +2,51 @@ import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 
-/// User page with standard access features.
+/// App shell page with navigation.
 ///
 /// Provides navigation to:
 /// - Home
 /// - Profile
-class UserPage extends ConsumerStatefulWidget {
-  /// Creates a [UserPage].
-  const UserPage({super.key});
+class AppShellPage extends ConsumerWidget {
+  /// Creates an [AppShellPage].
+  const AppShellPage({required this.navigationShell, super.key});
 
-  @override
-  ConsumerState<UserPage> createState() => _UserPageState();
-}
+  /// The navigation shell for managing sub-routes
+  final StatefulNavigationShell navigationShell;
 
-class _UserPageState extends ConsumerState<UserPage> {
-  int _selectedIndex = 0;
-
-  static final List<(String, IconData)> _navigationItems = [
-    ('Home', FIcons.layoutDashboard),
-    ('Profile', FIcons.user),
+  static final List<(String, IconData, String)> _navigationItems = [
+    ('Home', FIcons.layoutDashboard, '/home'),
+    ('Profile', FIcons.user, '/profile'),
   ];
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildSidebar(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
     final auth = ref.watch(authControllerProvider).value;
 
-    return FScaffold(
-      sidebar: FSidebar(
+    return DecoratedBox(
+      decoration: BoxDecoration(color: theme.colors.background),
+      child: FSidebar(
+        width: 300,
         header: Padding(
-          padding: const .symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            crossAxisAlignment: .start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const .fromLTRB(12, 0, 12, 8),
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
                 child: Text(
                   'Enterprise',
                   style: theme.typography.xl2.copyWith(
-                    fontWeight: .bold,
+                    fontWeight: FontWeight.bold,
                     color: theme.colors.primary,
                   ),
                 ),
               ),
               FDivider(
                 style: theme.dividerStyles.horizontalStyle
-                    .copyWith(
-                      padding: .zero,
-                    )
+                    .copyWith(padding: EdgeInsets.zero)
                     .call,
               ),
             ],
@@ -131,60 +127,74 @@ class _UserPageState extends ConsumerState<UserPage> {
           FSidebarGroup(
             label: const Text('Overview'),
             children: [
-              FSidebarItem(
-                icon: Icon(_navigationItems[0].$2),
-                label: Text(_navigationItems[0].$1),
-                onPress: () {
-                  setState(() {
-                    _selectedIndex = 0;
-                  });
-                },
-              ),
-              FSidebarItem(
-                icon: Icon(_navigationItems[1].$2),
-                label: Text(_navigationItems[1].$1),
-                onPress: () {
-                  setState(() {
-                    _selectedIndex = 1;
-                  });
-                },
-              ),
+              for (var i = 0; i < _navigationItems.length; i++)
+                FSidebarItem(
+                  icon: Icon(_navigationItems[i].$2),
+                  label: Text(_navigationItems[i].$1),
+                  selected: navigationShell.currentIndex == i,
+                  onPress: () async {
+                    navigationShell.goBranch(i);
+                    await Navigator.of(context).maybePop();
+                  },
+                ),
             ],
           ),
         ],
       ),
-      child: _buildContent(theme),
     );
   }
 
-  Widget _buildContent(FThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
-        children: [
-          Text(
-            _navigationItems[_selectedIndex].$1,
-            style: theme.typography.xl3.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colors.foreground,
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                'Content for ${_navigationItems[_selectedIndex].$1} '
-                'will be implemented here.',
-                style: theme.typography.base.copyWith(
-                  color: theme.colors.mutedForeground,
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.theme;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 768;
+
+    if (isSmallScreen) {
+      return FScaffold(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: theme.colors.background,
+                border: Border(
+                  bottom: BorderSide(
+                    color: theme.colors.border,
+                  ),
                 ),
-                textAlign: TextAlign.center,
+              ),
+              child: Row(
+                children: [
+                  FButton(
+                    style: FButtonStyle.outline(),
+                    onPress: () => showFSheet<void>(
+                      context: context,
+                      side: FLayout.ltr,
+                      builder: (context) => _buildSidebar(context, ref),
+                    ),
+                    child: const Icon(FIcons.menu),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Enterprise',
+                    style: theme.typography.xl.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colors.primary,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+            Expanded(child: navigationShell),
+          ],
+        ),
+      );
+    }
+
+    return FScaffold(
+      sidebar: _buildSidebar(context, ref),
+      child: navigationShell,
     );
   }
 }
