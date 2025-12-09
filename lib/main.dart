@@ -64,8 +64,12 @@ class MainApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       builder: (context, child) {
+        // check the current theme mode from the system
+        final brightness = MediaQuery.platformBrightnessOf(context);
         return FAnimatedTheme(
-          data: FThemes.zinc.dark,
+          data: brightness == Brightness.dark
+              ? FThemes.zinc.dark
+              : FThemes.zinc.light,
           child: child!,
         );
       },
