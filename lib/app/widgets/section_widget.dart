@@ -1,3 +1,4 @@
+import 'package:enterprise/app/pages/app_shell_page.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
@@ -28,7 +29,7 @@ class SectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
     final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth >= 768;
+    final isLargeScreen = screenWidth >= 768 + sidebarWidth;
 
     return Container(
       padding: EdgeInsets.symmetric(

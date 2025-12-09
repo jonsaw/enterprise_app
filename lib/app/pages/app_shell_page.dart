@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
+/// Width of the sidebar
+const sidebarWidth = 400.0;
+
 /// App shell page with navigation.
 ///
 /// Provides navigation to:
@@ -25,7 +28,7 @@ class AppShellPage extends ConsumerWidget {
       decoration: BoxDecoration(color: theme.colors.background),
       child: SafeArea(
         child: FSidebar(
-          width: 400,
+          width: sidebarWidth,
           header: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
