@@ -25,10 +25,9 @@ class AppShellPage extends ConsumerWidget {
     final theme = context.theme;
     final auth = ref.watch(authControllerProvider).value;
 
-    return SafeArea(
-      bottom: false,
-      child: DecoratedBox(
-        decoration: BoxDecoration(color: theme.colors.background),
+    return DecoratedBox(
+      decoration: BoxDecoration(color: theme.colors.background),
+      child: SafeArea(
         child: FSidebar(
           width: 400,
           header: Padding(
