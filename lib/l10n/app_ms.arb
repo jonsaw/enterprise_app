@@ -24,5 +24,10 @@
     "homePageTitle": "Laman Utama",
     "homePageContent": "Kandungan untuk Laman Utama akan dilaksanakan di sini.",
     "profilePageTitle": "Profil",
-    "profilePageContent": "Kandungan untuk Profil akan dilaksanakan di sini."
+    "profilePageContent": "Kandungan untuk Profil akan dilaksanakan di sini.",
+    "sessionManagement": "Pengurusan Sesi",
+    "sessionManagementDescription": "Log keluar dari sesi di peranti ini",
+    "signOutConfirmTitle": "Log Keluar",
+    "signOutConfirmMessage": "Adakah anda pasti mahu log keluar?",
+    "cancel": "Batal"
 }

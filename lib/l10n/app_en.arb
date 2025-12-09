@@ -99,5 +99,25 @@
     "profilePageContent": "Content for Profile will be implemented here.",
     "@profilePageContent": {
         "description": "Profile page placeholder content"
+    },
+    "sessionManagement": "Session Management",
+    "@sessionManagement": {
+        "description": "Session Management section title"
+    },
+    "sessionManagementDescription": "Sign out of session in this device",
+    "@sessionManagementDescription": {
+        "description": "Session Management section description"
+    },
+    "signOutConfirmTitle": "Sign Out",
+    "@signOutConfirmTitle": {
+        "description": "Sign out confirmation dialog title"
+    },
+    "signOutConfirmMessage": "Are you sure you want to sign out?",
+    "@signOutConfirmMessage": {
+        "description": "Sign out confirmation dialog message"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Cancel button label"
     }
 }

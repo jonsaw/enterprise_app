@@ -52,65 +52,57 @@ class AppShellPage extends ConsumerWidget {
           footer: auth != null
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: FCard.raw(
-                    child: Padding(
+                  child: GestureDetector(
+                    onTap: () async {
+                      navigationShell.goBranch(1);
+                      await Navigator.of(context).maybePop();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: navigationShell.currentIndex == 1
+                              ? theme.colors.primary
+                              : theme.colors.border,
+                        ),
+                        color: navigationShell.currentIndex == 1
+                            ? theme.colors.primary.withAlpha(25)
+                            : theme.colors.background,
+                      ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 12,
                         horizontal: 16,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        spacing: 12,
+                      child: Row(
+                        spacing: 10,
                         children: [
-                          Row(
-                            spacing: 10,
-                            children: [
-                              FAvatar.raw(
-                                child: Icon(
-                                  FIcons.user,
-                                  size: 18,
-                                  color: theme.colors.mutedForeground,
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 2,
-                                  children: [
-                                    Text(
-                                      auth.name,
-                                      style: theme.typography.sm.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: theme.colors.foreground,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      auth.email,
-                                      style: theme.typography.xs.copyWith(
-                                        color: theme.colors.mutedForeground,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          FAvatar.raw(
+                            child: Icon(
+                              FIcons.user,
+                              size: 18,
+                              color: theme.colors.mutedForeground,
+                            ),
                           ),
-                          FButton(
-                            style: FButtonStyle.outline(),
-                            onPress: () async {
-                              await ref
-                                  .read(authControllerProvider.notifier)
-                                  .signOut();
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 2,
                               children: [
-                                const Icon(FIcons.logOut, size: 16),
-                                const SizedBox(width: 8),
-                                Text(context.tr.signOut),
+                                Text(
+                                  auth.name,
+                                  style: theme.typography.sm.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colors.foreground,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  auth.email,
+                                  style: theme.typography.xs.copyWith(
+                                    color: theme.colors.mutedForeground,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),
