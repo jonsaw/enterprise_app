@@ -1,4 +1,5 @@
 import 'package:enterprise/app/state/auth_controller.dart';
+import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
@@ -15,11 +16,6 @@ class AppShellPage extends ConsumerWidget {
 
   /// The navigation shell for managing sub-routes
   final StatefulNavigationShell navigationShell;
-
-  static final List<(String, IconData, String)> _navigationItems = [
-    ('Home', FIcons.layoutDashboard, '/home'),
-    ('Profile', FIcons.user, '/profile'),
-  ];
 
   Widget _buildSidebar(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
@@ -38,7 +34,7 @@ class AppShellPage extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
                   child: Text(
-                    'Enterprise',
+                    context.tr.appName,
                     style: theme.typography.xl2.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colors.primary,
@@ -109,12 +105,12 @@ class AppShellPage extends ConsumerWidget {
                                   .read(authControllerProvider.notifier)
                                   .signOut();
                             },
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(FIcons.logOut, size: 16),
-                                SizedBox(width: 8),
-                                Text('Sign Out'),
+                                const Icon(FIcons.logOut, size: 16),
+                                const SizedBox(width: 8),
+                                Text(context.tr.signOut),
                               ],
                             ),
                           ),
@@ -126,18 +122,26 @@ class AppShellPage extends ConsumerWidget {
               : const SizedBox.shrink(),
           children: [
             FSidebarGroup(
-              label: const Text('Overview'),
+              label: Text(context.tr.overview),
               children: [
-                for (var i = 0; i < _navigationItems.length; i++)
-                  FSidebarItem(
-                    icon: Icon(_navigationItems[i].$2),
-                    label: Text(_navigationItems[i].$1),
-                    selected: navigationShell.currentIndex == i,
-                    onPress: () async {
-                      navigationShell.goBranch(i);
-                      await Navigator.of(context).maybePop();
-                    },
-                  ),
+                FSidebarItem(
+                  icon: const Icon(FIcons.layoutDashboard),
+                  label: Text(context.tr.home),
+                  selected: navigationShell.currentIndex == 0,
+                  onPress: () async {
+                    navigationShell.goBranch(0);
+                    await Navigator.of(context).maybePop();
+                  },
+                ),
+                FSidebarItem(
+                  icon: const Icon(FIcons.user),
+                  label: Text(context.tr.profile),
+                  selected: navigationShell.currentIndex == 1,
+                  onPress: () async {
+                    navigationShell.goBranch(1);
+                    await Navigator.of(context).maybePop();
+                  },
+                ),
               ],
             ),
           ],
@@ -183,7 +187,7 @@ class AppShellPage extends ConsumerWidget {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'Enterprise',
+                      context.tr.appName,
                       style: theme.typography.xl.copyWith(
                         fontWeight: FontWeight.bold,
                         color: theme.colors.primary,

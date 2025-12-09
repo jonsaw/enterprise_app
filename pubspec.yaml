@@ -13,6 +13,8 @@ dependencies:
   ferry_hive_ce_store: ^0.0.2-dev.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^3.0.3
   flutter_secure_storage: ^9.2.2
   forui: ^0.16.0
@@ -22,6 +24,7 @@ dependencies:
   gql_http_link: ^1.2.0
   hive_ce: ^2.15.1
   hive_ce_flutter: ^2.3.3
+  intl: ^0.20.2
   riverpod_annotation: ^3.0.3
   talker_flutter: ^5.1.5
   talker_riverpod_logger: ^5.1.5
@@ -42,3 +45,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

@@ -1,0 +1,103 @@
+{
+    "@@locale": "en",
+    "appName": "Enterprise",
+    "@appName": {
+        "description": "The name of the application"
+    },
+    "home": "Home",
+    "@home": {
+        "description": "Home navigation label"
+    },
+    "profile": "Profile",
+    "@profile": {
+        "description": "Profile navigation label"
+    },
+    "overview": "Overview",
+    "@overview": {
+        "description": "Overview section label"
+    },
+    "signOut": "Sign Out",
+    "@signOut": {
+        "description": "Sign out button label"
+    },
+    "signInTitle": "Sign in to continue",
+    "@signInTitle": {
+        "description": "Sign in page title"
+    },
+    "enterVerificationCode": "Enter verification code",
+    "@enterVerificationCode": {
+        "description": "Title when user needs to enter OTP"
+    },
+    "email": "Email",
+    "@email": {
+        "description": "Email field label"
+    },
+    "emailHint": "enter@example.com",
+    "@emailHint": {
+        "description": "Email field hint text"
+    },
+    "password": "Password",
+    "@password": {
+        "description": "Password field label"
+    },
+    "passwordHint": "Enter your password",
+    "@passwordHint": {
+        "description": "Password field hint text"
+    },
+    "verificationCode": "Verification Code",
+    "@verificationCode": {
+        "description": "OTP field label"
+    },
+    "verificationCodeHint": "Enter the code sent to your email",
+    "@verificationCodeHint": {
+        "description": "OTP field hint text"
+    },
+    "continue_": "Continue",
+    "@continue_": {
+        "description": "Continue button label"
+    },
+    "pleaseWait": "Please wait...",
+    "@pleaseWait": {
+        "description": "Loading message"
+    },
+    "verifyAndSignIn": "Verify & Sign In",
+    "@verifyAndSignIn": {
+        "description": "Button to verify OTP and sign in"
+    },
+    "resendCode": "Resend Code",
+    "@resendCode": {
+        "description": "Button to resend OTP"
+    },
+    "useDifferentAccount": "Use Different Account",
+    "@useDifferentAccount": {
+        "description": "Button to go back and use different account"
+    },
+    "enterEmailAndPassword": "Please enter both email and password",
+    "@enterEmailAndPassword": {
+        "description": "Error message when email or password is missing"
+    },
+    "enterOtp": "Please enter the OTP code",
+    "@enterOtp": {
+        "description": "Error message when OTP is missing"
+    },
+    "otpResentSuccessfully": "OTP resent successfully",
+    "@otpResentSuccessfully": {
+        "description": "Success message when OTP is resent"
+    },
+    "homePageTitle": "Home",
+    "@homePageTitle": {
+        "description": "Home page title"
+    },
+    "homePageContent": "Content for Home will be implemented here.",
+    "@homePageContent": {
+        "description": "Home page placeholder content"
+    },
+    "profilePageTitle": "Profile",
+    "@profilePageTitle": {
+        "description": "Profile page title"
+    },
+    "profilePageContent": "Content for Profile will be implemented here.",
+    "@profilePageContent": {
+        "description": "Profile page placeholder content"
+    }
+}

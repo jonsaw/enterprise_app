@@ -1,0 +1,5 @@
+# Ignore all generated localization files
+*
+
+# Keep this gitignore file
+!.gitignore

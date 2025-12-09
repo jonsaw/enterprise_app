@@ -4,6 +4,7 @@ import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/router/router.dart';
 import 'package:enterprise/app/state/secure_storage_service.dart';
 import 'package:enterprise/app_clients.dart';
+import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -63,6 +64,8 @@ class MainApp extends ConsumerWidget {
       title: 'Enterprise',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) {
         // check the current theme mode from the system
         final brightness = MediaQuery.platformBrightnessOf(context);

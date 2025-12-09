@@ -1,4 +1,5 @@
 import 'package:enterprise/app/state/auth_controller.dart';
+import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
@@ -35,7 +36,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
   Future<void> _handleSignIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       setState(() {
-        _errorMessage = 'Please enter both email and password';
+        _errorMessage = context.tr.enterEmailAndPassword;
       });
       return;
     }
@@ -68,7 +69,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
   Future<void> _handleConfirmSignIn() async {
     if (_otpController.text.isEmpty) {
       setState(() {
-        _errorMessage = 'Please enter the OTP code';
+        _errorMessage = context.tr.enterOtp;
       });
       return;
     }
@@ -121,7 +122,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('OTP resent successfully')),
+          SnackBar(content: Text(context.tr.otpResentSuccessfully)),
         );
       }
     } on Exception catch (e) {
@@ -156,7 +157,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               children: [
                 // App branding
                 Text(
-                  'Enterprise',
+                  context.tr.appName,
                   style: theme.typography.xl4.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colors.primary,
@@ -166,8 +167,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 const SizedBox(height: 8),
                 Text(
                   _isOtpStep
-                      ? 'Enter verification code'
-                      : 'Sign in to continue',
+                      ? context.tr.enterVerificationCode
+                      : context.tr.signInTitle,
                   style: theme.typography.base.copyWith(
                     color: theme.colors.mutedForeground,
                   ),
@@ -199,8 +200,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 // Email field
                 FTextField(
                   controller: _emailController,
-                  label: const Text('Email'),
-                  hint: 'enter@example.com',
+                  label: Text(context.tr.email),
+                  hint: context.tr.emailHint,
                   keyboardType: TextInputType.emailAddress,
                   enabled: !_isOtpStep && !_isLoading,
                 ),
@@ -209,8 +210,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 // Password field
                 FTextField(
                   controller: _passwordController,
-                  label: const Text('Password'),
-                  hint: 'Enter your password',
+                  label: Text(context.tr.password),
+                  hint: context.tr.passwordHint,
                   obscureText: true,
                   enabled: !_isOtpStep && !_isLoading,
                 ),
@@ -220,8 +221,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   const SizedBox(height: 16),
                   FTextField(
                     controller: _otpController,
-                    label: const Text('Verification Code'),
-                    hint: 'Enter the code sent to your email',
+                    label: Text(context.tr.verificationCode),
+                    hint: context.tr.verificationCodeHint,
                     keyboardType: TextInputType.number,
                     enabled: !_isLoading,
                   ),
@@ -236,10 +237,10 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                       : (_isOtpStep ? _handleConfirmSignIn : _handleSignIn),
                   child: Text(
                     _isLoading
-                        ? 'Please wait...'
+                        ? context.tr.pleaseWait
                         : _isOtpStep
-                        ? 'Verify & Sign In'
-                        : 'Continue',
+                        ? context.tr.verifyAndSignIn
+                        : context.tr.continue_,
                   ),
                 ),
 
@@ -249,13 +250,13 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   FButton(
                     style: FButtonStyle.outline(),
                     onPress: _isLoading ? null : _handleResendOtp,
-                    child: const Text('Resend Code'),
+                    child: Text(context.tr.resendCode),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
                     onPressed: _isLoading ? null : _handleUseDeifferentAccount,
                     child: Text(
-                      'Use Different Account',
+                      context.tr.useDifferentAccount,
                       style: theme.typography.sm.copyWith(
                         color: theme.colors.mutedForeground,
                       ),

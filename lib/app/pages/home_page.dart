@@ -1,3 +1,4 @@
+import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
         spacing: 12,
         children: [
           Text(
-            'Home',
+            context.tr.homePageTitle,
             style: theme.typography.xl3.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.colors.foreground,
@@ -26,7 +27,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                'Content for Home will be implemented here.',
+                context.tr.homePageContent,
                 style: theme.typography.base.copyWith(
                   color: theme.colors.mutedForeground,
                 ),

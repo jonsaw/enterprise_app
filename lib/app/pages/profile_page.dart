@@ -1,3 +1,4 @@
+import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
@@ -9,7 +10,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -17,7 +18,7 @@ class ProfilePage extends StatelessWidget {
         spacing: 12,
         children: [
           Text(
-            'Profile',
+            context.tr.profilePageTitle,
             style: theme.typography.xl3.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.colors.foreground,
@@ -26,7 +27,7 @@ class ProfilePage extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                'Content for Profile will be implemented here.',
+                context.tr.profilePageContent,
                 style: theme.typography.base.copyWith(
                   color: theme.colors.mutedForeground,
                 ),
