@@ -30,19 +30,16 @@ part 'router.g.dart';
 /// to your case and out of this scope.
 @riverpod
 GoRouter router(Ref ref) {
-  // build a `Listenable` to be fed to GoRouter
-  final notifier = _AuthStateNotifier(ref.read(authControllerProvider));
-
-  // update the notifier when the auth state changes
+  final auth = ValueNotifier<AsyncValue<Auth?>>(const AsyncLoading());
   ref
-    ..onDispose(notifier.dispose)
+    ..onDispose(auth.dispose)
     ..listen(authControllerProvider, (_, next) {
-      notifier.update(next);
+      auth.value = next;
     });
 
   final router = GoRouter(
     navigatorKey: _routerKey,
-    refreshListenable: notifier,
+    refreshListenable: auth,
     initialLocation: const SplashRoute().location,
     debugLogDiagnostics: true,
     routes: $appRoutes,
@@ -50,7 +47,7 @@ GoRouter router(Ref ref) {
       final isSplash = state.uri.path == const SplashRoute().location;
       final isSigningIn = state.uri.path == const SignInRoute().location;
 
-      switch (notifier.value) {
+      switch (auth.value) {
         case AsyncError():
           return const SignInRoute().location;
         case AsyncLoading():
@@ -150,21 +147,5 @@ class AppProfileRoute extends GoRouteData with $AppProfileRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ProfilePage();
-  }
-}
-
-/// ChangeNotifier that wraps auth state for GoRouter refresh
-class _AuthStateNotifier extends ChangeNotifier {
-  _AuthStateNotifier(this._value);
-
-  AsyncValue<Auth?> _value;
-
-  AsyncValue<Auth?> get value => _value;
-
-  void update(AsyncValue<Auth?> newValue) {
-    if (_value != newValue) {
-      _value = newValue;
-      notifyListeners();
-    }
   }
 }
