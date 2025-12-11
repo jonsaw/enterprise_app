@@ -9,6 +9,8 @@ environment:
 dependencies:
   api_auth:
     path: packages/api_auth
+  api_management:
+    path: packages/api_management
   ferry: ^0.16.1+2
   ferry_hive_ce_store: ^0.0.2-dev.0
   flutter:
