@@ -1,0 +1,21 @@
+query ListMyCompanies($input: ListMyCompaniesInput!) {
+    listMyCompanies(input: $input) {
+        id
+        role
+        readAt
+        createdAt
+        updatedAt
+        company {
+            id
+            code
+            name
+            createdAt
+            updatedAt
+        }
+        user {
+            id
+            name
+            email
+        }
+    }
+}

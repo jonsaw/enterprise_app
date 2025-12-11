@@ -1,0 +1,21 @@
+query GetMyCompany($companyId: UUID!) {
+    getMyCompany(companyId: $companyId) {
+        id
+        role
+        readAt
+        createdAt
+        updatedAt
+        company {
+            id
+            code
+            name
+            createdAt
+            updatedAt
+        }
+        user {
+            id
+            name
+            email
+        }
+    }
+}

@@ -1,0 +1,665 @@
+input AcceptPendingCompanyInviteInput {
+  id: UUID!
+  token: String!
+}
+
+type Company {
+  id: UUID!
+  code: String!
+  name: String!
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  createdBy: User
+  """
+  Show list of integrations for this company
+  """
+  integrations: [CompanyIntegrationObject!]!
+  """
+  Get the BA integration customer data for this company
+
+  This method retrieves customer information from the IntegrationBA API using
+  the company's code as the account number to look up. It requires the company
+  to have an active IntegrationBaApi integration configured.
+
+  # Features
+  This method is only available when the `integration_ba` feature is enabled.
+  """
+  baIntegrationCustomer: IntegrationBaCustomer
+}
+
+input CompanyIntegrationAccessInput {
+  companyId: UUID!
+  integrationType: IntegrationType!
+}
+
+type CompanyIntegrationObject {
+  id: UUID!
+  companyId: UUID!
+  integrationType: IntegrationType!
+  status: IntegrationStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  createdBy: UUID!
+  settingsVersion: Int!
+  hasSettings: Boolean!
+}
+
+input CompanyIntegrationsInput {
+  companyId: UUID!
+}
+
+type CompanyIntegrationsResponse {
+  integrations: [CompanyIntegrationObject!]!
+}
+
+type CompanyInvite {
+  id: UUID!
+  name: String!
+  email: String!
+  role: CompanyUserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  readAt: DateTime!
+  createdById: UUID!
+  companyId: UUID!
+  token: String
+  tokenExpiresAt: DateTime
+  createdBy: User
+}
+
+enum CompanyInviteSortField {
+  """
+  Sort by invite ID
+  """
+  ID
+  """
+  Sort by creation date
+  """
+  CREATED_AT
+  """
+  Sort by last update date
+  """
+  UPDATED_AT
+  """
+  Sort by invitee name
+  """
+  NAME
+  """
+  Sort by invitee email
+  """
+  EMAIL
+  """
+  Sort by assigned role
+  """
+  ROLE
+  """
+  Sort by number of resends
+  """
+  RESEND_COUNT
+}
+
+input CompanyInviteSortInput {
+  field: CompanyInviteSortField!
+  direction: SortDirection!
+}
+
+enum CompanySortField {
+  """
+  Sort by company ID
+  """
+  ID
+  """
+  Sort by creation date
+  """
+  CREATED_AT
+  """
+  Sort by last update date
+  """
+  UPDATED_AT
+  """
+  Sort by company code
+  """
+  CODE
+  """
+  Sort by company name
+  """
+  NAME
+}
+
+input CompanySortInput {
+  field: CompanySortField!
+  direction: SortDirection!
+}
+
+type CompanyUser {
+  id: UUID!
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  companyId: UUID!
+  userId: UUID!
+  role: CompanyUserRole!
+  user: User
+  company: Company
+  createdBy: User
+}
+
+enum CompanyUserRole {
+  OWNER
+  MANAGER
+  USER
+}
+
+enum CompanyUserSortField {
+  """
+  Sort by company user ID
+  """
+  ID
+  """
+  Sort by creation date
+  """
+  CREATED_AT
+  """
+  Sort by last update date
+  """
+  UPDATED_AT
+  """
+  Sort by user role
+  """
+  ROLE
+}
+
+input CompanyUserSortInput {
+  field: CompanyUserSortField!
+  direction: SortDirection!
+}
+
+input CreateCompanyInput {
+  code: String!
+  name: String!
+}
+
+input CreateCompanyIntegrationInput {
+  companyId: UUID!
+  integrationType: IntegrationType!
+  settings: IntegrationSettings
+}
+
+type CreateCompanyIntegrationResponse {
+  integration: CompanyIntegrationObject!
+}
+
+input CreateCompanyInviteInput {
+  name: String!
+  email: String!
+  companyId: UUID!
+  role: CompanyUserRole!
+}
+
+input CreateCompanyMyEinvoiceInput {
+  companyId: UUID!
+  clientId: String!
+  clientSecret: String!
+  clientExpiresAt: DateTime!
+}
+
+input CreateCurrencyInput {
+  companyId: UUID!
+  code: String!
+  name: String!
+  symbol: String!
+  exchangeRateToId: UUID
+  exchangeRateTo: Float
+  """
+  The number of cents in one unit of this currency. Ie., USD 1 = 100 cents.
+  This is used to convert between the smallest unit of the currency and will
+  be used as the conversion value when converting to a BIGINT when storing
+  in a Database.
+  """
+  centsConversion: Int!
+}
+
+input CreateItemTypeInput {
+  name: String!
+  companyId: UUID!
+  """
+  Price field identifier in details_ui JSON
+  """
+  priceField: String!
+  """
+  JSON representation of UI for item details
+  """
+  detailsUi: UI!
+}
+
+input CreateServiceClientInput {
+  companyId: UUID!
+  purpose: String!
+  expiresAt: DateTime
+}
+
+type Currency {
+  id: UUID!
+  code: String!
+  name: String!
+  symbol: String!
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  exchangeRateToId: UUID
+  exchangeRateTo: Float
+  centsConversion: Int!
+  revision: Int!
+  createdBy: User
+}
+
+"""
+Implement the DateTime<Utc> scalar
+
+The input/output is a string in RFC3339 format.
+"""
+scalar DateTime
+
+input DeleteIntegrationInput {
+  companyId: UUID!
+  integrationType: IntegrationType!
+}
+
+type DeleteIntegrationResponse {
+  success: Boolean!
+  integration: CompanyIntegrationObject!
+}
+
+type IntegrationAccessResponse {
+  hasAccess: Boolean!
+  integration: CompanyIntegrationObject
+}
+
+type IntegrationBaCustomer {
+  accountNumber: String!
+  currencyCode: String!
+  warehouseCode: String!
+  name: String!
+  addressLine1: String
+  addressLine2: String
+  addressLine3: String
+  addressLine4: String
+  postalCode: String
+  town: String
+  state: String
+  lhdnEinvoiceState: String
+  country: String
+  lhdnEinvoiceCountry: String
+  contactPerson: String
+  telephone1: String
+  telephone2: String
+  faxNumber: String
+  mobileNumber: String
+  companyNumber: String
+  gstNumber: String
+  email: String
+  standardDiscountPercent: Float
+  paymentDueDate: Int
+  creditTerm: Int
+  creditLimit: Float
+  bypassCreditLimit: Boolean
+  lockPrice: Boolean
+  decimalAdjustType: String
+  decimalAdjust: Float
+  lhdnEinvoiceIdType: String
+  lhdnEinvoiceIdValue: String
+  lhdnEinvoiceTin: String
+  lhdnEinvoiceTinValidated: Boolean
+  status: String
+  statusCode: String
+  customPriceMarkup: Float
+  customPriceMarkupPercent: Float
+  remarks: String
+  assignedTo: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+A scalar that represents JSON integration settings.
+"""
+scalar IntegrationSettings
+
+enum IntegrationStatus {
+  ENABLED
+  DISABLED
+  PENDING
+}
+
+enum IntegrationType {
+  MY_EINVOICE
+  INTEGRATION_BA
+  INTEGRATION_BA_API
+  INTEGRATION_SHOPIFY
+}
+
+type ItemType {
+  id: UUID!
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  updatedById: UUID
+  name: String!
+  priceField: String!
+  detailsUi: UI!
+  revision: Int!
+  createdBy: User
+  updatedBy: User
+}
+
+input ListCompaniesInput {
+  limit: Int
+  offset: Int
+  search: String
+  sort: CompanySortInput
+}
+
+input ListItemTypesInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+}
+
+input ListMyCompaniesInput {
+  limit: Int
+  offset: Int
+  search: String
+  sort: CompanyUserSortInput
+}
+
+input ListMyCompanyInvitesInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+  sort: CompanyInviteSortInput
+}
+
+input ListMyCompanyUsersInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+  sort: CompanyUserSortInput
+}
+
+input ListMyPendingCompanyInvitesInput {
+  limit: Int
+  offset: Int
+  search: String
+  sort: PendingCompanyInviteSortInput
+}
+
+type Mutation {
+  """
+  Create a company and become an owner of the company
+  """
+  createCompany(input: CreateCompanyInput!): Company!
+  """
+  Invite user to company
+  """
+  createCompanyInvite(input: CreateCompanyInviteInput!): CompanyInvite!
+  """
+  Create MY Einvoice
+  """
+  createCompanyMyEinvoice(input: CreateCompanyMyEinvoiceInput!): MyEinvoiceCompany!
+  """
+  Create company service client. Client that is used to communicate with enterprise services.
+  """
+  createServiceClient(input: CreateServiceClientInput!): ServiceClient!
+  """
+  Accept pending company invite
+  """
+  acceptPendingCompanyInvite(input: AcceptPendingCompanyInviteInput!): Boolean!
+  """
+  Decline pending company invite
+  """
+  declinePendingCompanyInvite(id: UUID!): Boolean!
+  """
+  Create a item type
+  """
+  createItemType(input: CreateItemTypeInput!): ItemType!
+  """
+  Update a item type
+  """
+  updateItemType(input: UpdateItemTypeInput!): ItemType!
+  """
+  Create a currency for a company
+  """
+  createCurrency(input: CreateCurrencyInput!): Currency!
+  """
+  Update a currency for a company
+  """
+  updateCurrency(input: UpdateCurrencyInput!): Currency!
+  """
+  Create a new company integration
+  """
+  createCompanyIntegration(input: CreateCompanyIntegrationInput!): CreateCompanyIntegrationResponse!
+  """
+  Update integration status
+  """
+  updateIntegrationStatus(input: UpdateIntegrationStatusInput!): UpdateIntegrationResponse!
+  """
+  Update integration settings
+  """
+  updateIntegrationSettings(input: UpdateIntegrationSettingsInput!): UpdateIntegrationResponse!
+  """
+  Delete (soft delete) a company integration
+  """
+  deleteCompanyIntegration(input: DeleteIntegrationInput!): DeleteIntegrationResponse!
+}
+
+type MyEinvoiceCompany {
+  id: UUID!
+  companyId: UUID!
+  clientId: String!
+  clientExpiresAt: DateTime!
+  company: Company
+}
+
+type PendingCompanyInvite {
+  id: UUID!
+  name: String!
+  email: String!
+  role: CompanyUserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  readAt: DateTime!
+  createdById: UUID!
+  companyId: UUID!
+  createdBy: User
+  company: Company
+}
+
+enum PendingCompanyInviteSortField {
+  """
+  Sort by invite ID
+  """
+  ID
+  """
+  Sort by creation date
+  """
+  CREATED_AT
+  """
+  Sort by last update date
+  """
+  UPDATED_AT
+  """
+  Sort by invitee name
+  """
+  NAME
+  """
+  Sort by invitee email
+  """
+  EMAIL
+  """
+  Sort by assigned role
+  """
+  ROLE
+}
+
+input PendingCompanyInviteSortInput {
+  field: PendingCompanyInviteSortField!
+  direction: SortDirection!
+}
+
+type Query {
+  apiVersion: String!
+  """
+  List all active companies
+  """
+  listCompanies(input: ListCompaniesInput!): [Company!]!
+  getMyCompany(companyId: UUID!): CompanyUser!
+  """
+  List all companies that the user is associated with
+  """
+  listMyCompanies(input: ListMyCompaniesInput!): [CompanyUser!]!
+  """
+  List all my company invites. Only `OWNER`s and `MANAGER`s can access this query
+  """
+  listMyCompanyInvites(input: ListMyCompanyInvitesInput!): [CompanyInvite!]!
+  """
+  List all users that are associated with the company. Only `OWNER`s and `MANAGER`s can access this query
+  """
+  listMyCompanyUsers(input: ListMyCompanyUsersInput!): [CompanyUser!]!
+  """
+  Get a company user by company ID and user ID. Only `OWNER`s and `MANAGER`s can access this query
+  """
+  getMyCompanyUser(companyId: UUID!, userId: UUID!): CompanyUser!
+  """
+  List my pending company invites.
+  """
+  listMyPendingCompanyInvites(input: ListMyPendingCompanyInvitesInput!): [PendingCompanyInvite!]!
+  """
+  Get my pending company invite by ID.
+  """
+  getMyPendingCompanyInvite(id: UUID!): PendingCompanyInvite!
+  listItemTypes(input: ListItemTypesInput!): [ItemType!]!
+  """
+  Get all integrations for a company
+  """
+  companyIntegrations(input: CompanyIntegrationsInput!): CompanyIntegrationsResponse!
+  """
+  Get active integrations for a company
+  """
+  activeCompanyIntegrations(input: CompanyIntegrationsInput!): CompanyIntegrationsResponse!
+  """
+  Check if company has access to a specific integration
+  """
+  hasIntegrationAccess(input: CompanyIntegrationAccessInput!): IntegrationAccessResponse!
+  """
+  Get all companies with access to a specific integration type
+  """
+  companiesWithIntegration(integrationType: IntegrationType!): CompanyIntegrationsResponse!
+}
+
+type ServiceClient {
+  id: UUID!
+  companyId: UUID!
+  purpose: String!
+  secret: String
+  expiresAt: DateTime
+  company: Company
+}
+
+enum SortDirection {
+  """
+  Ascending order (A-Z, 1-9, oldest first)
+  """
+  ASC
+  """
+  Descending order (Z-A, 9-1, newest first)
+  """
+  DESC
+}
+
+"""
+A scalar that represents a JSON value for the model UI.
+"""
+scalar UI
+
+"""
+A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
+Strings within GraphQL. UUIDs are used to assign unique identifiers to
+entities without requiring a central allocating authority.
+
+# References
+
+* [Wikipedia: Universally Unique Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier)
+* [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122)
+"""
+scalar UUID
+
+input UpdateCurrencyInput {
+  id: UUID!
+  companyId: UUID!
+  code: String!
+  name: String!
+  symbol: String!
+  exchangeRateToId: UUID
+  exchangeRateTo: Float
+  """
+  The number of cents in one unit of this currency. Ie., USD 1 = 100 cents.
+  This is used to convert between the smallest unit of the currency and will
+  be used as the conversion value when converting to a BIGINT when storing
+  in a Database.
+  """
+  centsConversion: Int!
+}
+
+type UpdateIntegrationResponse {
+  integration: CompanyIntegrationObject!
+}
+
+input UpdateIntegrationSettingsInput {
+  companyId: UUID!
+  integrationType: IntegrationType!
+  settings: IntegrationSettings!
+}
+
+input UpdateIntegrationStatusInput {
+  companyId: UUID!
+  integrationType: IntegrationType!
+  status: IntegrationStatus!
+}
+
+input UpdateItemTypeInput {
+  id: UUID!
+  companyId: UUID!
+  name: String!
+  """
+  Price field identifier in details_ui JSON
+  """
+  priceField: String!
+  """
+  JSON representation of UI for item details
+  """
+  detailsUi: UI!
+}
+
+type User {
+  id: UUID!
+  name: String!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+Indicates that an Input Object is a OneOf Input Object (and thus requires
+                        exactly one of its field be provided)
+"""
+directive @oneOf on INPUT_OBJECT
+
