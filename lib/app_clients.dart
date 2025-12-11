@@ -41,3 +41,10 @@ TypedLink gqlAuthClient(Ref ref) {
   // will be overridden in main.dart after creating the client asynchronously
   throw UnimplementedError();
 }
+
+/// Provides the GraphQL client for management-related operations.
+@riverpod
+TypedLink gqlManagementClient(Ref ref) {
+  // will be overridden in main.dart after creating the client asynchronously
+  throw UnimplementedError();
+}

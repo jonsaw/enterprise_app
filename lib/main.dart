@@ -1,4 +1,5 @@
 import 'package:api_auth/api_auth.dart' as api_auth;
+import 'package:api_management/api_management.dart' as api_management;
 import 'package:enterprise/app/config/app_config.dart';
 import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/router/router.dart';
@@ -19,6 +20,7 @@ void main() async {
   AppConfig.create(
     appName: 'Enterprise',
     authEndpoint: 'https://resource-api.ap.ngrok.io/auth',
+    managementEndpoint: 'https://resource-api.ap.ngrok.io/management',
   );
 
   // Create secure storage service
@@ -32,10 +34,19 @@ void main() async {
     storage,
   );
 
+  // Create GraphQL client for API management
+  final gqlManagementClient = await createClient(
+    'api_management_cache_box',
+    AppConfig.shared.managementEndpoint,
+    api_management.possibleTypesMap,
+    storage,
+  );
+
   runApp(
     ProviderScope(
       overrides: [
         gqlAuthClientProvider.overrideWith((ref) => gqlAuthClient),
+        gqlManagementClientProvider.overrideWith((ref) => gqlManagementClient),
         secureStorageServiceProvider.overrideWith((ref) => storage),
       ],
       observers: [
