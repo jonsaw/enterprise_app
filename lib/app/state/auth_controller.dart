@@ -72,7 +72,6 @@ class AuthController extends _$AuthController {
       }
 
       final userData = result.data!.authenticated!;
-      final role = userData.userId.toUserRole();
 
       talker.info('Session validated for user: ${userData.email}');
 
@@ -80,7 +79,7 @@ class AuthController extends _$AuthController {
         userId: userData.userId,
         name: userData.name,
         email: userData.email,
-        role: role,
+        role: const User(), // TODO(jonsaw): Map actual role from userData
       );
     } on Exception catch (e, st) {
       talker.error('Session check failed', e, st);
