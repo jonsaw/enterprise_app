@@ -39,12 +39,17 @@ class HomePage extends ConsumerWidget {
                 const SizedBox(height: 16),
 
                 switch (company) {
-                  AsyncData(:final value) when value != null => Text(
-                    'Current Company: ${value.company?.name ?? 'N/A'}',
-                    style: theme.typography.base.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colors.foreground,
-                    ),
+                  AsyncData(:final value) when value != null => Column(
+                    children: [
+                      Text(
+                        'Current Company: ${value.company?.name ?? 'N/A'}',
+                        style: theme.typography.base.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colors.foreground,
+                        ),
+                      ),
+                      Text('Role: ${value.role.tr(context.tr)}'),
+                    ],
                   ),
                   AsyncLoading() => const Padding(
                     padding: EdgeInsets.only(top: 16),

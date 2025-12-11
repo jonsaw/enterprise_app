@@ -94,6 +94,7 @@ class AppShellPage extends ConsumerWidget {
                     onTap: () => _navigateToBranch(
                       context,
                       '/companies/$companyId/profile',
+                      currentPath,
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -163,6 +164,7 @@ class AppShellPage extends ConsumerWidget {
                   onPress: () => _navigateToBranch(
                     context,
                     '/companies/$companyId/home',
+                    currentPath,
                   ),
                 ),
                 FSidebarItem(
@@ -174,6 +176,7 @@ class AppShellPage extends ConsumerWidget {
                   onPress: () => _navigateToBranch(
                     context,
                     '/companies/$companyId/profile',
+                    currentPath,
                   ),
                 ),
               ],
@@ -187,7 +190,11 @@ class AppShellPage extends ConsumerWidget {
   void _navigateToBranch(
     BuildContext context,
     String path,
+    String currentPath,
   ) {
+    if (currentPath == path) {
+      return;
+    }
     context.go(path);
     unawaited(Navigator.of(context).maybePop());
   }

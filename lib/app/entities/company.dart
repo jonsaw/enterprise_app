@@ -1,4 +1,5 @@
 import 'package:api_management/api_management.dart';
+import 'package:enterprise/app/entities/user_role.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'company.freezed.dart';
@@ -27,6 +28,19 @@ abstract class Company with _$Company {
   }
 }
 
+/// Converts GraphQL user role to [UserRole].
+UserRole fromUserRole(GCompanyUserRole role) {
+  switch (role) {
+    case GCompanyUserRole.OWNER:
+      return const Owner();
+    case GCompanyUserRole.MANAGER:
+      return const Manager();
+    case GCompanyUserRole.USER:
+      return const User();
+  }
+  return const None();
+}
+
 /// Represents a user associated with a company.
 @freezed
 abstract class CompanyUser with _$CompanyUser {
@@ -34,6 +48,7 @@ abstract class CompanyUser with _$CompanyUser {
   const factory CompanyUser({
     required String id,
     required Company? company,
+    required UserRole role,
   }) = _CompanyUser;
 
   const CompanyUser._();
@@ -47,6 +62,7 @@ abstract class CompanyUser with _$CompanyUser {
       company: u.company != null
           ? Company.fromGListMyCompaniesData(u.company!)
           : null,
+      role: fromUserRole(u.role),
     );
   }
 
@@ -63,6 +79,7 @@ abstract class CompanyUser with _$CompanyUser {
               code: u.company!.code,
             )
           : null,
+      role: fromUserRole(u.role),
     );
   }
 }

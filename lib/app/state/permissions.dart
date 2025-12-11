@@ -1,5 +1,6 @@
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
+import 'package:enterprise/app/state/company_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'permissions.g.dart';
@@ -17,4 +18,18 @@ Future<UserRole> permissions(Ref ref) async {
   }
 
   return auth.role;
+}
+
+/// Provider that derives the user's role within a specific company.
+@riverpod
+Future<UserRole> companyPermissions(Ref ref, String companyId) async {
+  final companyUser = await ref.watch(
+    companyControllerProvider(companyId).future,
+  );
+
+  if (companyUser == null) {
+    return const None();
+  }
+
+  return companyUser.role;
 }

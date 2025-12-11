@@ -1,8 +1,24 @@
+import 'package:enterprise/l10n.dart';
+
 /// Sealed class hierarchy for user roles with compile-time
 /// exhaustiveness checking.
 sealed class UserRole {
   /// Creates a [UserRole].
   const UserRole();
+
+  /// Translates the [UserRole] to a human-readable string.
+  String tr(AppLocalizations loc) {
+    switch (this) {
+      case Owner():
+        return loc.owner;
+      case Manager():
+        return loc.manager;
+      case User():
+        return loc.user;
+      case None():
+        return loc.none;
+    }
+  }
 }
 
 /// Owner role - highest privilege level

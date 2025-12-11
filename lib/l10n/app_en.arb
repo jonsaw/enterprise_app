@@ -12,6 +12,22 @@
     "@profile": {
         "description": "Profile navigation label"
     },
+    "owner": "Owner",
+    "@owner": {
+        "description": "User role: Owner"
+    },
+    "manager": "Manager",
+    "@manager": {
+        "description": "User role: Manager"
+    },
+    "user": "User",
+    "@user": {
+        "description": "User role: User"
+    },
+    "none": "None",
+    "@none": {
+        "description": "User role: None"
+    },
     "overview": "Overview",
     "@overview": {
         "description": "Overview section label"

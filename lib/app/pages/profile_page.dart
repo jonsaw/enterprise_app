@@ -43,12 +43,22 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authControllerProvider).value;
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Page header
           PageHeader(title: context.tr.profilePageTitle),
+          SectionWidget(
+            header: 'Personal Information',
+            description: 'Manage your personal details and settings.',
+            children: [
+              Text(auth?.name ?? ''),
+              Text(auth?.email ?? ''),
+            ],
+          ),
           // Session Management Section
           SectionWidget(
             header: context.tr.sessionManagement,
