@@ -29,5 +29,7 @@
     "sessionManagementDescription": "Log keluar dari sesi di peranti ini",
     "signOutConfirmTitle": "Log Keluar",
     "signOutConfirmMessage": "Adakah anda pasti mahu log keluar?",
-    "cancel": "Batal"
+    "cancel": "Batal",
+    "selectCompany": "Pilih Syarikat",
+    "unknownCompany": "Syarikat Tidak Diketahui"
 }

@@ -119,5 +119,13 @@
     "cancel": "Cancel",
     "@cancel": {
         "description": "Cancel button label"
+    },
+    "selectCompany": "Select Company",
+    "@selectCompany": {
+        "description": "Company dropdown hint text"
+    },
+    "unknownCompany": "Unknown Company",
+    "@unknownCompany": {
+        "description": "Fallback text when company name is not available"
     }
 }

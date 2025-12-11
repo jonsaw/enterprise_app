@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:enterprise/app/entities/auth.dart';
 import 'package:enterprise/app/pages/app_shell_page.dart';
+import 'package:enterprise/app/pages/companies_page.dart';
 import 'package:enterprise/app/pages/home_page.dart';
 import 'package:enterprise/app/pages/profile_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
@@ -61,8 +62,8 @@ GoRouter router(Ref ref) {
 
           return const SignInRoute().location;
         case AsyncData(value: Auth()):
-          if (isSplash) return const AppHomeRoute().location;
-          if (isSigningIn) return const AppHomeRoute().location;
+          if (isSplash) return const CompaniesRoute().location;
+          if (isSigningIn) return const CompaniesRoute().location;
 
           return null;
       }
@@ -99,50 +100,105 @@ class SignInRoute extends GoRouteData with $SignInRoute {
   }
 }
 
-@TypedStatefulShellRoute<AppShellRoute>(
-  branches: [
-    TypedStatefulShellBranch(
+/// Companies route - shows list of companies
+@TypedGoRoute<CompaniesRoute>(
+  path: '/companies',
+  routes: [
+    TypedGoRoute<CompanyBaseRoute>(
+      path: ':companyId',
       routes: [
-        TypedGoRoute<AppHomeRoute>(path: '/home'),
-      ],
-    ),
-    TypedStatefulShellBranch(
-      routes: [
-        TypedGoRoute<AppProfileRoute>(path: '/profile'),
+        TypedStatefulShellRoute<AppShellRoute>(
+          branches: [
+            TypedStatefulShellBranch(
+              routes: [
+                TypedGoRoute<AppHomeRoute>(path: 'home'),
+              ],
+            ),
+            TypedStatefulShellBranch(
+              routes: [
+                TypedGoRoute<AppProfileRoute>(path: 'profile'),
+              ],
+            ),
+          ],
+        ),
       ],
     ),
   ],
 )
+class CompaniesRoute extends GoRouteData with $CompaniesRoute {
+  /// Creates a [CompaniesRoute].
+  const CompaniesRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CompaniesPage();
+  }
+}
+
+/// Company base route - parent for company-specific routes
+class CompanyBaseRoute extends GoRouteData with $CompanyBaseRoute {
+  /// Creates a [CompanyBaseRoute].
+  const CompanyBaseRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SizedBox.shrink();
+  }
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    // Check if the current location ends with the company ID (meaning no sub-route)
+    if (state.uri.path.endsWith(companyId)) {
+      return '${state.uri.path}/home';
+    }
+    return null;
+  }
+}
+
 /// App shell route with branches for home and profile navigation
 class AppShellRoute extends StatefulShellRouteData {
   /// Creates an [AppShellRoute].
   const AppShellRoute();
 
   @override
-  Widget builder(
+  Page<void> pageBuilder(
     BuildContext context,
     GoRouterState state,
     StatefulNavigationShell navigationShell,
   ) {
-    return AppShellPage(navigationShell: navigationShell);
+    return NoTransitionPage(
+      child: AppShellPage(
+        key: ValueKey('shell-${state.pathParameters['companyId']}'),
+        navigationShell: navigationShell,
+      ),
+    );
   }
 }
 
 /// Home route - displays the main home page
 class AppHomeRoute extends GoRouteData with $AppHomeRoute {
   /// Creates an [AppHomeRoute].
-  const AppHomeRoute();
+  const AppHomeRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomePage();
+    return HomePage(companyId: companyId);
   }
 }
 
 /// Profile route - displays the user profile page
 class AppProfileRoute extends GoRouteData with $AppProfileRoute {
   /// Creates an [AppProfileRoute].
-  const AppProfileRoute();
+  const AppProfileRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
