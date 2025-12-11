@@ -239,12 +239,25 @@ class AppShellPage extends ConsumerWidget {
                       child: const Icon(FIcons.menu),
                     ),
                     const SizedBox(width: 12),
-                    Text(
-                      context.tr.appName,
-                      style: theme.typography.xl.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colors.primary,
-                      ),
+                    Expanded(
+                      child: switch (company) {
+                        AsyncData(:final value) when value?.company != null =>
+                          Text(
+                            value!.company!.name,
+                            style: theme.typography.xl.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colors.primary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        _ => Text(
+                          context.tr.appName,
+                          style: theme.typography.xl.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colors.primary,
+                          ),
+                        ),
+                      },
                     ),
                   ],
                 ),
