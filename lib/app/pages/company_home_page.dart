@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 
-/// Home page
-class HomePage extends ConsumerWidget {
-  /// Creates a [HomePage].
-  const HomePage({required this.companyId, super.key});
+/// Company home page
+class CompanyHomePage extends ConsumerWidget {
+  /// Creates a [CompanyHomePage].
+  const CompanyHomePage({required this.companyId, super.key});
 
   /// The ID of the company.
   final String companyId;

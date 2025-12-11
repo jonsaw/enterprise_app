@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/entities/auth.dart';
 import 'package:enterprise/app/entities/company.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
@@ -11,17 +12,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
-/// Width of the sidebar
-const sidebarWidth = 400.0;
-
 /// App shell page with navigation.
 ///
 /// Provides navigation to:
 /// - Home
 /// - Profile
-class AppShellPage extends ConsumerWidget {
-  /// Creates an [AppShellPage].
-  const AppShellPage({required this.navigationShell, super.key});
+class CompanyAppShellPage extends ConsumerWidget {
+  /// Creates an [CompanyAppShellPage].
+  const CompanyAppShellPage({required this.navigationShell, super.key});
 
   /// The navigation shell for managing sub-routes
   final StatefulNavigationShell navigationShell;

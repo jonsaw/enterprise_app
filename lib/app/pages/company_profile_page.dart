@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 
-/// Profile page
-class ProfilePage extends ConsumerWidget {
-  /// Creates a [ProfilePage].
-  const ProfilePage({super.key});
+/// Company profile page
+class CompanyProfilePage extends ConsumerWidget {
+  /// Creates a [CompanyProfilePage].
+  const CompanyProfilePage({super.key});
 
   Future<void> _showSignOutDialog(BuildContext context, WidgetRef ref) async {
     final confirmed = await showFDialog<bool>(

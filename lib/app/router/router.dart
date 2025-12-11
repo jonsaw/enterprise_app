@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:enterprise/app/entities/auth.dart';
-import 'package:enterprise/app/pages/app_shell_page.dart';
 import 'package:enterprise/app/pages/companies_page.dart';
-import 'package:enterprise/app/pages/home_page.dart';
-import 'package:enterprise/app/pages/profile_page.dart';
+import 'package:enterprise/app/pages/company_app_shell_page.dart';
+import 'package:enterprise/app/pages/company_home_page.dart';
+import 'package:enterprise/app/pages/company_profile_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
@@ -107,16 +107,16 @@ class SignInRoute extends GoRouteData with $SignInRoute {
     TypedGoRoute<CompanyBaseRoute>(
       path: ':companyId',
       routes: [
-        TypedStatefulShellRoute<AppShellRoute>(
+        TypedStatefulShellRoute<CompanyAppShellRoute>(
           branches: [
             TypedStatefulShellBranch(
               routes: [
-                TypedGoRoute<AppHomeRoute>(path: 'home'),
+                TypedGoRoute<CompanyHomeRoute>(path: 'home'),
               ],
             ),
             TypedStatefulShellBranch(
               routes: [
-                TypedGoRoute<AppProfileRoute>(path: 'profile'),
+                TypedGoRoute<CompanyProfileRoute>(path: 'profile'),
               ],
             ),
           ],
@@ -158,10 +158,10 @@ class CompanyBaseRoute extends GoRouteData with $CompanyBaseRoute {
   }
 }
 
-/// App shell route with branches for home and profile navigation
-class AppShellRoute extends StatefulShellRouteData {
-  /// Creates an [AppShellRoute].
-  const AppShellRoute();
+/// Company App shell route with branches for home and profile navigation
+class CompanyAppShellRoute extends StatefulShellRouteData {
+  /// Creates an [CompanyAppShellRoute].
+  const CompanyAppShellRoute();
 
   @override
   Page<void> pageBuilder(
@@ -170,7 +170,7 @@ class AppShellRoute extends StatefulShellRouteData {
     StatefulNavigationShell navigationShell,
   ) {
     return NoTransitionPage(
-      child: AppShellPage(
+      child: CompanyAppShellPage(
         key: ValueKey('shell-${state.pathParameters['companyId']}'),
         navigationShell: navigationShell,
       ),
@@ -178,30 +178,30 @@ class AppShellRoute extends StatefulShellRouteData {
   }
 }
 
-/// Home route - displays the main home page
-class AppHomeRoute extends GoRouteData with $AppHomeRoute {
-  /// Creates an [AppHomeRoute].
-  const AppHomeRoute({required this.companyId});
+/// Company home route - displays the main home page
+class CompanyHomeRoute extends GoRouteData with $CompanyHomeRoute {
+  /// Creates an [CompanyHomeRoute].
+  const CompanyHomeRoute({required this.companyId});
 
   /// The ID of the company.
   final String companyId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomePage(companyId: companyId);
+    return CompanyHomePage(companyId: companyId);
   }
 }
 
-/// Profile route - displays the user profile page
-class AppProfileRoute extends GoRouteData with $AppProfileRoute {
-  /// Creates an [AppProfileRoute].
-  const AppProfileRoute({required this.companyId});
+/// Company profile route - displays the user profile page
+class CompanyProfileRoute extends GoRouteData with $CompanyProfileRoute {
+  /// Creates an [CompanyProfileRoute].
+  const CompanyProfileRoute({required this.companyId});
 
   /// The ID of the company.
   final String companyId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ProfilePage();
+    return const CompanyProfilePage();
   }
 }
