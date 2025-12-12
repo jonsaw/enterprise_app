@@ -91,8 +91,8 @@ class CompanyAppShellPage extends ConsumerWidget {
                   child: GestureDetector(
                     onTap: () => _navigateToBranch(
                       context,
-                      '/companies/$companyId/profile',
                       currentPath,
+                      '/companies/$companyId/profile',
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -156,25 +156,27 @@ class CompanyAppShellPage extends ConsumerWidget {
                 FSidebarItem(
                   icon: const Icon(FIcons.layoutDashboard),
                   label: Text(context.tr.home),
-                  selected: currentPath.startsWith(
+                  selected: _sidebarItemSelected(
+                    currentPath,
                     '/companies/$companyId/home',
                   ),
                   onPress: () => _navigateToBranch(
                     context,
-                    '/companies/$companyId/home',
                     currentPath,
+                    '/companies/$companyId/home',
                   ),
                 ),
                 FSidebarItem(
                   icon: const Icon(FIcons.user),
                   label: Text(context.tr.profile),
-                  selected: currentPath.startsWith(
+                  selected: _sidebarItemSelected(
+                    currentPath,
                     '/companies/$companyId/profile',
                   ),
                   onPress: () => _navigateToBranch(
                     context,
-                    '/companies/$companyId/profile',
                     currentPath,
+                    '/companies/$companyId/profile',
                   ),
                 ),
               ],
@@ -185,10 +187,14 @@ class CompanyAppShellPage extends ConsumerWidget {
     );
   }
 
+  bool _sidebarItemSelected(String currentPath, String targetPath) {
+    return currentPath.startsWith(targetPath);
+  }
+
   void _navigateToBranch(
     BuildContext context,
-    String path,
     String currentPath,
+    String path,
   ) {
     if (currentPath == path) {
       return;
