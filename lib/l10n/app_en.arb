@@ -143,5 +143,105 @@
     "unknownCompany": "Unknown Company",
     "@unknownCompany": {
         "description": "Fallback text when company name is not available"
+    },
+    "users": "Users",
+    "@users": {
+        "description": "Users navigation label"
+    },
+    "unknownUser": "Unknown User",
+    "@unknownUser": {
+        "description": "Fallback text when user name is not available"
+    },
+    "userDetails": "User Details",
+    "@userDetails": {
+        "description": "User details page title"
+    },
+    "searchUsers": "Search users...",
+    "@searchUsers": {
+        "description": "Search users placeholder text"
+    },
+    "page": "Page",
+    "@page": {
+        "description": "Page label for pagination"
+    },
+    "ofPage": "of",
+    "@ofPage": {
+        "description": "Of label for pagination (Page X of Y)"
+    },
+    "previous": "Previous",
+    "@previous": {
+        "description": "Previous page button label"
+    },
+    "next": "Next",
+    "@next": {
+        "description": "Next page button label"
+    },
+    "noUsersFound": "No users found",
+    "@noUsersFound": {
+        "description": "Message when no users are found"
+    },
+    "errorLoadingUsers": "Error loading users",
+    "@errorLoadingUsers": {
+        "description": "Error message when users fail to load"
+    },
+    "retry": "Retry",
+    "@retry": {
+        "description": "Retry button label"
+    },
+    "userInformation": "User Information",
+    "@userInformation": {
+        "description": "User information section title"
+    },
+    "companyInformation": "Company Information",
+    "@companyInformation": {
+        "description": "Company information section title"
+    },
+    "metadata": "Metadata",
+    "@metadata": {
+        "description": "Metadata section title"
+    },
+    "name": "Name",
+    "@name": {
+        "description": "Name field label"
+    },
+    "role": "Role",
+    "@role": {
+        "description": "Role field label"
+    },
+    "userId": "User ID",
+    "@userId": {
+        "description": "User ID field label"
+    },
+    "companyName": "Company Name",
+    "@companyName": {
+        "description": "Company name field label"
+    },
+    "companyCode": "Company Code",
+    "@companyCode": {
+        "description": "Company code field label"
+    },
+    "companyId": "Company ID",
+    "@companyId": {
+        "description": "Company ID field label"
+    },
+    "createdAt": "Created At",
+    "@createdAt": {
+        "description": "Created at field label"
+    },
+    "updatedAt": "Updated At",
+    "@updatedAt": {
+        "description": "Updated at field label"
+    },
+    "backToUsers": "Back to Users",
+    "@backToUsers": {
+        "description": "Back to users button label"
+    },
+    "userNotFound": "User not found",
+    "@userNotFound": {
+        "description": "Message when user is not found"
+    },
+    "selectUserToViewDetails": "Select a user to view details",
+    "@selectUserToViewDetails": {
+        "description": "Message shown when no user is selected in the split view"
     }
 }

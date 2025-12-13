@@ -1,4 +1,5 @@
 import 'package:api_management/api_management.dart';
+import 'package:enterprise/app/entities/user.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -36,7 +37,7 @@ UserRole fromUserRole(GCompanyUserRole role) {
     case GCompanyUserRole.MANAGER:
       return const Manager();
     case GCompanyUserRole.USER:
-      return const User();
+      return const UserMember();
   }
   return const None();
 }
@@ -49,6 +50,9 @@ abstract class CompanyUser with _$CompanyUser {
     required String id,
     required Company? company,
     required UserRole role,
+    required User? user,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) = _CompanyUser;
 
   const CompanyUser._();
@@ -63,6 +67,7 @@ abstract class CompanyUser with _$CompanyUser {
           ? Company.fromGListMyCompaniesData(u.company!)
           : null,
       role: fromUserRole(u.role),
+      user: null,
     );
   }
 
@@ -80,6 +85,47 @@ abstract class CompanyUser with _$CompanyUser {
             )
           : null,
       role: fromUserRole(u.role),
+      user: null,
+    );
+  }
+
+  /// Creates a [CompanyUser] from list paginated GraphQL data.
+  factory CompanyUser.fromGListMyCompanyUsersData(
+    GListMyCompanyUsersData_listMyCompanyUsersPaginated_items u,
+  ) {
+    return CompanyUser(
+      id: u.id.value,
+      company: u.company != null
+          ? Company(
+              id: u.company!.id.value,
+              name: u.company!.name,
+              code: u.company!.code,
+            )
+          : null,
+      role: fromUserRole(u.role),
+      user: u.user != null ? User.fromGListMyCompanyUsersData(u.user!) : null,
+      createdAt: DateTime.tryParse(u.createdAt.value),
+      updatedAt: DateTime.tryParse(u.updatedAt.value),
+    );
+  }
+
+  /// Creates a [CompanyUser] from detail GraphQL data.
+  factory CompanyUser.fromGGetMyCompanyUserData(
+    GGetMyCompanyUserData_getMyCompanyUser u,
+  ) {
+    return CompanyUser(
+      id: u.id.value,
+      company: u.company != null
+          ? Company(
+              id: u.company!.id.value,
+              name: u.company!.name,
+              code: u.company!.code,
+            )
+          : null,
+      role: fromUserRole(u.role),
+      user: u.user != null ? User.fromGGetMyCompanyUserData(u.user!) : null,
+      createdAt: DateTime.tryParse(u.createdAt.value),
+      updatedAt: DateTime.tryParse(u.updatedAt.value),
     );
   }
 }

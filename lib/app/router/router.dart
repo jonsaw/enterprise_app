@@ -5,6 +5,8 @@ import 'package:enterprise/app/pages/companies_page.dart';
 import 'package:enterprise/app/pages/company_app_shell_page.dart';
 import 'package:enterprise/app/pages/company_home_page.dart';
 import 'package:enterprise/app/pages/company_profile_page.dart';
+import 'package:enterprise/app/pages/company_user_detail_page.dart';
+import 'package:enterprise/app/pages/company_users_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
@@ -107,6 +109,7 @@ class SignInRoute extends GoRouteData with $SignInRoute {
     TypedGoRoute<CompanyBaseRoute>(
       path: ':companyId',
       routes: [
+        TypedGoRoute<CompanyUserDetailRoute>(path: 'users/:userId'),
         TypedStatefulShellRoute<CompanyAppShellRoute>(
           branches: [
             TypedStatefulShellBranch(
@@ -117,6 +120,11 @@ class SignInRoute extends GoRouteData with $SignInRoute {
             TypedStatefulShellBranch(
               routes: [
                 TypedGoRoute<CompanyProfileRoute>(path: 'profile'),
+              ],
+            ),
+            TypedStatefulShellBranch(
+              routes: [
+                TypedGoRoute<CompanyUsersRoute>(path: 'users'),
               ],
             ),
           ],
@@ -203,5 +211,42 @@ class CompanyProfileRoute extends GoRouteData with $CompanyProfileRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CompanyProfilePage();
+  }
+}
+
+/// Company users route - displays the company users page
+class CompanyUsersRoute extends GoRouteData with $CompanyUsersRoute {
+  /// Creates a [CompanyUsersRoute].
+  const CompanyUsersRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyUsersPage(companyId: companyId);
+  }
+}
+
+/// Company user detail route - displays a single user's details
+class CompanyUserDetailRoute extends GoRouteData with $CompanyUserDetailRoute {
+  /// Creates a [CompanyUserDetailRoute].
+  const CompanyUserDetailRoute({
+    required this.companyId,
+    required this.userId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the user.
+  final String userId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyUserDetailPage(
+      companyId: companyId,
+      userId: userId,
+    );
   }
 }

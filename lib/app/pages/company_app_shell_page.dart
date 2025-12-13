@@ -11,6 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'company_app_shell_page.g.dart';
+
+/// Notifier to track which company each navigation branch last showed
+@Riverpod(keepAlive: true)
+class BranchCompanyTracking extends _$BranchCompanyTracking {
+  @override
+  Map<int, String> build() => {};
+
+  /// Update the company ID for a specific branch
+  void updateBranch(int branchIndex, String companyId) {
+    state = {...state, branchIndex: companyId};
+  }
+}
 
 /// App shell page with navigation.
 ///
@@ -26,6 +41,7 @@ class CompanyAppShellPage extends ConsumerWidget {
 
   Widget _buildSidebar(
     BuildContext context,
+    WidgetRef ref,
     String? companyId,
     AsyncValue<CompanyUser?> company,
     Auth? auth,
@@ -91,8 +107,11 @@ class CompanyAppShellPage extends ConsumerWidget {
                   child: GestureDetector(
                     onTap: () => _navigateToBranch(
                       context,
+                      ref,
+                      1,
                       currentPath,
                       '/companies/$companyId/profile',
+                      companyId,
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -162,8 +181,27 @@ class CompanyAppShellPage extends ConsumerWidget {
                   ),
                   onPress: () => _navigateToBranch(
                     context,
+                    ref,
+                    0,
                     currentPath,
                     '/companies/$companyId/home',
+                    companyId,
+                  ),
+                ),
+                FSidebarItem(
+                  icon: const Icon(FIcons.users),
+                  label: Text(context.tr.users),
+                  selected: _sidebarItemSelected(
+                    currentPath,
+                    '/companies/$companyId/users',
+                  ),
+                  onPress: () => _navigateToBranch(
+                    context,
+                    ref,
+                    2,
+                    currentPath,
+                    '/companies/$companyId/users',
+                    companyId,
                   ),
                 ),
                 FSidebarItem(
@@ -175,8 +213,11 @@ class CompanyAppShellPage extends ConsumerWidget {
                   ),
                   onPress: () => _navigateToBranch(
                     context,
+                    ref,
+                    1,
                     currentPath,
                     '/companies/$companyId/profile',
+                    companyId,
                   ),
                 ),
               ],
@@ -193,13 +234,43 @@ class CompanyAppShellPage extends ConsumerWidget {
 
   void _navigateToBranch(
     BuildContext context,
+    WidgetRef ref,
+    int index,
     String currentPath,
     String path,
+    String? activeCompanyId,
   ) {
     if (currentPath == path) {
       return;
     }
-    context.go(path);
+
+    // Get branch tracking state using read (not watch) since we're in an event handler
+    final branchTracking = ref.read(branchCompanyTrackingProvider);
+    final lastBranchCompanyId = branchTracking[index];
+    final branchHasDifferentCompany =
+        lastBranchCompanyId != null && lastBranchCompanyId != activeCompanyId;
+
+    if (branchHasDifferentCompany) {
+      // Branch has cached routes from a different company, use context.go() to reset
+      context.go(path);
+    } else {
+      // Same company or first time, use goBranch() to preserve state
+      navigationShell.goBranch(
+        index,
+        initialLocation: index == navigationShell.currentIndex,
+      );
+    }
+
+    // Update the tracking state
+    if (activeCompanyId != null) {
+      ref
+          .read(branchCompanyTrackingProvider.notifier)
+          .updateBranch(
+            index,
+            activeCompanyId,
+          );
+    }
+
     unawaited(Navigator.of(context).maybePop());
   }
 
@@ -241,6 +312,7 @@ class CompanyAppShellPage extends ConsumerWidget {
                         side: FLayout.ltr,
                         builder: (context) => _buildSidebar(
                           context,
+                          ref,
                           companyId,
                           company,
                           auth,
@@ -281,7 +353,14 @@ class CompanyAppShellPage extends ConsumerWidget {
     }
 
     return FScaffold(
-      sidebar: _buildSidebar(context, companyId, company, auth, currentPath),
+      sidebar: _buildSidebar(
+        context,
+        ref,
+        companyId,
+        company,
+        auth,
+        currentPath,
+      ),
       child: navigationShell,
     );
   }
