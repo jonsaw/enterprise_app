@@ -1,0 +1,42 @@
+query ListMyCompanyUsers($input: ListMyCompanyUsersInput!) {
+    listMyCompanyUsersPaginated(input: $input) {
+        items {
+            id
+            readAt
+            createdAt
+            updatedAt
+            role
+            userId
+            user {
+                id
+                name
+                email
+                createdAt
+                updatedAt
+            }
+            companyId
+            company {
+                id
+                code
+                name
+                readAt
+                createdAt
+                updatedAt
+            }
+        }
+        pageInfo {
+            totalCount
+            totalPages
+            currentPage
+            pageSize
+            hasNextPage
+            hasPreviousPage
+        }
+        cursorInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+        }
+    }
+}
