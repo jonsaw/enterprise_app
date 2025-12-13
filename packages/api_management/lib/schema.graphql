@@ -259,6 +259,28 @@ type Currency {
 }
 
 """
+Cursor-based pagination metadata for infinite scroll (reserved for future use)
+"""
+type CursorBasedInfo {
+  """
+  Whether there are more items after this page
+  """
+  hasNextPage: Boolean!
+  """
+  Whether there are items before this page
+  """
+  hasPreviousPage: Boolean!
+  """
+  Cursor to the start of this page
+  """
+  startCursor: String
+  """
+  Cursor to the end of this page
+  """
+  endCursor: String
+}
+
+"""
 Implement the DateTime<Utc> scalar
 
 The input/output is a string in RFC3339 format.
@@ -469,6 +491,51 @@ type MyEinvoiceCompany {
   company: Company
 }
 
+"""
+Page-based pagination metadata for offset/limit style queries
+"""
+type PageBasedInfo {
+  """
+  Total count of matching records (respects filters/search)
+  """
+  totalCount: Int!
+  """
+  Total number of pages based on page size
+  """
+  totalPages: Int!
+  """
+  Current page number (1-indexed)
+  """
+  currentPage: Int!
+  """
+  Number of items per page
+  """
+  pageSize: Int!
+  """
+  Whether there is a next page
+  """
+  hasNextPage: Boolean!
+  """
+  Whether there is a previous page
+  """
+  hasPreviousPage: Boolean!
+}
+
+type PaginatedCompanyUsers {
+  """
+  The items in this page
+  """
+  items: [CompanyUser!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+  """
+  Cursor-based pagination info (present for cursor-based queries, reserved for future)
+  """
+  cursorInfo: CursorBasedInfo
+}
+
 type PendingCompanyInvite {
   id: UUID!
   name: String!
@@ -534,6 +601,14 @@ type Query {
   List all users that are associated with the company. Only `OWNER`s and `MANAGER`s can access this query
   """
   listMyCompanyUsers(input: ListMyCompanyUsersInput!): [CompanyUser!]!
+  """
+  List all users in a company with pagination metadata.
+  Only `OWNER`s and `MANAGER`s can access this query.
+
+  This is the paginated version of `list_my_company_users` that includes
+  total count, total pages, current page, and next/previous page indicators.
+  """
+  listMyCompanyUsersPaginated(input: ListMyCompanyUsersInput!): PaginatedCompanyUsers!
   """
   Get a company user by company ID and user ID. Only `OWNER`s and `MANAGER`s can access this query
   """
