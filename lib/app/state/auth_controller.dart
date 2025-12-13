@@ -79,7 +79,7 @@ class AuthController extends _$AuthController {
         userId: userData.userId,
         name: userData.name,
         email: userData.email,
-        role: const User(), // TODO(jonsaw): Map actual role from userData
+        role: const UserMember(), // TODO(jonsaw): Map actual role from userData
       );
     } on Exception catch (e, st) {
       talker.error('Session check failed', e, st);

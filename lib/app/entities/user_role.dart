@@ -13,7 +13,7 @@ sealed class UserRole {
         return loc.owner;
       case Manager():
         return loc.manager;
-      case User():
+      case UserMember():
         return loc.user;
       case None():
         return loc.none;
@@ -34,9 +34,9 @@ final class Manager extends UserRole {
 }
 
 /// User role - standard access level
-final class User extends UserRole {
-  /// Creates a [User] role.
-  const User();
+final class UserMember extends UserRole {
+  /// Creates a [UserMember] role.
+  const UserMember();
 }
 
 /// None role - represents unauthenticated state

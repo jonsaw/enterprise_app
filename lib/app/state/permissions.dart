@@ -8,7 +8,7 @@ part 'permissions.g.dart';
 /// Provider that derives the user's role from the authentication state.
 ///
 /// Returns [None] if the user is not authenticated, otherwise returns
-/// the user's role ([Owner], [Manager], or [User]).
+/// the user's role ([Owner], [Manager], or [UserMember]).
 @riverpod
 Future<UserRole> permissions(Ref ref) async {
   final auth = await ref.watch(authControllerProvider.future);
