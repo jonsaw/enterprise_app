@@ -42,19 +42,24 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
   int _currentPage = 1;
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounceTimer;
 
   static const int _pageSize = 20;
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
   void _onSearchChanged(String value) {
-    setState(() {
-      _searchQuery = value;
-      _currentPage = 1; // Reset to first page on search
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        _searchQuery = value;
+        _currentPage = 1; // Reset to first page on search
+      });
     });
   }
 
@@ -96,7 +101,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isLargeScreen = screenWidth >= 768;
     final selectedUserId = ref.watch(selectedUserIdProvider);
-    final theme = Theme.of(context);
+    final theme = context.theme;
 
     final usersList = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,11 +123,10 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
           child: usersAsync.when(
             data: (paginatedUsers) {
               if (paginatedUsers.items.isEmpty) {
-                return Center(
-                  child: Text(
-                    _searchQuery.isEmpty
-                        ? context.tr.noUsersFound
-                        : context.tr.noUsersFound,
+                return _buildNoticeContainer(
+                  context,
+                  Text(
+                    context.tr.noUsersFound,
                     style: const TextStyle(fontSize: 16),
                   ),
                 );
@@ -132,15 +136,6 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 16,
                 children: [
-                  // User count info
-                  Text(
-                    '${paginatedUsers.totalCount} ${context.tr.users}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-
                   // Users list
                   Expanded(
                     child: Padding(
@@ -199,8 +194,9 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                 ],
               );
             },
-            loading: () => const Center(
-              child: FCircularProgress(),
+            loading: () => _buildNoticeContainer(
+              context,
+              const FCircularProgress(),
             ),
             error: (error, stack) => Center(
               child: Column(
@@ -254,13 +250,13 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                     Icon(
                       Icons.person_search,
                       size: 64,
-                      color: theme.colorScheme.outline,
+                      color: theme.colors.border,
                     ),
                     Text(
                       context.tr.selectUserToViewDetails,
                       style: TextStyle(
                         fontSize: 16,
-                        color: theme.colorScheme.secondary,
+                        color: theme.colors.secondary,
                       ),
                     ),
                   ],
@@ -295,5 +291,29 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
           child: Text(context.tr.none),
         );
     }
+  }
+
+  Widget _buildNoticeContainer(BuildContext context, Widget notice) {
+    final theme = context.theme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 16,
+      children: [
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: theme.colors.border,
+              ),
+            ),
+            child: Center(child: notice),
+          ),
+        ),
+      ],
+    );
   }
 }
