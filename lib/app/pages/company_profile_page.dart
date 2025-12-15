@@ -1,5 +1,5 @@
 import 'package:enterprise/app/state/auth_controller.dart';
-import 'package:enterprise/app/widgets/page_header.dart';
+import 'package:enterprise/app/widgets/page_app_bar.dart';
 import 'package:enterprise/app/widgets/section_widget.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +49,10 @@ class CompanyProfilePage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Page header
-          PageHeader(title: context.tr.profilePageTitle),
+          PageAppBar(
+            title: context.tr.profilePageTitle,
+          ),
+
           SectionWidget(
             header: 'Personal Information',
             description: 'Manage your personal details and settings.',

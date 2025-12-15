@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/state/company_users_controller.dart';
+import 'package:enterprise/app/widgets/page_app_bar.dart';
 import 'package:enterprise/app/widgets/resizable_split_view.dart';
 import 'package:enterprise/app/widgets/selectable_tile.dart';
 import 'package:enterprise/l10n.dart';
@@ -105,10 +106,9 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
 
     final usersList = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 16,
       children: [
-        FHeader(
-          title: Text(context.tr.users),
+        PageAppBar(
+          title: context.tr.users,
         ),
 
         // Search bar
@@ -117,6 +117,8 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
           hint: context.tr.searchUsers,
           onChange: _onSearchChanged,
         ),
+
+        const SizedBox(height: 16),
 
         // Content area
         Expanded(

@@ -1,5 +1,5 @@
 import 'package:enterprise/app/state/company_controller.dart';
-import 'package:enterprise/app/widgets/page_header.dart';
+import 'package:enterprise/app/widgets/page_app_bar.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +23,10 @@ class CompanyHomePage extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 12,
       children: [
-        PageHeader(title: context.tr.homePageTitle),
+        PageAppBar(
+          title: context.tr.homePageTitle,
+        ),
+
         Expanded(
           child: Center(
             child: Column(

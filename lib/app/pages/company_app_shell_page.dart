@@ -6,6 +6,7 @@ import 'package:enterprise/app/entities/company.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:enterprise/app/state/company_controller.dart';
 import 'package:enterprise/app/widgets/company_dropdown.dart';
+import 'package:enterprise/app/widgets/page_app_bar.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,10 +29,6 @@ class BranchCompanyTracking extends _$BranchCompanyTracking {
 }
 
 /// App shell page with navigation.
-///
-/// Provides navigation to:
-/// - Home
-/// - Profile
 class CompanyAppShellPage extends ConsumerWidget {
   /// Creates an [CompanyAppShellPage].
   const CompanyAppShellPage({required this.navigationShell, super.key});
@@ -322,25 +319,8 @@ class CompanyAppShellPage extends ConsumerWidget {
                       child: const Icon(FIcons.menu),
                     ),
                     const SizedBox(width: 12),
-                    Expanded(
-                      child: switch (company) {
-                        AsyncData(:final value) when value?.company != null =>
-                          Text(
-                            value!.company!.name,
-                            style: theme.typography.xl.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: theme.colors.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        _ => Text(
-                          context.tr.appName,
-                          style: theme.typography.xl.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colors.primary,
-                          ),
-                        ),
-                      },
+                    const Expanded(
+                      child: PageAppBarReader(),
                     ),
                   ],
                 ),
