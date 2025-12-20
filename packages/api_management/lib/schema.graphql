@@ -3,6 +3,11 @@ input AcceptPendingCompanyInviteInput {
   token: String!
 }
 
+type CompaniesConnection {
+  edges: [CompanyEdge!]!
+  pageInfo: RelayPageInfo!
+}
+
 type Company {
   id: UUID!
   code: String!
@@ -27,6 +32,11 @@ type Company {
   This method is only available when the `integration_ba` feature is enabled.
   """
   baIntegrationCustomer: IntegrationBaCustomer
+}
+
+type CompanyEdge {
+  node: Company!
+  cursor: String!
 }
 
 input CompanyIntegrationAccessInput {
@@ -70,6 +80,11 @@ type CompanyInvite {
   createdBy: User
 }
 
+type CompanyInviteEdge {
+  node: CompanyInvite!
+  cursor: String!
+}
+
 enum CompanyInviteSortField {
   """
   Sort by invite ID
@@ -104,6 +119,11 @@ enum CompanyInviteSortField {
 input CompanyInviteSortInput {
   field: CompanyInviteSortField!
   direction: SortDirection!
+}
+
+type CompanyInvitesConnection {
+  edges: [CompanyInviteEdge!]!
+  pageInfo: RelayPageInfo!
 }
 
 enum CompanySortField {
@@ -148,6 +168,11 @@ type CompanyUser {
   createdBy: User
 }
 
+type CompanyUserEdge {
+  node: CompanyUser!
+  cursor: String!
+}
+
 enum CompanyUserRole {
   OWNER
   MANAGER
@@ -176,6 +201,11 @@ enum CompanyUserSortField {
 input CompanyUserSortInput {
   field: CompanyUserSortField!
   direction: SortDirection!
+}
+
+type CompanyUsersConnection {
+  edges: [CompanyUserEdge!]!
+  pageInfo: RelayPageInfo!
 }
 
 input CreateCompanyInput {
@@ -242,6 +272,11 @@ input CreateServiceClientInput {
   expiresAt: DateTime
 }
 
+type CurrenciesConnection {
+  edges: [CurrencyEdge!]!
+  pageInfo: RelayPageInfo!
+}
+
 type Currency {
   id: UUID!
   code: String!
@@ -258,26 +293,9 @@ type Currency {
   createdBy: User
 }
 
-"""
-Cursor-based pagination metadata for infinite scroll (reserved for future use)
-"""
-type CursorBasedInfo {
-  """
-  Whether there are more items after this page
-  """
-  hasNextPage: Boolean!
-  """
-  Whether there are items before this page
-  """
-  hasPreviousPage: Boolean!
-  """
-  Cursor to the start of this page
-  """
-  startCursor: String
-  """
-  Cursor to the end of this page
-  """
-  endCursor: String
+type CurrencyEdge {
+  node: Currency!
+  cursor: String!
 }
 
 """
@@ -380,11 +398,99 @@ type ItemType {
   updatedBy: User
 }
 
+type ItemTypeEdge {
+  node: ItemType!
+  cursor: String!
+}
+
+type ItemTypesConnection {
+  edges: [ItemTypeEdge!]!
+  pageInfo: RelayPageInfo!
+}
+
+input ListCompaniesCursorInput {
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Sort order
+  """
+  sort: CompanySortInput
+}
+
 input ListCompaniesInput {
   limit: Int
   offset: Int
   search: String
   sort: CompanySortInput
+}
+
+input ListCurrenciesCursorInput {
+  companyId: UUID!
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+}
+
+input ListCurrenciesInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+}
+
+input ListItemTypesCursorInput {
+  companyId: UUID!
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
 }
 
 input ListItemTypesInput {
@@ -394,11 +500,66 @@ input ListItemTypesInput {
   search: String
 }
 
+input ListMyCompaniesCursorInput {
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+  """
+  Sort order
+  """
+  sort: CompanyUserSortInput
+}
+
 input ListMyCompaniesInput {
   limit: Int
   offset: Int
   search: String
   sort: CompanyUserSortInput
+}
+
+input ListMyCompanyInvitesCursorInput {
+  companyId: UUID!
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+  """
+  Sort order
+  """
+  sort: CompanyInviteSortInput
 }
 
 input ListMyCompanyInvitesInput {
@@ -409,12 +570,67 @@ input ListMyCompanyInvitesInput {
   sort: CompanyInviteSortInput
 }
 
+input ListMyCompanyUsersCursorInput {
+  companyId: UUID!
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+  """
+  Sort order
+  """
+  sort: CompanyUserSortInput
+}
+
 input ListMyCompanyUsersInput {
   companyId: UUID!
   limit: Int
   offset: Int
   search: String
   sort: CompanyUserSortInput
+}
+
+input ListMyPendingCompanyInvitesCursorInput {
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+  """
+  Sort order
+  """
+  sort: PendingCompanyInviteSortInput
 }
 
 input ListMyPendingCompanyInvitesInput {
@@ -521,6 +737,28 @@ type PageBasedInfo {
   hasPreviousPage: Boolean!
 }
 
+type PaginatedCompanies {
+  """
+  The items in this page
+  """
+  items: [Company!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
+type PaginatedCompanyInvites {
+  """
+  The items in this page
+  """
+  items: [CompanyInvite!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
 type PaginatedCompanyUsers {
   """
   The items in this page
@@ -530,10 +768,39 @@ type PaginatedCompanyUsers {
   Page-based pagination info (present for offset/limit queries)
   """
   pageInfo: PageBasedInfo
+}
+
+type PaginatedCurrencies {
   """
-  Cursor-based pagination info (present for cursor-based queries, reserved for future)
+  The items in this page
   """
-  cursorInfo: CursorBasedInfo
+  items: [Currency!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
+type PaginatedItemTypes {
+  """
+  The items in this page
+  """
+  items: [ItemType!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
+type PaginatedPendingCompanyInvites {
+  """
+  The items in this page
+  """
+  items: [PendingCompanyInvite!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
 }
 
 type PendingCompanyInvite {
@@ -548,6 +815,11 @@ type PendingCompanyInvite {
   companyId: UUID!
   createdBy: User
   company: Company
+}
+
+type PendingCompanyInviteEdge {
+  node: PendingCompanyInvite!
+  cursor: String!
 }
 
 enum PendingCompanyInviteSortField {
@@ -582,21 +854,38 @@ input PendingCompanyInviteSortInput {
   direction: SortDirection!
 }
 
+type PendingCompanyInvitesConnection {
+  edges: [PendingCompanyInviteEdge!]!
+  pageInfo: RelayPageInfo!
+}
+
 type Query {
   apiVersion: String!
   """
   List all active companies
   """
   listCompanies(input: ListCompaniesInput!): [Company!]!
+  """
+  List all active companies with pagination metadata
+  """
+  listCompaniesPaginated(input: ListCompaniesInput!): PaginatedCompanies!
   getMyCompany(companyId: UUID!): CompanyUser!
   """
   List all companies that the user is associated with
   """
   listMyCompanies(input: ListMyCompaniesInput!): [CompanyUser!]!
   """
+  List user's companies with pagination metadata
+  """
+  listMyCompaniesPaginated(input: ListMyCompaniesInput!): PaginatedCompanyUsers!
+  """
   List all my company invites. Only `OWNER`s and `MANAGER`s can access this query
   """
   listMyCompanyInvites(input: ListMyCompanyInvitesInput!): [CompanyInvite!]!
+  """
+  List all my company invites with pagination metadata. Only `OWNER`s and `MANAGER`s can access this query
+  """
+  listMyCompanyInvitesPaginated(input: ListMyCompanyInvitesInput!): PaginatedCompanyInvites!
   """
   List all users that are associated with the company. Only `OWNER`s and `MANAGER`s can access this query
   """
@@ -614,14 +903,59 @@ type Query {
   """
   getMyCompanyUser(companyId: UUID!, userId: UUID!): CompanyUser!
   """
+  Get a company invite by company ID and invite ID. Only `OWNER`s and `MANAGER`s can access this query
+  """
+  getMyCompanyInvite(companyId: UUID!, id: UUID!): CompanyInvite!
+  """
   List my pending company invites.
   """
   listMyPendingCompanyInvites(input: ListMyPendingCompanyInvitesInput!): [PendingCompanyInvite!]!
   """
+  List my pending company invites with pagination metadata.
+  """
+  listMyPendingCompanyInvitesPaginated(input: ListMyPendingCompanyInvitesInput!): PaginatedPendingCompanyInvites!
+  """
   Get my pending company invite by ID.
   """
   getMyPendingCompanyInvite(id: UUID!): PendingCompanyInvite!
+  """
+  List companies with cursor-based pagination (Relay-compliant)
+  """
+  listMyCompaniesCursor(input: ListMyCompaniesCursorInput!): CompanyUsersConnection!
+  """
+  List company invites with cursor-based pagination (Relay-compliant)
+  """
+  listMyCompanyInvitesCursor(input: ListMyCompanyInvitesCursorInput!): CompanyInvitesConnection!
+  """
+  List company users with cursor-based pagination (Relay-compliant)
+  """
+  listMyCompanyUsersCursor(input: ListMyCompanyUsersCursorInput!): CompanyUsersConnection!
+  """
+  List pending company invites with cursor-based pagination (Relay-compliant)
+  """
+  listMyPendingCompanyInvitesCursor(input: ListMyPendingCompanyInvitesCursorInput!): PendingCompanyInvitesConnection!
+  """
+  List companies with cursor-based pagination (Relay-compliant)
+  """
+  listCompaniesCursor(input: ListCompaniesCursorInput!): CompaniesConnection!
+  listCurrencies(input: ListCurrenciesInput!): [Currency!]!
+  """
+  List currencies with pagination metadata
+  """
+  listCurrenciesPaginated(input: ListCurrenciesInput!): PaginatedCurrencies!
+  """
+  List currencies with cursor-based pagination (Relay-compliant)
+  """
+  listCurrenciesCursor(input: ListCurrenciesCursorInput!): CurrenciesConnection!
   listItemTypes(input: ListItemTypesInput!): [ItemType!]!
+  """
+  List item types with pagination metadata
+  """
+  listItemTypesPaginated(input: ListItemTypesInput!): PaginatedItemTypes!
+  """
+  List item types with cursor-based pagination (Relay-compliant)
+  """
+  listItemTypesCursor(input: ListItemTypesCursorInput!): ItemTypesConnection!
   """
   Get all integrations for a company
   """
@@ -638,6 +972,28 @@ type Query {
   Get all companies with access to a specific integration type
   """
   companiesWithIntegration(integrationType: IntegrationType!): CompanyIntegrationsResponse!
+}
+
+"""
+Relay-compliant PageInfo for cursor-based pagination
+"""
+type RelayPageInfo {
+  """
+  Whether there are more items after this page
+  """
+  hasNextPage: Boolean!
+  """
+  Whether there are items before this page
+  """
+  hasPreviousPage: Boolean!
+  """
+  Cursor to the start of this page
+  """
+  startCursor: String
+  """
+  Cursor to the end of this page
+  """
+  endCursor: String
 }
 
 type ServiceClient {

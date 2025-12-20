@@ -1,0 +1,29 @@
+query ListMyCompanyInvitesPaginated($input: ListMyCompanyInvitesInput!) {
+    listMyCompanyInvitesPaginated(input: $input) {
+        items {
+            id
+            name
+            email
+            role
+            createdAt
+            updatedAt
+            readAt
+            companyId
+            tokenExpiresAt
+            createdById
+            createdBy {
+                id
+                name
+                email
+            }
+        }
+        pageInfo {
+            totalCount
+            totalPages
+            currentPage
+            pageSize
+            hasNextPage
+            hasPreviousPage
+        }
+    }
+}

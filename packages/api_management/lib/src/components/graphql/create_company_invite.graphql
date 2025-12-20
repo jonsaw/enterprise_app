@@ -1,0 +1,7 @@
+mutation CreateCompanyInvite($input: CreateCompanyInviteInput!) {
+  createCompanyInvite(input: $input) {
+    id
+    email
+    createdAt
+  }
+}

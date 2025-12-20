@@ -32,11 +32,5 @@ query ListMyCompanyUsers($input: ListMyCompanyUsersInput!) {
             hasNextPage
             hasPreviousPage
         }
-        cursorInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-        }
     }
 }
