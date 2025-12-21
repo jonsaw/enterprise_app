@@ -16,6 +16,7 @@ abstract class PageAppBarProviderState with _$PageAppBarProviderState {
   /// Creates a [PageAppBarProviderState].
   const factory PageAppBarProviderState({
     required String title,
+    @Default([]) List<Widget> suffixes,
   }) = _PageAppBarProviderState;
 
   const PageAppBarProviderState._();
@@ -32,6 +33,11 @@ class PageAppBarProvider extends _$PageAppBarProvider {
   /// Sets the title of the app bar.
   set title(String value) {
     state = state.copyWith(title: value);
+  }
+
+  /// Sets the suffixes of the app bar.
+  set suffixes(List<Widget> value) {
+    state = state.copyWith(suffixes: value);
   }
 }
 
@@ -56,13 +62,16 @@ class PageAppBarProvider extends _$PageAppBarProvider {
 /// - [PageAppBarProvider], which manages the app bar title state.
 class PageAppBar extends ConsumerWidget {
   /// Creates a [PageAppBar].
-  const PageAppBar({required this.title, super.key});
+  const PageAppBar({required this.title, this.suffixes, super.key});
 
   /// The title text to display on the page.
   ///
   /// On large screens, this is rendered directly. On small screens, it updates
   /// the [PageAppBarProvider] state instead.
   final String title;
+
+  /// Optional widgets to display after the title (e.g., action buttons).
+  final List<Widget>? suffixes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,6 +89,7 @@ class PageAppBar extends ConsumerWidget {
     if (currentPath == actualCurrentPath) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(pageAppBarProviderProvider.notifier).title = title;
+        ref.read(pageAppBarProviderProvider.notifier).suffixes = suffixes ?? [];
       });
     }
 
@@ -89,11 +99,21 @@ class PageAppBar extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Text(
-        title,
-        style: theme.typography.xl2.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: theme.typography.xl.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (suffixes != null)
+            Row(
+              spacing: 8,
+              children: suffixes!,
+            ),
+        ],
       ),
     );
   }
@@ -123,13 +143,23 @@ class PageAppBarReader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
-    final title = ref.watch(pageAppBarProviderProvider).title;
+    final state = ref.watch(pageAppBarProviderProvider);
 
-    return Text(
-      title,
-      style: theme.typography.xl2.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          state.title,
+          style: theme.typography.xl2.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        if (state.suffixes.isNotEmpty)
+          Row(
+            spacing: 8,
+            children: state.suffixes,
+          ),
+      ],
     );
   }
 }
