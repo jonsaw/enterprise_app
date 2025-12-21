@@ -10,7 +10,7 @@ class ResizableSplitView extends StatefulWidget {
   const ResizableSplitView({
     required this.leftPanel,
     required this.rightPanel,
-    this.initialLeftExtentRatio = 0.5,
+    this.initialLeftExtentRatio = 0.3,
     this.minExtentRatio = 0.3,
     super.key,
   }) : assert(
@@ -79,7 +79,7 @@ class _ResizableSplitViewState extends State<ResizableSplitView> {
                   });
                 }
                 return Padding(
-                  padding: const EdgeInsets.only(right: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: widget.leftPanel,
                 );
               },
@@ -89,7 +89,7 @@ class _ResizableSplitViewState extends State<ResizableSplitView> {
               minExtent: minExtent,
               builder: (context, data, _) {
                 return Padding(
-                  padding: const EdgeInsets.only(left: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: widget.rightPanel,
                 );
               },
