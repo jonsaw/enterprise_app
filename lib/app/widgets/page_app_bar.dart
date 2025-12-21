@@ -83,7 +83,7 @@ class PageAppBar extends ConsumerWidget {
       });
     }
 
-    if (!isLargeScreen(MediaQuery.sizeOf(context).width)) {
+    if (!isLargeScreen(context)) {
       return const SizedBox.shrink();
     }
 

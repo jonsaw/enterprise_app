@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/state/company_users_controller.dart';
@@ -79,10 +80,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
   }
 
   void _onUserTap(String userId) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth >= 768;
-
-    if (isLargeScreen) {
+    if (isLargeScreen(context)) {
       ref.read(selectedUserIdProvider.notifier).userId = userId;
     } else {
       unawaited(context.push('/companies/${widget.companyId}/users/$userId'));
@@ -99,8 +97,6 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
         search: _searchQuery.isEmpty ? null : _searchQuery,
       ),
     );
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth >= 768;
     final selectedUserId = ref.watch(selectedUserIdProvider);
     final theme = context.theme;
 
@@ -232,7 +228,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     );
 
     // On large screens, use resizable layout
-    if (isLargeScreen) {
+    if (isLargeScreen(context)) {
       return ResizableSplitView(
         initialLeftExtentRatio: screenWidth >= 1024 ? 0.3 : 0.4,
         leftPanel: usersList,
