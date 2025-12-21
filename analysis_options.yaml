@@ -1,5 +1,8 @@
 include: package:very_good_analysis/analysis_options.yaml
 
 analyzer:
+  errors:
+    avoid_setters_without_getters: ignore
+    lines_longer_than_80_chars: ignore
   plugins:
     - custom_lint
