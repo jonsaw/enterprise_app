@@ -49,8 +49,11 @@ class CompanyProfilePage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PageAppBar(
-            title: context.tr.profilePageTitle,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: PageAppBar(
+              title: context.tr.profilePageTitle,
+            ),
           ),
 
           SectionWidget(

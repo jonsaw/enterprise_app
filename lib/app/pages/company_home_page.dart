@@ -23,8 +23,11 @@ class CompanyHomePage extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 12,
       children: [
-        PageAppBar(
-          title: context.tr.homePageTitle,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: PageAppBar(
+            title: context.tr.homePageTitle,
+          ),
         ),
 
         Expanded(

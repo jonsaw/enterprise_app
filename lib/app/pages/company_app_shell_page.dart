@@ -333,6 +333,7 @@ class CompanyAppShellPage extends ConsumerWidget {
     }
 
     return FScaffold(
+      childPad: false,
       sidebar: _buildSidebar(
         context,
         ref,
