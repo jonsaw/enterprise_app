@@ -4,6 +4,7 @@ import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/state/company_users_controller.dart';
+import 'package:enterprise/app/state/selected_id_provider.dart';
 import 'package:enterprise/app/widgets/page_app_bar.dart';
 import 'package:enterprise/app/widgets/resizable_split_view.dart';
 import 'package:enterprise/app/widgets/selectable_tile.dart';
@@ -12,21 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'company_users_page.g.dart';
-
-/// Notifier for managing the selected user ID in the company users page.
-@riverpod
-class SelectedUserId extends _$SelectedUserId {
-  @override
-  String? build() => null;
-
-  /// Update the selected user ID.
-  set userId(String? userId) {
-    state = userId;
-  }
-}
 
 /// Company Users Page
 class CompanyUsersPage extends ConsumerStatefulWidget {
@@ -80,9 +66,8 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
   }
 
   void _onUserTap(String userId) {
-    if (isLargeScreen(context)) {
-      ref.read(selectedUserIdProvider.notifier).userId = userId;
-    } else {
+    ref.read(selectedIdProvider(SelectedIdType.user).notifier).id = userId;
+    if (!isLargeScreen(context)) {
       unawaited(context.push('/companies/${widget.companyId}/users/$userId'));
     }
   }
@@ -97,7 +82,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
         search: _searchQuery.isEmpty ? null : _searchQuery,
       ),
     );
-    final selectedUserId = ref.watch(selectedUserIdProvider);
+    final selectedUserId = ref.watch(selectedIdProvider(SelectedIdType.user));
     final theme = context.theme;
 
     final usersList = Column(
@@ -145,7 +130,9 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                           final user = companyUser.user;
                           final isSelected =
                               companyUser.user?.id ==
-                              ref.watch(selectedUserIdProvider);
+                              ref.watch(
+                                selectedIdProvider(SelectedIdType.user),
+                              );
                           return SelectableTile(
                             title: Text(user?.name ?? context.tr.unknownUser),
                             subtitle: user?.email != null
@@ -230,14 +217,18 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     // On large screens, use resizable layout
     if (isLargeScreen(context)) {
       return ResizableSplitView(
-        initialLeftExtentRatio: screenWidth >= 1024 ? 0.3 : 0.4,
         leftPanel: usersList,
         rightPanel: selectedUserId != null
             ? CompanyUserDetailPage(
                 companyId: widget.companyId,
                 userId: selectedUserId,
                 onClose: () {
-                  ref.read(selectedUserIdProvider.notifier).userId = null;
+                  ref
+                          .read(
+                            selectedIdProvider(SelectedIdType.user).notifier,
+                          )
+                          .id =
+                      null;
                 },
               )
             : Center(

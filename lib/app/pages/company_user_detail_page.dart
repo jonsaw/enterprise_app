@@ -33,19 +33,46 @@ class CompanyUserDetailPage extends ConsumerWidget {
       companyUserDetailControllerProvider(companyId, userId),
     );
 
+    // Use split view layout when onClose is provided
+    if (onClose != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header aligned with PageAppBar style
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  context.tr.userDetails,
+                  style: context.theme.typography.xl.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                FButton.icon(
+                  style: FButtonStyle.ghost(),
+                  onPress: onClose,
+                  child: const Icon(Icons.close),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: _buildContent(context, ref, userAsync),
+          ),
+        ],
+      );
+    }
+
+    // Use FScaffold for mobile/small screen view
     return FScaffold(
       header: FHeader.nested(
         title: Text(context.tr.userDetails),
         prefixes: [
-          if (onClose != null)
-            FHeaderAction(
-              icon: const Icon(Icons.close),
-              onPress: onClose,
-            )
-          else
-            FHeaderAction.back(
-              onPress: () => context.go('/companies/$companyId/users'),
-            ),
+          FHeaderAction.back(
+            onPress: () => context.go('/companies/$companyId/users'),
+          ),
         ],
       ),
       child: _buildContent(context, ref, userAsync),
