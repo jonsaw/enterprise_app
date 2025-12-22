@@ -4,9 +4,12 @@ import 'package:enterprise/app/entities/auth.dart';
 import 'package:enterprise/app/pages/companies_page.dart';
 import 'package:enterprise/app/pages/company_app_shell_page.dart';
 import 'package:enterprise/app/pages/company_home_page.dart';
+import 'package:enterprise/app/pages/company_invite_detail_page.dart';
+import 'package:enterprise/app/pages/company_invites_page.dart';
 import 'package:enterprise/app/pages/company_profile_page.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/pages/company_users_page.dart';
+import 'package:enterprise/app/pages/create_company_invite_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
@@ -110,6 +113,8 @@ class SignInRoute extends GoRouteData with $SignInRoute {
       path: ':companyId',
       routes: [
         TypedGoRoute<CompanyUserDetailRoute>(path: 'users/:userId'),
+        TypedGoRoute<CreateCompanyInviteRoute>(path: 'invites/create'),
+        TypedGoRoute<CompanyInviteDetailRoute>(path: 'invites/:inviteId'),
         TypedStatefulShellRoute<CompanyAppShellRoute>(
           branches: [
             TypedStatefulShellBranch(
@@ -125,6 +130,11 @@ class SignInRoute extends GoRouteData with $SignInRoute {
             TypedStatefulShellBranch(
               routes: [
                 TypedGoRoute<CompanyUsersRoute>(path: 'users'),
+              ],
+            ),
+            TypedStatefulShellBranch(
+              routes: [
+                TypedGoRoute<CompanyInvitesRoute>(path: 'invites'),
               ],
             ),
           ],
@@ -247,6 +257,65 @@ class CompanyUserDetailRoute extends GoRouteData with $CompanyUserDetailRoute {
     return CompanyUserDetailPage(
       companyId: companyId,
       userId: userId,
+    );
+  }
+}
+
+/// Company invites route - displays the company invites page
+class CompanyInvitesRoute extends GoRouteData with $CompanyInvitesRoute {
+  /// Creates a [CompanyInvitesRoute].
+  const CompanyInvitesRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyInvitesPage(companyId: companyId);
+  }
+}
+
+/// Company invite detail route - displays a single invite's details
+class CompanyInviteDetailRoute extends GoRouteData
+    with $CompanyInviteDetailRoute {
+  /// Creates a [CompanyInviteDetailRoute].
+  const CompanyInviteDetailRoute({
+    required this.companyId,
+    required this.inviteId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the invite.
+  final String inviteId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyInviteDetailPage(
+      companyId: companyId,
+      inviteId: inviteId,
+    );
+  }
+}
+
+/// Create company invite route - displays the create invite page
+class CreateCompanyInviteRoute extends GoRouteData
+    with $CreateCompanyInviteRoute {
+  /// Creates a [CreateCompanyInviteRoute].
+  const CreateCompanyInviteRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreateCompanyInvitePage(
+      companyId: companyId,
+      onSuccess: () {
+        // Pop back to invites page
+        context.pop();
+      },
     );
   }
 }

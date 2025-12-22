@@ -243,5 +243,149 @@
     "selectUserToViewDetails": "Select a user to view details",
     "@selectUserToViewDetails": {
         "description": "Message shown when no user is selected in the split view"
+    },
+    "access": "Access",
+    "@access": {
+        "description": "Access section title"
+    },
+    "invites": "Invites",
+    "@invites": {
+        "description": "Invites navigation label"
+    },
+    "inviteDetails": "Invite Details",
+    "@inviteDetails": {
+        "description": "Invite details page title"
+    },
+    "createInvite": "Create Invite",
+    "@createInvite": {
+        "description": "Create invite button and sheet title"
+    },
+    "add": "Add",
+    "@add": {
+        "description": "Add button label"
+    },
+    "searchInvites": "Search invites...",
+    "@searchInvites": {
+        "description": "Search invites placeholder text"
+    },
+    "noInvitesFound": "No invites found",
+    "@noInvitesFound": {
+        "description": "Message when no invites are found"
+    },
+    "errorLoadingInvites": "Error loading invites",
+    "@errorLoadingInvites": {
+        "description": "Error message when invites fail to load"
+    },
+    "inviteInformation": "Invite Information",
+    "@inviteInformation": {
+        "description": "Invite information section title"
+    },
+    "tokenInformation": "Token Information",
+    "@tokenInformation": {
+        "description": "Token information section title"
+    },
+    "creatorInformation": "Creator Information",
+    "@creatorInformation": {
+        "description": "Creator information section title"
+    },
+    "metadata": "Metadata",
+    "@metadata": {
+        "description": "Metadata section title"
+    },
+    "inviteToken": "Invite Token",
+    "@inviteToken": {
+        "description": "Invite token field label"
+    },
+    "tokenExpiresAt": "Token Expires At",
+    "@tokenExpiresAt": {
+        "description": "Token expiry date field label"
+    },
+    "createdBy": "Created By",
+    "@createdBy": {
+        "description": "Created by field label"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status field label"
+    },
+    "pending": "Pending",
+    "@pending": {
+        "description": "Pending status badge"
+    },
+    "read": "Read",
+    "@read": {
+        "description": "Read status badge"
+    },
+    "expired": "Expired",
+    "@expired": {
+        "description": "Expired status badge"
+    },
+    "readAt": "Read At",
+    "@readAt": {
+        "description": "Read at field label"
+    },
+    "inviteId": "Invite ID",
+    "@inviteId": {
+        "description": "Invite ID field label"
+    },
+    "inviteNotFound": "Invite not found",
+    "@inviteNotFound": {
+        "description": "Message when invite is not found"
+    },
+    "backToInvites": "Back to Invites",
+    "@backToInvites": {
+        "description": "Back to invites button label"
+    },
+    "selectInviteToViewDetails": "Select an invite to view details",
+    "@selectInviteToViewDetails": {
+        "description": "Message shown when no invite is selected in the split view"
+    },
+    "enterInviteeName": "Enter invitee name",
+    "@enterInviteeName": {
+        "description": "Name field hint for invite form"
+    },
+    "enterInviteeEmail": "Enter invitee email",
+    "@enterInviteeEmail": {
+        "description": "Email field hint for invite form"
+    },
+    "selectRole": "Select role",
+    "@selectRole": {
+        "description": "Role selection hint"
+    },
+    "inviteCreatedSuccessfully": "Invite created successfully",
+    "@inviteCreatedSuccessfully": {
+        "description": "Success message when invite is created"
+    },
+    "failedToCreateInvite": "Failed to create invite",
+    "@failedToCreateInvite": {
+        "description": "Error message when invite creation fails"
+    },
+    "creating": "Creating...",
+    "@creating": {
+        "description": "Loading text while creating invite"
+    },
+    "copiedToClipboard": "Copied to clipboard",
+    "@copiedToClipboard": {
+        "description": "Message when text is copied to clipboard"
+    },
+    "emailRequired": "Email is required",
+    "@emailRequired": {
+        "description": "Validation error for required email"
+    },
+    "invalidEmail": "Invalid email format",
+    "@invalidEmail": {
+        "description": "Validation error for invalid email"
+    },
+    "nameRequired": "Name is required",
+    "@nameRequired": {
+        "description": "Validation error for required name"
+    },
+    "nameTooShort": "Name must be at least 2 characters",
+    "@nameTooShort": {
+        "description": "Validation error for name that is too short"
+    },
+    "emailInvalid": "Please enter a valid email address",
+    "@emailInvalid": {
+        "description": "Validation error for invalid email format"
     }
 }

@@ -186,6 +186,27 @@ class CompanyAppShellPage extends ConsumerWidget {
                   ),
                 ),
                 FSidebarItem(
+                  icon: const Icon(FIcons.user),
+                  label: Text(context.tr.profile),
+                  selected: _sidebarItemSelected(
+                    currentPath,
+                    '/companies/$companyId/profile',
+                  ),
+                  onPress: () => _navigateToBranch(
+                    context,
+                    ref,
+                    1,
+                    currentPath,
+                    '/companies/$companyId/profile',
+                    companyId,
+                  ),
+                ),
+              ],
+            ),
+            FSidebarGroup(
+              label: Text(context.tr.access),
+              children: [
+                FSidebarItem(
                   icon: const Icon(FIcons.users),
                   label: Text(context.tr.users),
                   selected: _sidebarItemSelected(
@@ -202,18 +223,18 @@ class CompanyAppShellPage extends ConsumerWidget {
                   ),
                 ),
                 FSidebarItem(
-                  icon: const Icon(FIcons.user),
-                  label: Text(context.tr.profile),
+                  icon: const Icon(FIcons.mail),
+                  label: Text(context.tr.invites),
                   selected: _sidebarItemSelected(
                     currentPath,
-                    '/companies/$companyId/profile',
+                    '/companies/$companyId/invites',
                   ),
                   onPress: () => _navigateToBranch(
                     context,
                     ref,
-                    1,
+                    3,
                     currentPath,
-                    '/companies/$companyId/profile',
+                    '/companies/$companyId/invites',
                     companyId,
                   ),
                 ),
