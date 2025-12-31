@@ -70,7 +70,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     ref.read(selectedIdProvider(SelectedIdType.user).notifier).id = userId;
     if (!isLargeScreen(context)) {
       // On small/medium screens, push the detail route
-      unawaited(context.push('/companies/${widget.companyId}/users/$userId'));
+      context.go('/companies/${widget.companyId}/users/$userId');
     }
     // On large screens, just update the selected ID (split view handles it)
   }

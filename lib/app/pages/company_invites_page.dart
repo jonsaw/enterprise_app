@@ -71,9 +71,7 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     ref.read(selectedIdProvider(SelectedIdType.invite).notifier).id = inviteId;
     if (!isLargeScreen(context)) {
       // On small/medium screens, push the detail route
-      unawaited(
-        context.push('/companies/${widget.companyId}/invites/$inviteId'),
-      );
+      context.go('/companies/${widget.companyId}/invites/$inviteId');
     }
     // On large screens, just update the selected ID (split view handles it)
   }
