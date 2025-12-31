@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "name": "Enterprise Web",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--debug",
+        "--flavor",
+        "development",
+        "--web-port",
+        "8080",
+        "-d",
+        "chrome"
+      ]
+    }
+  ]
+}
