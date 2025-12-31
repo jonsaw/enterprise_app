@@ -30,6 +30,7 @@ dependencies:
   riverpod_annotation: ^3.0.3
   talker_flutter: ^5.1.5
   talker_riverpod_logger: ^5.1.5
+  web: ^1.0.0
 
 dev_dependencies:
   build_runner: ^2.10.4

@@ -5,6 +5,7 @@ import 'package:enterprise/app/entities/auth.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/state/secure_storage_service.dart';
+import 'package:enterprise/app/utils/browser_info.dart';
 import 'package:enterprise/app_clients.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -272,6 +273,7 @@ class AuthController extends _$AuthController {
 
   /// Gets the device manufacturer.
   String? _getManufacturer() {
+    if (kIsWeb) return BrowserInfo.getManufacturer();
     if (Platform.isIOS || Platform.isMacOS) return 'Apple';
     if (Platform.isAndroid) return 'Android';
     if (Platform.isWindows) return 'Microsoft';
@@ -283,6 +285,7 @@ class AuthController extends _$AuthController {
   String? _getModel() {
     // In a real app, you'd use device_info_plus to get actual model
     // For now, return basic platform info
+    if (kIsWeb) return BrowserInfo.getModel();
     if (Platform.isIOS) return 'iOS Device';
     if (Platform.isMacOS) return 'Mac';
     if (Platform.isAndroid) return 'Android Device';
