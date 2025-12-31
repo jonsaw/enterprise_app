@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:enterprise/app/entities/company_invite.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/state/company_invite_detail_controller.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,52 +59,29 @@ class _CompanyInviteDetailPageState
       companyInviteDetailControllerProvider(widget.companyId, widget.inviteId),
     );
 
-    // Use split view layout when onClose is provided
-    if (widget.onClose != null) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header aligned with PageAppBar style
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  context.tr.inviteDetails,
-                  style: context.theme.typography.xl.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                FButton.icon(
-                  style: FButtonStyle.ghost(),
-                  onPress: widget.onClose,
-                  child: const Icon(Icons.close),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Builder(
-              builder: (context) => _buildContent(context, ref, inviteAsync),
-            ),
-          ),
-        ],
-      );
-    }
-
     // Use FScaffold for mobile/small screen view
     return FScaffold(
-      header: FHeader.nested(
+      header: AppHeader.nested(
         title: Text(context.tr.inviteDetails),
         prefixes: [
-          FHeaderAction.back(
-            onPress: () => context.go('/companies/${widget.companyId}/invites'),
-          ),
+          if (widget.onClose != null)
+            FHeaderAction(
+              icon: const Icon(FIcons.x),
+              onPress: widget.onClose,
+            )
+          else
+            FHeaderAction.back(
+              onPress: () =>
+                  context.go('/companies/${widget.companyId}/invites'),
+            ),
         ],
       ),
-      child: Builder(
-        builder: (context) => _buildContent(context, ref, inviteAsync),
+      child: SafeArea(
+        top: false,
+        left: false,
+        child: Builder(
+          builder: (context) => _buildContent(context, ref, inviteAsync),
+        ),
       ),
     );
   }

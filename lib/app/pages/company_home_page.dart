@@ -1,5 +1,7 @@
+import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/state/company_controller.dart';
-import 'package:enterprise/app/widgets/page_app_bar.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
+import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +17,36 @@ class CompanyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (isLargeScreen(context)) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppHeader(
+            title: Text(context.tr.home),
+          ),
+          Expanded(child: _buildContent(context, ref)),
+        ],
+      );
+    }
+
+    return FScaffold(
+      childPad: false,
+      header: AppHeader(
+        title: Text(context.tr.home),
+        suffixes: [
+          if (isSmallScreen(context))
+            AppSidebarIconButton(companyId: companyId),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        left: false,
+        child: _buildContent(context, ref),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
 
     final company = ref.watch(companyControllerProvider(companyId));
@@ -23,13 +55,6 @@ class CompanyHomePage extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 12,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: PageAppBar(
-            title: context.tr.homePageTitle,
-          ),
-        ),
-
         Expanded(
           child: Center(
             child: Column(

@@ -6,7 +6,8 @@ import 'package:enterprise/app/pages/company_invite_detail_page.dart';
 import 'package:enterprise/app/pages/create_company_invite_page.dart';
 import 'package:enterprise/app/state/company_invites_controller.dart';
 import 'package:enterprise/app/state/selected_id_provider.dart';
-import 'package:enterprise/app/widgets/page_app_bar.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
+import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/app/widgets/resizable_split_view.dart';
 import 'package:enterprise/app/widgets/selectable_tile.dart';
 import 'package:enterprise/l10n.dart';
@@ -69,10 +70,12 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
   void _onInviteTap(String inviteId) {
     ref.read(selectedIdProvider(SelectedIdType.invite).notifier).id = inviteId;
     if (!isLargeScreen(context)) {
+      // On small/medium screens, push the detail route
       unawaited(
         context.push('/companies/${widget.companyId}/invites/$inviteId'),
       );
     }
+    // On large screens, just update the selected ID (split view handles it)
   }
 
   @override
@@ -93,47 +96,6 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     final invitesList = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PageAppBar(
-          title: context.tr.invites,
-          suffixes: [
-            FButton.icon(
-              style: FButtonStyle.ghost(),
-              onPress: () {
-                if (isLargeScreen(context)) {
-                  // Show as sheet on larger screens
-                  unawaited(
-                    showFSheet<void>(
-                      useRootNavigator: true,
-                      context: context,
-                      side: FLayout.rtl,
-                      builder: (context) => CreateCompanyInvitePage(
-                        companyId: widget.companyId,
-                        showAsSheet: true,
-                        onSuccess: () {
-                          ref.invalidate(companyInvitesControllerProvider);
-                        },
-                      ),
-                    ),
-                  );
-                } else {
-                  // Push as route on mobile screens
-                  unawaited(
-                    context
-                        .push(
-                          '/companies/${widget.companyId}/invites/create',
-                        )
-                        .then((_) {
-                          // Refresh the list when returning from create page
-                          ref.invalidate(companyInvitesControllerProvider);
-                        }),
-                  );
-                }
-              },
-              child: const Icon(FIcons.plus),
-            ),
-          ],
-        ),
-
         // Search bar
         FTextField(
           controller: _searchController,
@@ -253,7 +215,49 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     // On large screens, use resizable layout
     if (isLargeScreen(context)) {
       return ResizableSplitView(
-        leftPanel: invitesList,
+        leftPanel: FScaffold(
+          header: AppHeader(
+            title: Text(context.tr.invites),
+            suffixes: [
+              FButton.icon(
+                style: FButtonStyle.ghost(),
+                onPress: () {
+                  if (isLargeScreen(context)) {
+                    // Show as sheet on larger screens
+                    unawaited(
+                      showFSheet<void>(
+                        useRootNavigator: true,
+                        context: context,
+                        side: FLayout.rtl,
+                        builder: (context) => CreateCompanyInvitePage(
+                          companyId: widget.companyId,
+                          showAsSheet: true,
+                          onSuccess: () {
+                            ref.invalidate(companyInvitesControllerProvider);
+                          },
+                        ),
+                      ),
+                    );
+                  } else {
+                    // Push as route on mobile screens
+                    unawaited(
+                      context
+                          .push(
+                            '/companies/${widget.companyId}/invites/create',
+                          )
+                          .then((_) {
+                            // Refresh the list when returning from create page
+                            ref.invalidate(companyInvitesControllerProvider);
+                          }),
+                    );
+                  }
+                },
+                child: const Icon(FIcons.plus),
+              ),
+            ],
+          ),
+          child: invitesList,
+        ),
         rightPanel: selectedInviteId != null
             ? CompanyInviteDetailPage(
                 companyId: widget.companyId,
@@ -290,7 +294,33 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
       );
     }
 
-    return invitesList;
+    return FScaffold(
+      header: AppHeader(
+        title: Text(context.tr.invites),
+        suffixes: [
+          FButton.icon(
+            onPress: () {
+              unawaited(
+                context
+                    .push(
+                      '/companies/${widget.companyId}/invites/create',
+                    )
+                    .then((_) {
+                      // Refresh the list when returning from create page
+                      ref.invalidate(companyInvitesControllerProvider);
+                    }),
+              );
+            },
+            child: const Icon(FIcons.plus),
+          ),
+          if (isSmallScreen(context))
+            AppSidebarIconButton(
+              companyId: widget.companyId,
+            ),
+        ],
+      ),
+      child: SafeArea(top: false, left: false, child: invitesList),
+    );
   }
 
   Widget _buildRoleBadge(BuildContext context, UserRole role) {

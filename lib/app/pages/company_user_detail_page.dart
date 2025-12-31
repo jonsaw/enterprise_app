@@ -1,6 +1,7 @@
 import 'package:enterprise/app/entities/company.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/state/company_user_detail_controller.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,49 +34,27 @@ class CompanyUserDetailPage extends ConsumerWidget {
       companyUserDetailControllerProvider(companyId, userId),
     );
 
-    // Use split view layout when onClose is provided
-    if (onClose != null) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header aligned with PageAppBar style
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  context.tr.userDetails,
-                  style: context.theme.typography.xl.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                FButton.icon(
-                  style: FButtonStyle.ghost(),
-                  onPress: onClose,
-                  child: const Icon(Icons.close),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: _buildContent(context, ref, userAsync),
-          ),
-        ],
-      );
-    }
-
     // Use FScaffold for mobile/small screen view
     return FScaffold(
-      header: FHeader.nested(
+      header: AppHeader.nested(
         title: Text(context.tr.userDetails),
         prefixes: [
-          FHeaderAction.back(
-            onPress: () => context.go('/companies/$companyId/users'),
-          ),
+          if (onClose != null)
+            FHeaderAction(
+              icon: const Icon(FIcons.x),
+              onPress: onClose,
+            )
+          else
+            FHeaderAction.back(
+              onPress: () => context.go('/companies/$companyId/users'),
+            ),
         ],
       ),
-      child: _buildContent(context, ref, userAsync),
+      child: SafeArea(
+        top: false,
+        left: false,
+        child: _buildContent(context, ref, userAsync),
+      ),
     );
   }
 
@@ -84,35 +63,35 @@ class CompanyUserDetailPage extends ConsumerWidget {
     WidgetRef ref,
     AsyncValue<CompanyUser?> userAsync,
   ) {
-    return userAsync.when(
-      data: (user) {
-        if (user == null) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 16,
-              children: [
-                const Icon(
-                  Icons.person_off,
-                  size: 64,
-                  color: Colors.grey,
-                ),
-                Text(
-                  context.tr.userNotFound,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                FButton(
-                  style: FButtonStyle.outline(),
-                  onPress: () => context.go('/companies/$companyId/users'),
-                  child: Text(context.tr.backToUsers),
-                ),
-              ],
-            ),
-          );
-        }
+    return SingleChildScrollView(
+      child: userAsync.when(
+        data: (user) {
+          if (user == null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 16,
+                children: [
+                  const Icon(
+                    Icons.person_off,
+                    size: 64,
+                    color: Colors.grey,
+                  ),
+                  Text(
+                    context.tr.userNotFound,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  FButton(
+                    style: FButtonStyle.outline(),
+                    onPress: () => context.go('/companies/$companyId/users'),
+                    child: Text(context.tr.backToUsers),
+                  ),
+                ],
+              ),
+            );
+          }
 
-        return SingleChildScrollView(
-          child: Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 24,
             children: [
@@ -219,34 +198,34 @@ class CompanyUserDetailPage extends ConsumerWidget {
                 ],
               ),
             ],
+          );
+        },
+        loading: () => const Center(
+          child: FCircularProgress(),
+        ),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              Text(
+                context.tr.errorLoadingUsers,
+                style: const TextStyle(fontSize: 16),
+              ),
+              FButton(
+                style: FButtonStyle.outline(),
+                onPress: () {
+                  ref.invalidate(
+                    companyUserDetailControllerProvider(
+                      companyId,
+                      userId,
+                    ),
+                  );
+                },
+                child: Text(context.tr.retry),
+              ),
+            ],
           ),
-        );
-      },
-      loading: () => const Center(
-        child: FCircularProgress(),
-      ),
-      error: (error, stack) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 16,
-          children: [
-            Text(
-              context.tr.errorLoadingUsers,
-              style: const TextStyle(fontSize: 16),
-            ),
-            FButton(
-              style: FButtonStyle.outline(),
-              onPress: () {
-                ref.invalidate(
-                  companyUserDetailControllerProvider(
-                    companyId,
-                    userId,
-                  ),
-                );
-              },
-              child: Text(context.tr.retry),
-            ),
-          ],
         ),
       ),
     );

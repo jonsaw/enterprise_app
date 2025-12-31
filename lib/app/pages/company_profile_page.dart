@@ -1,5 +1,7 @@
+import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
-import 'package:enterprise/app/widgets/page_app_bar.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
+import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/app/widgets/section_widget.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,10 @@ import 'package:forui/forui.dart';
 /// Company profile page
 class CompanyProfilePage extends ConsumerWidget {
   /// Creates a [CompanyProfilePage].
-  const CompanyProfilePage({super.key});
+  const CompanyProfilePage({required this.companyId, super.key});
+
+  /// The ID of the company.
+  final String companyId;
 
   Future<void> _showSignOutDialog(BuildContext context, WidgetRef ref) async {
     final confirmed = await showFDialog<bool>(
@@ -43,19 +48,41 @@ class CompanyProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (isLargeScreen(context)) {
+      return Column(
+        children: [
+          AppHeader(
+            title: Text(context.tr.profile),
+          ),
+
+          Expanded(child: _buildContent(context, ref)),
+        ],
+      );
+    }
+
+    return FScaffold(
+      header: AppHeader(
+        title: Text(context.tr.profile),
+        suffixes: [
+          if (isSmallScreen(context))
+            AppSidebarIconButton(companyId: companyId),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        left: false,
+        child: _buildContent(context, ref),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authControllerProvider).value;
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: PageAppBar(
-              title: context.tr.profilePageTitle,
-            ),
-          ),
-
           SectionWidget(
             header: 'Personal Information',
             description: 'Manage your personal details and settings.',

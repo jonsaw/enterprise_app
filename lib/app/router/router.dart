@@ -7,6 +7,7 @@ import 'package:enterprise/app/pages/company_home_page.dart';
 import 'package:enterprise/app/pages/company_invite_detail_page.dart';
 import 'package:enterprise/app/pages/company_invites_page.dart';
 import 'package:enterprise/app/pages/company_profile_page.dart';
+import 'package:enterprise/app/pages/company_shell_page.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/pages/company_users_page.dart';
 import 'package:enterprise/app/pages/create_company_invite_page.dart';
@@ -109,32 +110,46 @@ class SignInRoute extends GoRouteData with $SignInRoute {
 @TypedGoRoute<CompaniesRoute>(
   path: '/companies',
   routes: [
-    TypedGoRoute<CompanyBaseRoute>(
-      path: ':companyId',
+    TypedShellRoute<CompanyShellRoute>(
       routes: [
-        TypedGoRoute<CompanyUserDetailRoute>(path: 'users/:userId'),
-        TypedGoRoute<CreateCompanyInviteRoute>(path: 'invites/create'),
-        TypedGoRoute<CompanyInviteDetailRoute>(path: 'invites/:inviteId'),
-        TypedStatefulShellRoute<CompanyAppShellRoute>(
-          branches: [
-            TypedStatefulShellBranch(
-              routes: [
-                TypedGoRoute<CompanyHomeRoute>(path: 'home'),
-              ],
-            ),
-            TypedStatefulShellBranch(
-              routes: [
-                TypedGoRoute<CompanyProfileRoute>(path: 'profile'),
-              ],
-            ),
-            TypedStatefulShellBranch(
-              routes: [
-                TypedGoRoute<CompanyUsersRoute>(path: 'users'),
-              ],
-            ),
-            TypedStatefulShellBranch(
-              routes: [
-                TypedGoRoute<CompanyInvitesRoute>(path: 'invites'),
+        TypedGoRoute<CompanyBaseRoute>(
+          path: ':companyId',
+          routes: [
+            TypedStatefulShellRoute<CompanyAppShellRoute>(
+              branches: [
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyHomeRoute>(path: 'home'),
+                  ],
+                ),
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyProfileRoute>(path: 'profile'),
+                  ],
+                ),
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyUsersRoute>(
+                      path: 'users',
+                      routes: [
+                        TypedGoRoute<CompanyUserDetailRoute>(path: ':userId'),
+                      ],
+                    ),
+                  ],
+                ),
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyInvitesRoute>(
+                      path: 'invites',
+                      routes: [
+                        TypedGoRoute<CreateCompanyInviteRoute>(path: 'create'),
+                        TypedGoRoute<CompanyInviteDetailRoute>(
+                          path: ':inviteId',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
@@ -150,6 +165,24 @@ class CompaniesRoute extends GoRouteData with $CompaniesRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CompaniesPage();
+  }
+}
+
+/// Company shell route - wraps all company routes with sidebar on medium+ screens
+class CompanyShellRoute extends ShellRouteData {
+  /// Creates a [CompanyShellRoute].
+  const CompanyShellRoute();
+
+  @override
+  Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
+    final companyId = state.pathParameters['companyId'];
+    if (companyId == null) {
+      return navigator;
+    }
+    return CompanyShellPage(
+      companyId: companyId,
+      child: navigator,
+    );
   }
 }
 
@@ -220,7 +253,7 @@ class CompanyProfileRoute extends GoRouteData with $CompanyProfileRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const CompanyProfilePage();
+    return CompanyProfilePage(companyId: companyId);
   }
 }
 

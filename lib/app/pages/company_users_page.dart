@@ -5,7 +5,8 @@ import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/state/company_users_controller.dart';
 import 'package:enterprise/app/state/selected_id_provider.dart';
-import 'package:enterprise/app/widgets/page_app_bar.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
+import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/app/widgets/resizable_split_view.dart';
 import 'package:enterprise/app/widgets/selectable_tile.dart';
 import 'package:enterprise/l10n.dart';
@@ -68,8 +69,10 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
   void _onUserTap(String userId) {
     ref.read(selectedIdProvider(SelectedIdType.user).notifier).id = userId;
     if (!isLargeScreen(context)) {
+      // On small/medium screens, push the detail route
       unawaited(context.push('/companies/${widget.companyId}/users/$userId'));
     }
+    // On large screens, just update the selected ID (split view handles it)
   }
 
   @override
@@ -88,10 +91,6 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     final usersList = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PageAppBar(
-          title: context.tr.users,
-        ),
-
         // Search bar
         FTextField(
           controller: _searchController,
@@ -217,7 +216,10 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     // On large screens, use resizable layout
     if (isLargeScreen(context)) {
       return ResizableSplitView(
-        leftPanel: usersList,
+        leftPanel: FScaffold(
+          header: AppHeader(title: Text(context.tr.users)),
+          child: usersList,
+        ),
         rightPanel: selectedUserId != null
             ? CompanyUserDetailPage(
                 companyId: widget.companyId,
@@ -254,7 +256,16 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
       );
     }
 
-    return usersList;
+    return FScaffold(
+      header: AppHeader(
+        title: Text(context.tr.users),
+        suffixes: [
+          if (isSmallScreen(context))
+            AppSidebarIconButton(companyId: widget.companyId),
+        ],
+      ),
+      child: SafeArea(top: false, left: false, child: usersList),
+    );
   }
 
   Widget _buildRoleBadge(BuildContext context, UserRole role) {
