@@ -78,20 +78,14 @@ class _ResizableSplitViewState extends State<ResizableSplitView> {
                     }
                   });
                 }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: widget.leftPanel,
-                );
+                return widget.leftPanel;
               },
             ),
             FResizableRegion(
               initialExtent: constraints.maxWidth - validLeftExtent,
               minExtent: minExtent,
               builder: (context, data, _) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: widget.rightPanel,
-                );
+                return widget.rightPanel;
               },
             ),
           ],
