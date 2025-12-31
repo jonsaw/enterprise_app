@@ -43,11 +43,11 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     super.dispose();
   }
 
-  void _onSearchChanged(String value) {
+  void _onSearchChanged(TextEditingValue value) {
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 300), () {
       setState(() {
-        _searchQuery = value;
+        _searchQuery = value.text;
         _currentPage = 1; // Reset to first page on search
       });
     });
@@ -96,9 +96,11 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
       children: [
         // Search bar
         FTextField(
-          controller: _searchController,
+          control: .managed(
+            controller: _searchController,
+            onChange: _onSearchChanged,
+          ),
           hint: context.tr.searchInvites,
-          onChange: _onSearchChanged,
         ),
 
         const SizedBox(height: 16),

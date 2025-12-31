@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/pages/company_app_shell_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:enterprise/app/state/company_controller.dart';
@@ -72,7 +71,6 @@ class AppSidebar extends ConsumerWidget {
     return SafeArea(
       right: false,
       child: FSidebar(
-        width: sidebarWidth,
         header: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(

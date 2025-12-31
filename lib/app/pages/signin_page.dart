@@ -199,8 +199,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
                 // Email field
                 FTextField(
-                  controller: _emailController,
-                  label: Text(context.tr.email),
+                  control: .managed(controller: _emailController), label: Text(context.tr.email),
                   hint: context.tr.emailHint,
                   keyboardType: TextInputType.emailAddress,
                   enabled: !_isOtpStep && !_isLoading,
@@ -209,8 +208,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
                 // Password field
                 FTextField(
-                  controller: _passwordController,
-                  label: Text(context.tr.password),
+                  control: .managed(controller: _passwordController), label: Text(context.tr.password),
                   hint: context.tr.passwordHint,
                   obscureText: true,
                   enabled: !_isOtpStep && !_isLoading,
@@ -220,8 +218,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 if (_isOtpStep) ...[
                   const SizedBox(height: 16),
                   FTextField(
-                    controller: _otpController,
-                    label: Text(context.tr.verificationCode),
+                    control: .managed(controller: _otpController), label: Text(context.tr.verificationCode),
                     hint: context.tr.verificationCodeHint,
                     keyboardType: TextInputType.number,
                     enabled: !_isLoading,

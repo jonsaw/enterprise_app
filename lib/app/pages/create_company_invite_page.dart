@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:enterprise/app/entities/user_role.dart';
+import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/state/create_company_invite_controller.dart';
 import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/l10n.dart';
@@ -64,6 +65,12 @@ class _CreateCompanyInvitePageState
 
     if (!mounted) return;
 
+    talker.info(
+      'CreateCompanyInvitePage: Invite creation '
+      'for ${input.email} '
+      '${success ? 'succeeded' : 'failed: $errorMessage'}',
+    );
+
     if (success) {
       // Show success toast
       showFToast(
@@ -110,7 +117,7 @@ class _CreateCompanyInvitePageState
               children: [
                 // Name field
                 FTextFormField(
-                  controller: _nameController,
+                  control: .managed(controller: _nameController),
                   label: Text(context.tr.name),
                   hint: context.tr.enterInviteeName,
                   enabled: !isLoading,
@@ -129,7 +136,7 @@ class _CreateCompanyInvitePageState
 
                 // Email field
                 FTextFormField(
-                  controller: _emailController,
+                  control: .managed(controller: _emailController),
                   label: Text(context.tr.email),
                   hint: context.tr.enterInviteeEmail,
                   keyboardType: TextInputType.emailAddress,
@@ -153,6 +160,16 @@ class _CreateCompanyInvitePageState
 
                 // Role selection
                 FSelect<UserRole>.rich(
+                  control: .managed(
+                    initial: _selectedRole,
+                    onChange: (UserRole? role) {
+                      if (role != null) {
+                        setState(() {
+                          _selectedRole = role;
+                        });
+                      }
+                    },
+                  ),
                   enabled: !isLoading,
                   label: Text(context.tr.role),
                   hint: context.tr.selectRole,
@@ -161,14 +178,6 @@ class _CreateCompanyInvitePageState
                     Manager() => context.tr.manager,
                     UserMember() => context.tr.user,
                     None() => context.tr.none,
-                  },
-                  initialValue: _selectedRole,
-                  onChange: (UserRole? role) {
-                    if (role != null) {
-                      setState(() {
-                        _selectedRole = role;
-                      });
-                    }
                   },
                   children: [
                     FSelectItem<UserRole>(

@@ -23,10 +23,8 @@ class CompanyDropdown extends ConsumerWidget {
     final client = ref.watch(gqlManagementClientProvider);
 
     return FSelect<CompanyUser>.searchBuilder(
-      hint: context.tr.selectCompany,
-      initialValue: initialValue,
+      control: .managed(initial: initialValue, onChange: onChange), hint: context.tr.selectCompany,
       format: (value) => value.company?.name ?? context.tr.unknownCompany,
-      onChange: onChange,
       filter: (query) async {
         final response = await client
             .request(

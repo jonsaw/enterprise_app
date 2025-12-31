@@ -84,7 +84,7 @@ class MainApp extends ConsumerWidget {
           data: brightness == Brightness.dark
               ? FThemes.zinc.dark
               : FThemes.zinc.light,
-          child: child!,
+          child: FToaster(child: child!),
         );
       },
     );
