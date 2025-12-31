@@ -5,7 +5,8 @@ import 'package:enterprise/app/entities/auth.dart';
 import 'package:enterprise/app/entities/user_role.dart';
 import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/state/secure_storage_service.dart';
-import 'package:enterprise/app/utils/browser_info.dart';
+import 'package:enterprise/app/utils/browser_info.dart'
+    if (dart.library.io) 'package:enterprise/app/utils/browser_info_stub.dart';
 import 'package:enterprise/app_clients.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
