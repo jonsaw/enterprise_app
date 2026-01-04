@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/entities/user_role.dart';
+import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/state/company_users_controller.dart';
 import 'package:enterprise/app/state/selected_id_provider.dart';
@@ -68,7 +69,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
 
   void _onUserTap(String userId) {
     ref.read(selectedIdProvider(SelectedIdType.user).notifier).id = userId;
-    if (!isLargeScreen(context)) {
+    if (!isMediumOrLargeScreen(context)) {
       // On small/medium screens, push the detail route
       context.go('/companies/${widget.companyId}/users/$userId');
     }
@@ -215,18 +216,30 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
       ],
     );
 
-    // On large screens, use resizable layout
-    if (isLargeScreen(context)) {
+    // On medium & large screens, use resizable layout
+    if (isMediumOrLargeScreen(context)) {
       return ResizableSplitView(
         leftPanel: FScaffold(
-          header: AppHeader(title: Text(context.tr.users)),
-          child: usersList,
+          header: AppHeader(
+            safeAreaRight: false,
+            title: Text(context.tr.users),
+            suffixes: [
+              if (isMediumScreen(context))
+                AppSidebarIconButton(companyId: widget.companyId),
+            ],
+          ),
+          child: SafeArea(
+            right: false,
+            bottom: false,
+            child: usersList,
+          ),
         ),
         rightPanel: selectedUserId != null
             ? CompanyUserDetailPage(
                 companyId: widget.companyId,
                 userId: selectedUserId,
                 onClose: () {
+                  talker.info('User detail page closed');
                   ref
                           .read(
                             selectedIdProvider(SelectedIdType.user).notifier,
@@ -235,24 +248,26 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                       null;
                 },
               )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 16,
-                  children: [
-                    Icon(
-                      Icons.person_search,
-                      size: 64,
-                      color: theme.colors.border,
-                    ),
-                    Text(
-                      context.tr.selectUserToViewDetails,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: theme.colors.secondary,
+            : FScaffold(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 16,
+                    children: [
+                      Icon(
+                        Icons.person_search,
+                        size: 64,
+                        color: theme.colors.mutedForeground,
                       ),
-                    ),
-                  ],
+                      Text(
+                        context.tr.selectUserToViewDetails,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: theme.colors.mutedForeground,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
       );

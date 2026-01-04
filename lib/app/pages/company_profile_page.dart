@@ -64,13 +64,12 @@ class CompanyProfilePage extends ConsumerWidget {
       header: AppHeader(
         title: Text(context.tr.profile),
         suffixes: [
-          if (isSmallScreen(context))
+          if (isSmallOrMediumScreen(context))
             AppSidebarIconButton(companyId: companyId),
         ],
       ),
       child: SafeArea(
         top: false,
-        left: false,
         child: _buildContent(context, ref),
       ),
     );

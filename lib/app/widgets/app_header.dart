@@ -41,7 +41,7 @@ class AppHeader extends StatelessWidget {
     this.maintainSafeArea = true,
     this.safeAreaTop = true,
     this.safeAreaBottom = false,
-    this.safeAreaLeft = false,
+    this.safeAreaLeft = true,
     this.safeAreaRight = true,
     super.key,
   }) : nested = false,

@@ -69,7 +69,7 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
 
   void _onInviteTap(String inviteId) {
     ref.read(selectedIdProvider(SelectedIdType.invite).notifier).id = inviteId;
-    if (!isLargeScreen(context)) {
+    if (!isMediumOrLargeScreen(context)) {
       // On small/medium screens, push the detail route
       context.go('/companies/${widget.companyId}/invites/$inviteId');
     }
@@ -213,16 +213,17 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     );
 
     // On large screens, use resizable layout
-    if (isLargeScreen(context)) {
+    if (isMediumOrLargeScreen(context)) {
       return ResizableSplitView(
         leftPanel: FScaffold(
           header: AppHeader(
+            safeAreaRight: false,
             title: Text(context.tr.invites),
             suffixes: [
               FButton.icon(
                 style: FButtonStyle.ghost(),
                 onPress: () {
-                  if (isLargeScreen(context)) {
+                  if (isMediumOrLargeScreen(context)) {
                     // Show as sheet on larger screens
                     unawaited(
                       showFSheet<void>(
@@ -254,9 +255,15 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
                 },
                 child: const Icon(FIcons.plus),
               ),
+              if (isMediumScreen(context))
+                AppSidebarIconButton(companyId: widget.companyId),
             ],
           ),
-          child: invitesList,
+          child: SafeArea(
+            right: false,
+            bottom: false,
+            child: invitesList,
+          ),
         ),
         rightPanel: selectedInviteId != null
             ? CompanyInviteDetailPage(
@@ -271,24 +278,26 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
                       null;
                 },
               )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 16,
-                  children: [
-                    Icon(
-                      Icons.mail_outline,
-                      size: 64,
-                      color: theme.colors.border,
-                    ),
-                    Text(
-                      context.tr.selectInviteToViewDetails,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: theme.colors.secondary,
+            : FScaffold(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 16,
+                    children: [
+                      Icon(
+                        Icons.mail_outline,
+                        size: 64,
+                        color: theme.colors.mutedForeground,
                       ),
-                    ),
-                  ],
+                      Text(
+                        context.tr.selectInviteToViewDetails,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: theme.colors.mutedForeground,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
       );

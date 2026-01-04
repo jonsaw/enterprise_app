@@ -26,7 +26,7 @@ class CompanyShellPage extends ConsumerWidget {
     final currentPath = GoRouterState.of(context).uri.path;
 
     // On medium+ screens, show sidebar + content
-    if (isMediumScreen(context)) {
+    if (isLargeScreen(context)) {
       return FScaffold(
         childPad: false,
         sidebar: AppSidebar(companyId: companyId, currentPath: currentPath),
