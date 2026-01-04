@@ -10,22 +10,31 @@ const mediumScreenBreakpoint = 768.0;
 const largeScreenBreakpoint = 1200.0;
 
 /// Checks if the given width corresponds to a small screen.
-/// On small screens, sidebar is hidden and content uses single panel navigation.
 bool isSmallScreen(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
   return width < mediumScreenBreakpoint;
 }
 
-/// Checks if the given width corresponds to a medium or larger screen.
-/// On medium screens, sidebar is visible but content uses single panel navigation.
+/// Checks if the given width corresponds to a medium screen only.
 bool isMediumScreen(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
-  return width >= mediumScreenBreakpoint;
+  return width >= mediumScreenBreakpoint && width < largeScreenBreakpoint;
 }
 
 /// Checks if the given width corresponds to a large screen.
-/// On large screens, sidebar is visible and split view is used.
 bool isLargeScreen(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
   return width >= largeScreenBreakpoint;
+}
+
+/// Checks if the given width corresponds to a small or medium screen.
+bool isSmallOrMediumScreen(BuildContext context) {
+  final width = MediaQuery.of(context).size.width;
+  return width < largeScreenBreakpoint;
+}
+
+/// Checks if the given width corresponds to a medium or larger screen.
+bool isMediumOrLargeScreen(BuildContext context) {
+  final width = MediaQuery.of(context).size.width;
+  return width >= mediumScreenBreakpoint;
 }
