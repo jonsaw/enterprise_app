@@ -62,6 +62,7 @@ class _ResizableSplitViewState extends State<ResizableSplitView> {
         final validLeftExtent = _leftPanelExtent!.clamp(minExtent, maxExtent);
 
         return FResizable(
+          hitRegionExtent: 10,
           axis: Axis.horizontal,
           children: [
             FResizableRegion(
