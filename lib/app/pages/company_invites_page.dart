@@ -221,6 +221,10 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
           header: AppHeader(
             safeAreaRight: false,
             title: Text(context.tr.invites),
+            prefixes: [
+              if (isMediumScreen(context))
+                AppSidebarIconButton(companyId: widget.companyId),
+            ],
             suffixes: [
               FButton.icon(
                 style: FButtonStyle.ghost(),
@@ -257,8 +261,6 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
                 },
                 child: const Icon(FIcons.plus),
               ),
-              if (isMediumScreen(context))
-                AppSidebarIconButton(companyId: widget.companyId),
             ],
           ),
           child: SafeArea(
@@ -308,6 +310,12 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     return FScaffold(
       header: AppHeader(
         title: Text(context.tr.invites),
+        prefixes: [
+          if (isSmallScreen(context))
+            AppSidebarIconButton(
+              companyId: widget.companyId,
+            ),
+        ],
         suffixes: [
           FButton.icon(
             onPress: () {
@@ -324,10 +332,6 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
             },
             child: const Icon(FIcons.plus),
           ),
-          if (isSmallScreen(context))
-            AppSidebarIconButton(
-              companyId: widget.companyId,
-            ),
         ],
       ),
       child: SafeArea(top: false, left: false, child: invitesList),

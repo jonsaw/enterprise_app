@@ -37,6 +37,7 @@ class AppHeader extends StatelessWidget {
   const AppHeader({
     this.title = const SizedBox(),
     this.style,
+    this.prefixes = const [],
     this.suffixes = const [],
     this.maintainSafeArea = true,
     this.safeAreaTop = true,
@@ -45,7 +46,6 @@ class AppHeader extends StatelessWidget {
     this.safeAreaRight = true,
     super.key,
   }) : nested = false,
-       prefixes = const [],
        titleAlignment = Alignment.centerLeft;
 
   /// Creates a nested header with customizable SafeArea.
@@ -76,7 +76,7 @@ class AppHeader extends StatelessWidget {
   final bool nested;
 
   /// The actions aligned to the left in LTR locales (right in RTL).
-  /// Only applicable when [nested] is true.
+  /// These appear before the title in the header.
   final List<Widget> prefixes;
 
   /// The title's alignment for nested headers.
@@ -155,16 +155,41 @@ class AppHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: DefaultTextStyle.merge(
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                softWrap: false,
-                style: headerStyle.titleTextStyle,
-                textHeightBehavior: const TextHeightBehavior(
-                  applyHeightToFirstAscent: false,
-                  applyHeightToLastDescent: false,
-                ),
-                child: title,
+              child: Row(
+                children: [
+                  if (prefixes.isNotEmpty)
+                    FHeaderData(
+                      actionStyle: headerStyle.actionStyle,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children:
+                            prefixes
+                                .expand(
+                                  (action) => [
+                                    action,
+                                    SizedBox(width: headerStyle.actionSpacing),
+                                  ],
+                                )
+                                .toList()
+                              ..removeLast(), // Remove trailing spacing
+                      ),
+                    ),
+                  if (prefixes.isNotEmpty)
+                    SizedBox(width: headerStyle.actionSpacing),
+                  Expanded(
+                    child: DefaultTextStyle.merge(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: headerStyle.titleTextStyle,
+                      textHeightBehavior: const TextHeightBehavior(
+                        applyHeightToFirstAscent: false,
+                        applyHeightToLastDescent: false,
+                      ),
+                      child: title,
+                    ),
+                  ),
+                ],
               ),
             ),
             FHeaderData(

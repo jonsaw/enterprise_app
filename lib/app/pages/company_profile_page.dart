@@ -63,7 +63,7 @@ class CompanyProfilePage extends ConsumerWidget {
     return FScaffold(
       header: AppHeader(
         title: Text(context.tr.profile),
-        suffixes: [
+        prefixes: [
           if (isSmallOrMediumScreen(context))
             AppSidebarIconButton(companyId: companyId),
         ],

@@ -33,7 +33,7 @@ class CompanyHomePage extends ConsumerWidget {
       childPad: false,
       header: AppHeader(
         title: Text(context.tr.home),
-        suffixes: [
+        prefixes: [
           if (isSmallOrMediumScreen(context))
             AppSidebarIconButton(companyId: companyId),
         ],

@@ -225,7 +225,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
           header: AppHeader(
             safeAreaRight: false,
             title: Text(context.tr.users),
-            suffixes: [
+            prefixes: [
               if (isMediumScreen(context))
                 AppSidebarIconButton(companyId: widget.companyId),
             ],
@@ -278,7 +278,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     return FScaffold(
       header: AppHeader(
         title: Text(context.tr.users),
-        suffixes: [
+        prefixes: [
           if (isSmallScreen(context))
             AppSidebarIconButton(companyId: widget.companyId),
         ],
