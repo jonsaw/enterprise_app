@@ -6,6 +6,7 @@ import 'package:enterprise/app/pages/company_invite_detail_page.dart';
 import 'package:enterprise/app/pages/create_company_invite_page.dart';
 import 'package:enterprise/app/state/company_invites_controller.dart';
 import 'package:enterprise/app/state/selected_id_provider.dart';
+import 'package:enterprise/app/state/split_view_size_provider.dart';
 import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/app/widgets/resizable_split_view.dart';
@@ -215,6 +216,7 @@ class _CompanyInvitesPageState extends ConsumerState<CompanyInvitesPage> {
     // On large screens, use resizable layout
     if (isMediumOrLargeScreen(context)) {
       return ResizableSplitView(
+        sizeGroup: companyPagesGroup,
         leftPanel: FScaffold(
           header: AppHeader(
             safeAreaRight: false,

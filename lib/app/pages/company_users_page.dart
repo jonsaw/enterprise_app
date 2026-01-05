@@ -6,6 +6,7 @@ import 'package:enterprise/app/logs/talker.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/state/company_users_controller.dart';
 import 'package:enterprise/app/state/selected_id_provider.dart';
+import 'package:enterprise/app/state/split_view_size_provider.dart';
 import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/app/widgets/resizable_split_view.dart';
@@ -219,6 +220,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     // On medium & large screens, use resizable layout
     if (isMediumOrLargeScreen(context)) {
       return ResizableSplitView(
+        sizeGroup: companyPagesGroup,
         leftPanel: FScaffold(
           header: AppHeader(
             safeAreaRight: false,
