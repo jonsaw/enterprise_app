@@ -3,6 +3,12 @@ input AcceptPendingCompanyInviteInput {
   token: String!
 }
 
+input AddProductToGroupInput {
+  groupId: UUID!
+  productId: UUID!
+  quantity: String!
+}
+
 type CompaniesConnection {
   edges: [CompanyEdge!]!
   pageInfo: RelayPageInfo!
@@ -266,6 +272,44 @@ input CreateItemTypeInput {
   detailsUi: UI!
 }
 
+input CreateProductCategoryInput {
+  companyId: UUID!
+  name: String!
+  description: String
+}
+
+input CreateProductGroupInput {
+  companyId: UUID!
+  name: String!
+  description: String
+}
+
+input CreateProductInput {
+  companyId: UUID!
+  sku: String!
+  brand: String
+  model: String
+  categoryId: UUID
+  typeId: UUID
+  description: LanguageMap!
+  detailsData: DetailsData!
+  affectsInventory: Boolean!
+}
+
+input CreateProductRelationInput {
+  productId: UUID!
+  relatedProductId: UUID!
+  relationType: ProductRelationType!
+  notes: String
+}
+
+input CreateProductTypeInput {
+  companyId: UUID!
+  name: String!
+  description: String
+  detailsUi: UI!
+}
+
 input CreateServiceClientInput {
   companyId: UUID!
   purpose: String!
@@ -314,6 +358,16 @@ type DeleteIntegrationResponse {
   success: Boolean!
   integration: CompanyIntegrationObject!
 }
+
+input DeleteProductRelationInput {
+  id: UUID!
+  productId: UUID!
+}
+
+"""
+A scalar that represents product details data matching the product type's schema.
+"""
+scalar DetailsData
 
 type IntegrationAccessResponse {
   hasAccess: Boolean!
@@ -407,6 +461,11 @@ type ItemTypesConnection {
   edges: [ItemTypeEdge!]!
   pageInfo: RelayPageInfo!
 }
+
+"""
+A scalar that represents a multi-lingual description map (e.g., {"en-MY": "text", "ms-MY": "text"}).
+"""
+scalar LanguageMap
 
 input ListCompaniesCursorInput {
   """
@@ -640,6 +699,89 @@ input ListMyPendingCompanyInvitesInput {
   sort: PendingCompanyInviteSortInput
 }
 
+input ListProductCategoriesCursorInput {
+  companyId: UUID!
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+}
+
+input ListProductCategoriesInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+}
+
+input ListProductGroupsInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+}
+
+input ListProductRelationsInput {
+  productId: UUID!
+  relationType: ProductRelationType
+}
+
+input ListProductTypesCursorInput {
+  companyId: UUID!
+  """
+  Forward pagination: get first N items after cursor
+  """
+  first: Int
+  """
+  Backward pagination: get last N items before cursor
+  """
+  last: Int
+  """
+  Start cursor for forward pagination
+  """
+  after: String
+  """
+  End cursor for backward pagination
+  """
+  before: String
+  """
+  Search filter
+  """
+  search: String
+}
+
+input ListProductTypesInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+}
+
+input ListProductsInput {
+  companyId: UUID!
+  limit: Int
+  offset: Int
+  search: String
+  categoryId: UUID
+  typeId: UUID
+}
+
 type Mutation {
   """
   Create a company and become an owner of the company
@@ -697,6 +839,74 @@ type Mutation {
   Delete (soft delete) a company integration
   """
   deleteCompanyIntegration(input: DeleteIntegrationInput!): DeleteIntegrationResponse!
+  """
+  Create a product category for a company
+  """
+  createProductCategory(input: CreateProductCategoryInput!): ProductCategory!
+  """
+  Update a product category for a company
+  """
+  updateProductCategory(input: UpdateProductCategoryInput!): ProductCategory!
+  """
+  Delete a product category (soft delete)
+  """
+  deleteProductCategory(id: UUID!, companyId: UUID!): Boolean!
+  """
+  Create a product group
+  """
+  createProductGroup(input: CreateProductGroupInput!): ProductGroup!
+  """
+  Update a product group
+  """
+  updateProductGroup(input: UpdateProductGroupInput!): ProductGroup!
+  """
+  Delete a product group (soft delete)
+  """
+  deleteProductGroup(id: UUID!, companyId: UUID!): Boolean!
+  """
+  Add a product to a group
+  """
+  addProductToGroup(input: AddProductToGroupInput!): ProductGroupMember!
+  """
+  Update group member quantity
+  """
+  updateGroupMember(input: UpdateGroupMemberInput!): ProductGroupMember!
+  """
+  Remove a product from a group
+  """
+  removeProductFromGroup(input: RemoveProductFromGroupInput!): Boolean!
+  """
+  Create a product relation
+  """
+  createProductRelation(input: CreateProductRelationInput!): ProductRelation!
+  """
+  Delete a product relation
+  """
+  deleteProductRelation(input: DeleteProductRelationInput!): Boolean!
+  """
+  Create a product type for a company
+  """
+  createProductType(input: CreateProductTypeInput!): ProductType!
+  """
+  Update a product type for a company
+  """
+  updateProductType(input: UpdateProductTypeInput!): ProductType!
+  """
+  Delete a product type (soft delete)
+  """
+  deleteProductType(id: UUID!, companyId: UUID!): Boolean!
+  """
+  Create a product
+  """
+  createProduct(input: CreateProductInput!): Product!
+  """
+  Update a product
+  """
+  updateProduct(input: UpdateProductInput!): Product!
+  """
+  Delete a product (soft delete)
+  """
+  deleteProduct(id: UUID!, companyId: UUID!): Boolean!
 }
 
 type MyEinvoiceCompany {
@@ -803,6 +1013,28 @@ type PaginatedPendingCompanyInvites {
   pageInfo: PageBasedInfo
 }
 
+type PaginatedProductCategories {
+  """
+  The items in this page
+  """
+  items: [ProductCategory!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
+type PaginatedProductTypes {
+  """
+  The items in this page
+  """
+  items: [ProductType!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
 type PendingCompanyInvite {
   id: UUID!
   name: String!
@@ -856,6 +1088,135 @@ input PendingCompanyInviteSortInput {
 
 type PendingCompanyInvitesConnection {
   edges: [PendingCompanyInviteEdge!]!
+  pageInfo: RelayPageInfo!
+}
+
+type Product {
+  id: UUID!
+  companyId: UUID!
+  sku: String!
+  brand: String
+  model: String
+  categoryId: UUID
+  typeId: UUID
+  description: LanguageMap!
+  detailsData: DetailsData!
+  affectsInventory: Boolean!
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  updatedById: UUID
+  revision: Int!
+  createdBy: User
+  updatedBy: User
+  """
+  Get all relations for this product
+  """
+  relations(relationType: ProductRelationType): [ProductRelation!]!
+  """
+  Get all product groups that contain this product
+  """
+  groups: [ProductGroup!]!
+}
+
+type ProductCategoriesConnection {
+  edges: [ProductCategoryEdge!]!
+  pageInfo: RelayPageInfo!
+}
+
+type ProductCategory {
+  id: UUID!
+  name: String!
+  description: String
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  updatedById: UUID
+  revision: Int!
+  createdBy: User
+  updatedBy: User
+}
+
+type ProductCategoryEdge {
+  node: ProductCategory!
+  cursor: String!
+}
+
+type ProductGroup {
+  id: UUID!
+  companyId: UUID!
+  name: String!
+  description: String
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  updatedById: UUID
+  revision: Int!
+  createdBy: User
+  updatedBy: User
+  """
+  Get all members (products) in this group
+  """
+  members: [ProductGroupMember!]!
+}
+
+type ProductGroupMember {
+  id: UUID!
+  groupId: UUID!
+  productId: UUID!
+  quantity: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  updatedById: UUID
+  createdBy: User
+  updatedBy: User
+}
+
+type ProductRelation {
+  id: UUID!
+  productId: UUID!
+  relatedProductId: UUID!
+  relationType: ProductRelationType!
+  createdAt: DateTime!
+  createdById: UUID!
+}
+
+enum ProductRelationType {
+  COMPATIBLE_WITH
+  REPLACEMENT_FOR
+  ACCESSORY_FOR
+  UPGRADE_OF
+  ALTERNATIVE_TO
+  BUNDLE_WITH
+  REQUIRES
+}
+
+type ProductType {
+  id: UUID!
+  name: String!
+  description: String
+  detailsUi: UI!
+  readAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: UUID!
+  updatedById: UUID
+  revision: Int!
+  createdBy: User
+  updatedBy: User
+}
+
+type ProductTypeEdge {
+  node: ProductType!
+  cursor: String!
+}
+
+type ProductTypesConnection {
+  edges: [ProductTypeEdge!]!
   pageInfo: RelayPageInfo!
 }
 
@@ -972,6 +1333,51 @@ type Query {
   Get all companies with access to a specific integration type
   """
   companiesWithIntegration(integrationType: IntegrationType!): CompanyIntegrationsResponse!
+  """
+  Get a product category by ID
+  """
+  productCategory(id: UUID!): ProductCategory!
+  """
+  List product categories
+  """
+  listProductCategories(input: ListProductCategoriesInput!): [ProductCategory!]!
+  """
+  List product categories with pagination metadata
+  """
+  listProductCategoriesPaginated(input: ListProductCategoriesInput!): PaginatedProductCategories!
+  """
+  List product categories with cursor-based pagination (Relay-compliant)
+  """
+  listProductCategoriesCursor(input: ListProductCategoriesCursorInput!): ProductCategoriesConnection!
+  """
+  List product groups for a company
+  """
+  listProductGroups(input: ListProductGroupsInput!): [ProductGroup!]!
+  """
+  List product relations for a product
+  """
+  listProductRelations(input: ListProductRelationsInput!): [ProductRelation!]!
+  """
+  List product types
+  """
+  listProductTypes(input: ListProductTypesInput!): [ProductType!]!
+  """
+  List product types with pagination metadata
+  """
+  listProductTypesPaginated(input: ListProductTypesInput!): PaginatedProductTypes!
+  """
+  List product types with cursor-based pagination (Relay-compliant)
+  """
+  listProductTypesCursor(input: ListProductTypesCursorInput!): ProductTypesConnection!
+  getProductType(id: UUID!): ProductType
+  """
+  Get a product by ID
+  """
+  product(id: UUID!): Product!
+  """
+  List products for a company
+  """
+  listProducts(input: ListProductsInput!): [Product!]!
 }
 
 """
@@ -994,6 +1400,10 @@ type RelayPageInfo {
   Cursor to the end of this page
   """
   endCursor: String
+}
+
+input RemoveProductFromGroupInput {
+  id: UUID!
 }
 
 type ServiceClient {
@@ -1050,6 +1460,11 @@ input UpdateCurrencyInput {
   centsConversion: Int!
 }
 
+input UpdateGroupMemberInput {
+  id: UUID!
+  quantity: String!
+}
+
 type UpdateIntegrationResponse {
   integration: CompanyIntegrationObject!
 }
@@ -1077,6 +1492,42 @@ input UpdateItemTypeInput {
   """
   JSON representation of UI for item details
   """
+  detailsUi: UI!
+}
+
+input UpdateProductCategoryInput {
+  id: UUID!
+  companyId: UUID!
+  name: String!
+  description: String
+}
+
+input UpdateProductGroupInput {
+  id: UUID!
+  companyId: UUID!
+  name: String!
+  description: String
+}
+
+input UpdateProductInput {
+  id: UUID!
+  companyId: UUID!
+  sku: String!
+  brand: String
+  model: String
+  categoryId: UUID
+  typeId: UUID
+  description: LanguageMap!
+  detailsData: DetailsData!
+  affectsInventory: Boolean!
+  revision: Int!
+}
+
+input UpdateProductTypeInput {
+  id: UUID!
+  companyId: UUID!
+  name: String!
+  description: String
   detailsUi: UI!
 }
 

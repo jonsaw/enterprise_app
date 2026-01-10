@@ -1,0 +1,8 @@
+mutation UpdateProductCategory($input: UpdateProductCategoryInput!) {
+    updateProductCategory(input: $input) {
+        id
+        name
+        description
+        updatedAt
+    }
+}

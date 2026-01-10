@@ -1,0 +1,23 @@
+query GetProductCategory($id: UUID!) {
+    productCategory(id: $id) {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        readAt
+        createdById
+        updatedById
+        revision
+        createdBy {
+            id
+            name
+            email
+        }
+        updatedBy {
+            id
+            name
+            email
+        }
+    }
+}

@@ -233,6 +233,28 @@ class AppSidebar extends ConsumerWidget {
             ],
           ),
           FSidebarGroup(
+            label: Text(context.tr.products),
+            children: [
+              FSidebarItem(
+                icon: const Icon(FIcons.tag),
+                label: Text(context.tr.categories),
+                selected: _sidebarItemSelected(
+                  currentPath,
+                  '/companies/$companyId/product-categories',
+                ),
+                onPress: () => _navigateToBranch(
+                  context,
+                  ref,
+                  4,
+                  currentPath,
+                  '/companies/$companyId/product-categories',
+                  companyId,
+                  navigationShell,
+                ),
+              ),
+            ],
+          ),
+          FSidebarGroup(
             label: Text(context.tr.access),
             children: [
               FSidebarItem(
