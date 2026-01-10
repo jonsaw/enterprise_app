@@ -1,0 +1,33 @@
+query ListProductCategoriesPaginated($input: ListProductCategoriesInput!) {
+    listProductCategoriesPaginated(input: $input) {
+        items {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+            readAt
+            createdById
+            updatedById
+            revision
+            createdBy {
+                id
+                name
+                email
+            }
+            updatedBy {
+                id
+                name
+                email
+            }
+        }
+        pageInfo {
+            totalCount
+            totalPages
+            currentPage
+            pageSize
+            hasNextPage
+            hasPreviousPage
+        }
+    }
+}

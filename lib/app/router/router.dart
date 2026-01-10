@@ -6,15 +6,24 @@ import 'package:enterprise/app/pages/company_app_shell_page.dart';
 import 'package:enterprise/app/pages/company_home_page.dart';
 import 'package:enterprise/app/pages/company_invite_detail_page.dart';
 import 'package:enterprise/app/pages/company_invites_page.dart';
+import 'package:enterprise/app/pages/company_product_categories_page.dart';
+import 'package:enterprise/app/pages/company_product_category_detail_page.dart';
 import 'package:enterprise/app/pages/company_profile_page.dart';
 import 'package:enterprise/app/pages/company_shell_page.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/pages/company_users_page.dart';
 import 'package:enterprise/app/pages/create_company_invite_page.dart';
+import 'package:enterprise/app/pages/create_product_category_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
+import 'package:enterprise/app/pages/update_product_category_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
+import 'package:enterprise/app/state/product_category_detail_controller.dart';
+import 'package:enterprise/app/widgets/app_header.dart';
+import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -145,6 +154,26 @@ class SignInRoute extends GoRouteData with $SignInRoute {
                         TypedGoRoute<CreateCompanyInviteRoute>(path: 'create'),
                         TypedGoRoute<CompanyInviteDetailRoute>(
                           path: ':inviteId',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyProductCategoriesRoute>(
+                      path: 'product-categories',
+                      routes: [
+                        TypedGoRoute<CreateProductCategoryRoute>(
+                          path: 'create',
+                        ),
+                        TypedGoRoute<CompanyProductCategoryDetailRoute>(
+                          path: ':categoryId',
+                          routes: [
+                            TypedGoRoute<EditProductCategoryRoute>(
+                              path: 'edit',
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -349,6 +378,169 @@ class CreateCompanyInviteRoute extends GoRouteData
         // Pop back to invites page
         context.pop();
       },
+    );
+  }
+}
+
+/// Company product categories route - displays the product categories page
+class CompanyProductCategoriesRoute extends GoRouteData
+    with $CompanyProductCategoriesRoute {
+  /// Creates a [CompanyProductCategoriesRoute].
+  const CompanyProductCategoriesRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyProductCategoriesPage(companyId: companyId);
+  }
+}
+
+/// Company product category detail route - displays a single category's details
+class CompanyProductCategoryDetailRoute extends GoRouteData
+    with $CompanyProductCategoryDetailRoute {
+  /// Creates a [CompanyProductCategoryDetailRoute].
+  const CompanyProductCategoryDetailRoute({
+    required this.companyId,
+    required this.categoryId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the category.
+  final String categoryId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyProductCategoryDetailPage(
+      companyId: companyId,
+      categoryId: categoryId,
+    );
+  }
+}
+
+/// Create product category route - displays the create category page
+class CreateProductCategoryRoute extends GoRouteData
+    with $CreateProductCategoryRoute {
+  /// Creates a [CreateProductCategoryRoute].
+  const CreateProductCategoryRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreateProductCategoryPage(
+      companyId: companyId,
+      onSuccess: () {
+        // Pop back to categories page
+        context.pop();
+      },
+    );
+  }
+}
+
+/// Edit product category route - edits an existing category
+class EditProductCategoryRoute extends GoRouteData
+    with $EditProductCategoryRoute {
+  /// Creates an [EditProductCategoryRoute].
+  const EditProductCategoryRoute({
+    required this.companyId,
+    required this.categoryId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the category to edit.
+  final String categoryId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return _EditProductCategoryPageLoader(
+      companyId: companyId,
+      categoryId: categoryId,
+    );
+  }
+}
+
+/// Loader widget that fetches category data before showing the edit page
+class _EditProductCategoryPageLoader extends ConsumerWidget {
+  const _EditProductCategoryPageLoader({
+    required this.companyId,
+    required this.categoryId,
+  });
+
+  final String companyId;
+  final String categoryId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoryAsync = ref.watch(
+      productCategoryDetailControllerProvider(companyId, categoryId),
+    );
+
+    return categoryAsync.when(
+      data: (category) {
+        if (category == null) {
+          return FScaffold(
+            header: AppHeader.nested(
+              title: Text(context.tr.editCategory),
+              prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+            ),
+            child: Center(
+              child: Text(context.tr.categoryNotFound),
+            ),
+          );
+        }
+
+        return UpdateProductCategoryPage(
+          companyId: companyId,
+          categoryId: categoryId,
+          initialName: category.name,
+          initialDescription: category.description,
+          onSuccess: () {
+            // Pop back to detail page
+            context.pop();
+          },
+        );
+      },
+      loading: () => FScaffold(
+        header: AppHeader.nested(
+          title: Text(context.tr.editCategory),
+          prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        ),
+        child: const Center(child: FCircularProgress()),
+      ),
+      error: (error, stack) => FScaffold(
+        header: AppHeader.nested(
+          title: Text(context.tr.editCategory),
+          prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              Text(context.tr.errorLoadingCategories),
+              FButton(
+                style: FButtonStyle.outline(),
+                onPress: () {
+                  ref.invalidate(
+                    productCategoryDetailControllerProvider(
+                      companyId,
+                      categoryId,
+                    ),
+                  );
+                },
+                child: Text(context.tr.retry),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

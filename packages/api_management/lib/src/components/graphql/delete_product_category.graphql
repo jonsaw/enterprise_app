@@ -1,0 +1,3 @@
+mutation DeleteProductCategory($id: UUID!, $companyId: UUID!) {
+    deleteProductCategory(id: $id, companyId: $companyId)
+}

@@ -136,6 +136,10 @@
     "@cancel": {
         "description": "Cancel button label"
     },
+    "delete": "Delete",
+    "@delete": {
+        "description": "Delete button label"
+    },
     "selectCompany": "Select Company",
     "@selectCompany": {
         "description": "Company dropdown hint text"
@@ -288,10 +292,6 @@
     "@creatorInformation": {
         "description": "Creator information section title"
     },
-    "metadata": "Metadata",
-    "@metadata": {
-        "description": "Metadata section title"
-    },
     "inviteToken": "Invite Token",
     "@inviteToken": {
         "description": "Invite token field label"
@@ -387,5 +387,141 @@
     "emailInvalid": "Please enter a valid email address",
     "@emailInvalid": {
         "description": "Validation error for invalid email format"
+    },
+    "products": "Products",
+    "@products": {
+        "description": "Products navigation label"
+    },
+    "categories": "Categories",
+    "@categories": {
+        "description": "Categories navigation label"
+    },
+    "category": "Category",
+    "@category": {
+        "description": "Category singular"
+    },
+    "categoryDetails": "Category Details",
+    "@categoryDetails": {
+        "description": "Category details page title"
+    },
+    "createCategory": "Create Category",
+    "@createCategory": {
+        "description": "Create category button and page title"
+    },
+    "editCategory": "Edit Category",
+    "@editCategory": {
+        "description": "Edit category button"
+    },
+    "deleteCategory": "Delete Category",
+    "@deleteCategory": {
+        "description": "Delete category button"
+    },
+    "searchCategories": "Search categories...",
+    "@searchCategories": {
+        "description": "Search placeholder for categories"
+    },
+    "noCategoriesFound": "No categories found",
+    "@noCategoriesFound": {
+        "description": "Message when no categories are found"
+    },
+    "errorLoadingCategories": "Error loading categories",
+    "@errorLoadingCategories": {
+        "description": "Error message when categories fail to load"
+    },
+    "selectCategoryToViewDetails": "Select a category to view details",
+    "@selectCategoryToViewDetails": {
+        "description": "Placeholder text in split view"
+    },
+    "categoryNotFound": "Category not found",
+    "@categoryNotFound": {
+        "description": "Message when category is not found"
+    },
+    "backToCategories": "Back to Categories",
+    "@backToCategories": {
+        "description": "Button to go back to categories list"
+    },
+    "categoryName": "Category Name",
+    "@categoryName": {
+        "description": "Category name field label"
+    },
+    "categoryDescription": "Description",
+    "@categoryDescription": {
+        "description": "Category description field label"
+    },
+    "enterCategoryName": "Enter category name",
+    "@enterCategoryName": {
+        "description": "Placeholder for category name field"
+    },
+    "enterCategoryDescription": "Enter description (optional)",
+    "@enterCategoryDescription": {
+        "description": "Placeholder for category description field"
+    },
+    "categoryCreatedSuccessfully": "Category created successfully",
+    "@categoryCreatedSuccessfully": {
+        "description": "Success message when category is created"
+    },
+    "failedToCreateCategory": "Failed to create category",
+    "@failedToCreateCategory": {
+        "description": "Error message when category creation fails"
+    },
+    "categoryUpdatedSuccessfully": "Category updated successfully",
+    "@categoryUpdatedSuccessfully": {
+        "description": "Success message when category is updated"
+    },
+    "failedToUpdateCategory": "Failed to update category",
+    "@failedToUpdateCategory": {
+        "description": "Error message when category update fails"
+    },
+    "categoryDeletedSuccessfully": "Category deleted successfully",
+    "@categoryDeletedSuccessfully": {
+        "description": "Success message when category is deleted"
+    },
+    "failedToDeleteCategory": "Failed to delete category",
+    "@failedToDeleteCategory": {
+        "description": "Error message when category deletion fails"
+    },
+    "deleteCategoryConfirmation": "Are you sure you want to delete this category?",
+    "@deleteCategoryConfirmation": {
+        "description": "Confirmation message for category deletion"
+    },
+    "deleteCategoryWarning": "This action cannot be undone.",
+    "@deleteCategoryWarning": {
+        "description": "Warning message for category deletion"
+    },
+    "categoryInformation": "Category Information",
+    "@categoryInformation": {
+        "description": "Section title for category information"
+    },
+    "categoryId": "Category ID",
+    "@categoryId": {
+        "description": "Category ID field label"
+    },
+    "revision": "Revision",
+    "@revision": {
+        "description": "Revision number field label"
+    },
+    "unsavedChanges": "Unsaved Changes",
+    "@unsavedChanges": {
+        "description": "Dialog title for unsaved changes warning"
+    },
+    "unsavedChangesMessage": "You have unsaved changes. Are you sure you want to discard them?",
+    "@unsavedChangesMessage": {
+        "description": "Dialog message for unsaved changes warning"
+    },
+    "discard": "Discard",
+    "@discard": {
+        "description": "Button label to discard changes"
+    },
+    "updatedBy": "Updated By",
+    "@updatedBy": {
+        "description": "Updated by field label"
+    },
+    "update": "Update",
+    "@update": {
+        "description": "Update button label"
+    },
+    "create": "Create",
+    "@create": {
+        "description": "Create button label"
     }
 }
