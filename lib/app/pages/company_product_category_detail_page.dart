@@ -127,15 +127,15 @@ class CompanyProductCategoryDetailPage extends ConsumerWidget {
         ),
         actions: [
           FButton(
+            style: FButtonStyle.destructive(),
+            onPress: () => Navigator.of(context, rootNavigator: true).pop(true),
+            child: Text(context.tr.deleteCategory),
+          ),
+          FButton(
             style: FButtonStyle.outline(),
             onPress: () =>
                 Navigator.of(context, rootNavigator: true).pop(false),
             child: Text(context.tr.cancel),
-          ),
-          FButton(
-            style: FButtonStyle.destructive(),
-            onPress: () => Navigator.of(context, rootNavigator: true).pop(true),
-            child: Text(context.tr.deleteCategory),
           ),
         ],
       ),
