@@ -1,3 +1,4 @@
+import 'package:enterprise/app/utils/auth_dialogs.dart';
 import 'package:enterprise/app/widgets/company_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,26 +18,33 @@ class CompaniesPage extends ConsumerWidget {
       child: Center(
         child: SizedBox(
           width: 400,
-          height: 100,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: theme.colors.background,
-              border: Border.all(color: theme.colors.border),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CompanyDropdown(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colors.background,
+                  border: Border.all(color: theme.colors.border),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: CompanyDropdown(
                   onChange: (cu) {
                     if (cu != null && cu.company != null) {
                       context.go('/companies/${cu.company?.id}');
                     }
                   },
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerRight,
+                child: FButton.icon(
+                  onPress: () => showSignOutDialog(context, ref),
+                  child: const Icon(FIcons.logOut),
+                ),
+              ),
+            ],
           ),
         ),
       ),
