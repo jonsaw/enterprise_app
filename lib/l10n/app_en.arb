@@ -640,6 +640,10 @@
     "@enterDetailsUiSchema": {
         "description": "Placeholder for DetailsUI schema field"
     },
+    "detailsUiSchemaRequired": "Details UI schema is required",
+    "@detailsUiSchemaRequired": {
+        "description": "Validation error for required Details UI schema field"
+    },
     "invalidJson": "Invalid JSON",
     "@invalidJson": {
         "description": "Error message for invalid JSON format"

@@ -160,6 +160,7 @@
     "detailsUiSchema": "Skema UI Butiran",
     "detailsUiSchemaJson": "Skema UI Butiran (JSON)",
     "enterDetailsUiSchema": "Masukkan skema JSON untuk medan borang",
+    "detailsUiSchemaRequired": "Skema UI Butiran diperlukan",
     "invalidJson": "JSON tidak sah",
     "jsonMustBeObject": "JSON mesti menjadi objek",
     "jsonMustContainRuntimeType": "JSON mesti mengandungi medan \"runtimeType\"",

@@ -92,27 +92,21 @@ class ProductTypeForm extends StatelessWidget {
             validator: (value) {
               final trimmed = value?.trim() ?? '';
               if (trimmed.isEmpty) {
-                return context.tr.nameRequired;
+                return context.tr.detailsUiSchemaRequired;
               }
 
-              // Validate JSON
-              try {
-                jsonDecode(trimmed);
-              } on FormatException catch (e) {
-                return '${context.tr.invalidJson}: ${e.message}';
-              }
-
-              // Optionally validate structure
+              // Validate JSON format and structure
               try {
                 final json = jsonDecode(trimmed);
+
                 if (json is! Map<String, dynamic>) {
                   return context.tr.jsonMustBeObject;
                 }
                 if (!json.containsKey('runtimeType')) {
                   return context.tr.jsonMustContainRuntimeType;
                 }
-              } on FormatException {
-                // Already caught above
+              } on FormatException catch (e) {
+                return '${context.tr.invalidJson}: ${e.message}';
               }
 
               return null;
