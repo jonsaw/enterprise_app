@@ -21,7 +21,6 @@ class DeleteProductCategoryController
 
     try {
       final managementClient = ref.read(gqlManagementClientProvider);
-      final companyIdValue = GUUIDBuilder()..value = companyId;
       final categoryIdValue = GUUIDBuilder()..value = categoryId;
 
       final response = await managementClient
@@ -29,7 +28,6 @@ class DeleteProductCategoryController
             GDeleteProductCategoryReq(
               (b) => b
                 ..vars.id = categoryIdValue
-                ..vars.companyId = companyIdValue
                 ..fetchPolicy = FetchPolicy.NetworkOnly,
             ),
           )
