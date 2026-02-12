@@ -145,6 +145,7 @@
     "typeNotFound": "Jenis tidak dijumpai",
     "backToTypes": "Kembali ke Jenis",
     "typeName": "Nama Jenis",
+    "typeDescription": "Penerangan Jenis",
     "typeId": "ID Jenis",
     "enterTypeName": "Masukkan nama jenis",
     "enterTypeDescription": "Masukkan penerangan (pilihan)",

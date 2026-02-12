@@ -580,6 +580,10 @@
     "@typeName": {
         "description": "Type name field label"
     },
+    "typeDescription": "Type Description",
+    "@typeDescription": {
+        "description": "Type description field label"
+    },
     "typeId": "Type ID",
     "@typeId": {
         "description": "Type ID field label"

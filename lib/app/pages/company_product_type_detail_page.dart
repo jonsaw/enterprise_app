@@ -399,7 +399,7 @@ class _CompanyProductTypeDetailPageState
             ),
             if (type.description != null)
               FTile(
-                title: Text(context.tr.categoryDescription),
+                title: Text(context.tr.typeDescription),
                 details: Text(type.description!),
               ),
             FTile(

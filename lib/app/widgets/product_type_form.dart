@@ -74,7 +74,7 @@ class ProductTypeForm extends StatelessWidget {
           // Description field
           FTextFormField(
             control: .managed(controller: descriptionController),
-            label: Text(context.tr.categoryDescription),
+            label: Text(context.tr.typeDescription),
             hint: context.tr.enterTypeDescription,
             enabled: !isLoading,
             maxLines: 3,
