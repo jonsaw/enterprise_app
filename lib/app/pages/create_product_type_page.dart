@@ -92,23 +92,14 @@ class _CreateProductTypePageState extends ConsumerState<CreateProductTypePage> {
     );
 
     if (success) {
-      // Pop first
+      // Show success toast
+      showFToast(
+        context: context,
+        title: Text(context.tr.typeCreatedSuccessfully),
+        duration: const Duration(seconds: 3),
+      );
+      widget.onSuccess?.call();
       Navigator.of(context).pop();
-      
-      // Defer success callback and toast to next frame to avoid go_router race condition
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        
-        // Show success toast
-        showFToast(
-          context: context,
-          title: Text(context.tr.typeCreatedSuccessfully),
-          duration: const Duration(seconds: 3),
-        );
-        
-        // Call success callback after navigation fully completes
-        widget.onSuccess?.call();
-      });
     } else {
       // Show error toast
       showFToast(
