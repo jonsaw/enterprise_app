@@ -523,5 +523,137 @@
     "create": "Create",
     "@create": {
         "description": "Create button label"
+    },
+    "types": "Types",
+    "@types": {
+        "description": "Product types navigation label"
+    },
+    "type": "Type",
+    "@type": {
+        "description": "Product type singular"
+    },
+    "typeDetails": "Type Details",
+    "@typeDetails": {
+        "description": "Product type details page title"
+    },
+    "productTypeDetails": "Product Type Details",
+    "@productTypeDetails": {
+        "description": "Full product type details page title"
+    },
+    "createType": "Create Type",
+    "@createType": {
+        "description": "Create type button and page title"
+    },
+    "editType": "Edit Type",
+    "@editType": {
+        "description": "Edit type button"
+    },
+    "deleteType": "Delete Type",
+    "@deleteType": {
+        "description": "Delete type button"
+    },
+    "searchTypes": "Search types...",
+    "@searchTypes": {
+        "description": "Search placeholder for types"
+    },
+    "noTypesFound": "No types found",
+    "@noTypesFound": {
+        "description": "Message when no types are found"
+    },
+    "errorLoadingTypes": "Error loading types",
+    "@errorLoadingTypes": {
+        "description": "Error message when types fail to load"
+    },
+    "selectTypeToViewDetails": "Select a type to view details",
+    "@selectTypeToViewDetails": {
+        "description": "Placeholder text in split view for types"
+    },
+    "typeNotFound": "Type not found",
+    "@typeNotFound": {
+        "description": "Message when type is not found"
+    },
+    "backToTypes": "Back to Types",
+    "@backToTypes": {
+        "description": "Button to go back to types list"
+    },
+    "typeName": "Type Name",
+    "@typeName": {
+        "description": "Type name field label"
+    },
+    "typeId": "Type ID",
+    "@typeId": {
+        "description": "Type ID field label"
+    },
+    "enterTypeName": "Enter type name",
+    "@enterTypeName": {
+        "description": "Placeholder for type name field"
+    },
+    "enterTypeDescription": "Enter description (optional)",
+    "@enterTypeDescription": {
+        "description": "Placeholder for type description field"
+    },
+    "typeCreatedSuccessfully": "Type created successfully",
+    "@typeCreatedSuccessfully": {
+        "description": "Success message when type is created"
+    },
+    "failedToCreateType": "Failed to create type",
+    "@failedToCreateType": {
+        "description": "Error message when type creation fails"
+    },
+    "typeUpdatedSuccessfully": "Type updated successfully",
+    "@typeUpdatedSuccessfully": {
+        "description": "Success message when type is updated"
+    },
+    "failedToUpdateType": "Failed to update type",
+    "@failedToUpdateType": {
+        "description": "Error message when type update fails"
+    },
+    "typeDeletedSuccessfully": "Type deleted successfully",
+    "@typeDeletedSuccessfully": {
+        "description": "Success message when type is deleted"
+    },
+    "failedToDeleteType": "Failed to delete type",
+    "@failedToDeleteType": {
+        "description": "Error message when type deletion fails"
+    },
+    "deleteTypeConfirmation": "Are you sure you want to delete this type?",
+    "@deleteTypeConfirmation": {
+        "description": "Confirmation message for type deletion"
+    },
+    "deleteTypeWarning": "This action cannot be undone.",
+    "@deleteTypeWarning": {
+        "description": "Warning message for type deletion"
+    },
+    "typeInformation": "Type Information",
+    "@typeInformation": {
+        "description": "Section title for type information"
+    },
+    "detailsUiSchema": "Details UI Schema",
+    "@detailsUiSchema": {
+        "description": "Label for the DetailsUI JSON schema field"
+    },
+    "detailsUiSchemaJson": "Details UI Schema (JSON)",
+    "@detailsUiSchemaJson": {
+        "description": "Form label for the DetailsUI JSON schema input field"
+    },
+    "enterDetailsUiSchema": "Enter JSON schema for form fields",
+    "@enterDetailsUiSchema": {
+        "description": "Placeholder for DetailsUI schema field"
+    },
+    "invalidJson": "Invalid JSON",
+    "@invalidJson": {
+        "description": "Error message for invalid JSON format"
+    },
+    "jsonMustBeObject": "JSON must be an object",
+    "@jsonMustBeObject": {
+        "description": "Error message when JSON is not an object"
+    },
+    "jsonMustContainRuntimeType": "JSON must contain \"runtimeType\" field",
+    "@jsonMustContainRuntimeType": {
+        "description": "Error message when JSON lacks runtimeType field"
+    },
+    "productTypes": "Product Types",
+    "@productTypes": {
+        "description": "Full product types label"
     }
 }
