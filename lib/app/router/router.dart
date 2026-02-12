@@ -672,11 +672,11 @@ class _EditProductTypePageLoader extends ConsumerWidget {
         if (type == null) {
           return FScaffold(
             header: AppHeader.nested(
-              title: const Text('Edit Product Type'),
+              title: Text(context.tr.editType),
               prefixes: [FHeaderAction.back(onPress: () => context.pop())],
             ),
-            child: const Center(
-              child: Text('Product type not found'),
+            child: Center(
+              child: Text(context.tr.typeNotFound),
             ),
           );
         }
@@ -695,14 +695,14 @@ class _EditProductTypePageLoader extends ConsumerWidget {
       },
       loading: () => FScaffold(
         header: AppHeader.nested(
-          title: const Text('Edit Product Type'),
+          title: Text(context.tr.editType),
           prefixes: [FHeaderAction.back(onPress: () => context.pop())],
         ),
         child: const Center(child: FCircularProgress()),
       ),
       error: (error, stack) => FScaffold(
         header: AppHeader.nested(
-          title: const Text('Edit Product Type'),
+          title: Text(context.tr.editType),
           prefixes: [FHeaderAction.back(onPress: () => context.pop())],
         ),
         child: Center(
@@ -710,7 +710,7 @@ class _EditProductTypePageLoader extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 16,
             children: [
-              const Text('Error loading product type'),
+              Text(context.tr.errorLoadingTypes),
               FButton(
                 style: FButtonStyle.outline(),
                 onPress: () {
