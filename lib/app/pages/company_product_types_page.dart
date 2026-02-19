@@ -75,12 +75,12 @@ class _CompanyProductTypesPageState
     ref.read(selectedIdProvider(SelectedIdType.productType).notifier).id =
         typeId;
     if (!isMediumOrLargeScreen(context)) {
-      // On small/medium screens, push the detail route
+      // On small screens, push the detail route
       context.go(
         '/companies/${widget.companyId}/product-types/$typeId',
       );
     }
-    // On large screens, just update the selected ID (split view handles it)
+    // On medium/large screens, just update the selected ID (split view handles it)
   }
 
   @override
