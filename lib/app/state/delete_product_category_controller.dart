@@ -49,9 +49,11 @@ class DeleteProductCategoryController
         state = const AsyncData(null);
         return (true, null);
       } else {
-        const errorMessage = 'Failed to delete category';
-        state = AsyncError(Exception(errorMessage), StackTrace.current);
-        return (false, errorMessage);
+        state = AsyncError(
+          Exception('Failed to delete category'),
+          StackTrace.current,
+        );
+        return (false, null);
       }
     } on Exception catch (e, st) {
       talker.error('Failed to delete product category', e);

@@ -48,9 +48,11 @@ class DeleteProductTypeController extends _$DeleteProductTypeController {
         state = const AsyncData(null);
         return (true, null);
       } else {
-        const errorMessage = 'Failed to delete type';
-        state = AsyncError(Exception(errorMessage), StackTrace.current);
-        return (false, errorMessage);
+        state = AsyncError(
+          Exception('Failed to delete type'),
+          StackTrace.current,
+        );
+        return (false, null);
       }
     } on Exception catch (e, st) {
       talker.error('Failed to delete product type', e);
