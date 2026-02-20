@@ -887,7 +887,8 @@ type Mutation {
   """
   createProductType(input: CreateProductTypeInput!): ProductType!
   """
-  Update a product type for a company
+  Update a product type for a company.
+  Reconciles all affected products' details_data against the new schema.
   """
   updateProductType(input: UpdateProductTypeInput!): ProductType!
   """
@@ -1542,6 +1543,7 @@ input UpdateProductTypeInput {
   name: String!
   description: String
   detailsUi: UI!
+  revision: Int!
 }
 
 type User {

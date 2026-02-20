@@ -687,6 +687,7 @@ class _EditProductTypePageLoader extends ConsumerWidget {
           initialName: type.name,
           initialDescription: type.description,
           initialDetailsUi: type.detailsUi ?? '{}',
+          revision: type.revision ?? 0,
           onSuccess: () {
             // Refresh the detail page after update
             // No need to pop - the update page already does that

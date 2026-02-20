@@ -82,6 +82,7 @@ class _CompanyProductTypeDetailPageState
             initialName: type.name,
             initialDescription: type.description,
             initialDetailsUi: type.detailsUi ?? '{}',
+            revision: type.revision ?? 0,
             onSuccess: () {
               ref
                 ..invalidate(

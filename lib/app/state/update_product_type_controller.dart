@@ -12,6 +12,7 @@ class UpdateProductTypeInput {
   const UpdateProductTypeInput({
     required this.name,
     required this.detailsUi,
+    required this.revision,
     this.description,
   });
 
@@ -23,6 +24,9 @@ class UpdateProductTypeInput {
 
   /// The UI schema JSON string.
   final String detailsUi;
+
+  /// The revision number for optimistic concurrency.
+  final int revision;
 }
 
 /// Controller for updating product types.
@@ -49,6 +53,7 @@ class UpdateProductTypeController extends _$UpdateProductTypeController {
                 ..vars.input.description = input.description
                 ..vars.input.detailsUi = input.detailsUi
                 ..vars.input.companyId = GUUID(companyId).toBuilder()
+                ..vars.input.revision = input.revision
                 ..fetchPolicy = FetchPolicy.NetworkOnly,
             ),
           )

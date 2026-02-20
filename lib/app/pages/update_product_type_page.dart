@@ -18,6 +18,7 @@ class UpdateProductTypePage extends ConsumerStatefulWidget {
     required this.typeId,
     required this.initialName,
     required this.initialDetailsUi,
+    required this.revision,
     this.initialDescription,
     this.onSuccess,
     this.showAsSheet = false,
@@ -38,6 +39,9 @@ class UpdateProductTypePage extends ConsumerStatefulWidget {
 
   /// Initial details UI value.
   final String initialDetailsUi;
+
+  /// The current revision number for optimistic concurrency.
+  final int revision;
 
   /// Optional callback when type is updated successfully.
   final VoidCallback? onSuccess;
@@ -103,6 +107,7 @@ class _UpdateProductTypePageState extends ConsumerState<UpdateProductTypePage> {
       name: name,
       description: description.isEmpty ? null : description,
       detailsUi: detailsUi,
+      revision: widget.revision,
     );
 
     final (success, errorMessage) = await ref
