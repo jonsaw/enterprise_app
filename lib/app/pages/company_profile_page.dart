@@ -1,5 +1,6 @@
 import 'package:enterprise/app/constants/constants.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
+import 'package:enterprise/app/utils/auth_dialogs.dart';
 import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/app/widgets/app_sidebar.dart';
 import 'package:enterprise/app/widgets/section_widget.dart';
@@ -15,36 +16,6 @@ class CompanyProfilePage extends ConsumerWidget {
 
   /// The ID of the company.
   final String companyId;
-
-  Future<void> _showSignOutDialog(BuildContext context, WidgetRef ref) async {
-    final confirmed = await showFDialog<bool>(
-      context: context,
-      useRootNavigator: true,
-      builder: (context, style, animation) => FDialog(
-        style: style.call,
-        animation: animation,
-        title: Text(context.tr.signOutConfirmTitle),
-        body: Text(context.tr.signOutConfirmMessage),
-        actions: [
-          FButton(
-            style: FButtonStyle.destructive(),
-            onPress: () => Navigator.of(context, rootNavigator: true).pop(true),
-            child: Text(context.tr.signOut),
-          ),
-          FButton(
-            style: FButtonStyle.outline(),
-            onPress: () =>
-                Navigator.of(context, rootNavigator: true).pop(false),
-            child: Text(context.tr.cancel),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed ?? false) {
-      await ref.read(authControllerProvider.notifier).signOut();
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -98,7 +69,7 @@ class CompanyProfilePage extends ConsumerWidget {
               FButton(
                 style: FButtonStyle.destructive(),
                 mainAxisSize: .min,
-                onPress: () => _showSignOutDialog(context, ref),
+                onPress: () => showSignOutDialog(context, ref),
                 child: Row(
                   mainAxisSize: .min,
                   children: [

@@ -1,12 +1,13 @@
 name: api_management
 description: "API Management Package"
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
   sdk: ^3.10.3
 
 dependencies:
+  built_value: ^8.9.2
   ferry: ^0.16.1+2
   gql_code_builder_serializers: ^0.1.0+1
   gql_http_link: ^1.2.0

@@ -4,16 +4,15 @@ import 'package:enterprise/app_clients.dart';
 import 'package:ferry/ferry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'delete_product_category_controller.g.dart';
+part 'delete_product_type_controller.g.dart';
 
-/// Controller for deleting product categories.
+/// Controller for deleting product types.
 @riverpod
-class DeleteProductCategoryController
-    extends _$DeleteProductCategoryController {
+class DeleteProductTypeController extends _$DeleteProductTypeController {
   @override
-  FutureOr<void> build(String companyId, String categoryId) {}
+  FutureOr<void> build(String companyId, String typeId) {}
 
-  /// Deletes a product category (soft delete).
+  /// Deletes a product type (soft delete).
   ///
   /// Returns a tuple of (success, errorMessage).
   Future<(bool, String?)> delete() async {
@@ -21,13 +20,13 @@ class DeleteProductCategoryController
 
     try {
       final managementClient = ref.read(gqlManagementClientProvider);
-      final categoryIdValue = GUUIDBuilder()..value = categoryId;
+      final typeIdValue = GUUIDBuilder()..value = typeId;
 
       final response = await managementClient
           .request(
-            GDeleteProductCategoryReq(
+            GDeleteProductTypeReq(
               (b) => b
-                ..vars.id = categoryIdValue
+                ..vars.id = typeIdValue
                 ..fetchPolicy = FetchPolicy.NetworkOnly,
             ),
           )
@@ -37,26 +36,26 @@ class DeleteProductCategoryController
         final errorMessage =
             response.graphqlErrors?.firstOrNull?.message ?? 'Unknown error';
         talker.error(
-          'GraphQL errors while deleting product category: ${response.graphqlErrors}',
+          'GraphQL errors while deleting product type: ${response.graphqlErrors}',
         );
         state = AsyncError(Exception(errorMessage), StackTrace.current);
         return (false, errorMessage);
       }
 
-      final success = response.data?.deleteProductCategory ?? false;
+      final success = response.data?.deleteProductType ?? false;
 
       if (success) {
         state = const AsyncData(null);
         return (true, null);
       } else {
         state = AsyncError(
-          Exception('Failed to delete category'),
+          Exception('Failed to delete type'),
           StackTrace.current,
         );
         return (false, null);
       }
     } on Exception catch (e, st) {
-      talker.error('Failed to delete product category', e);
+      talker.error('Failed to delete product type', e);
       state = AsyncError(e, st);
       return (false, e.toString());
     }

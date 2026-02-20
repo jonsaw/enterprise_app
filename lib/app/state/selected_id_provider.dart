@@ -12,6 +12,9 @@ enum SelectedIdType {
 
   /// Selected product category ID
   productCategory,
+
+  /// Selected product type ID
+  productType,
 }
 
 /// Notifier for managing a selected ID.

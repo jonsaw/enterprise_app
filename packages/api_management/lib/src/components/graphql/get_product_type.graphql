@@ -1,0 +1,24 @@
+query GetProductType($id: UUID!) {
+    productType(id: $id) {
+        id
+        name
+        description
+        detailsUi
+        createdAt
+        updatedAt
+        readAt
+        createdById
+        updatedById
+        revision
+        createdBy {
+            id
+            name
+            email
+        }
+        updatedBy {
+            id
+            name
+            email
+        }
+    }
+}

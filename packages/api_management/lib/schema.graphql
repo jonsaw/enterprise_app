@@ -361,7 +361,6 @@ type DeleteIntegrationResponse {
 
 input DeleteProductRelationInput {
   id: UUID!
-  productId: UUID!
 }
 
 """
@@ -850,7 +849,7 @@ type Mutation {
   """
   Delete a product category (soft delete)
   """
-  deleteProductCategory(id: UUID!, companyId: UUID!): Boolean!
+  deleteProductCategory(id: UUID!): Boolean!
   """
   Create a product group
   """
@@ -862,7 +861,7 @@ type Mutation {
   """
   Delete a product group (soft delete)
   """
-  deleteProductGroup(id: UUID!, companyId: UUID!): Boolean!
+  deleteProductGroup(id: UUID!): Boolean!
   """
   Add a product to a group
   """
@@ -888,13 +887,14 @@ type Mutation {
   """
   createProductType(input: CreateProductTypeInput!): ProductType!
   """
-  Update a product type for a company
+  Update a product type for a company.
+  Reconciles all affected products' details_data against the new schema.
   """
   updateProductType(input: UpdateProductTypeInput!): ProductType!
   """
   Delete a product type (soft delete)
   """
-  deleteProductType(id: UUID!, companyId: UUID!): Boolean!
+  deleteProductType(id: UUID!): Boolean!
   """
   Create a product
   """
@@ -906,7 +906,7 @@ type Mutation {
   """
   Delete a product (soft delete)
   """
-  deleteProduct(id: UUID!, companyId: UUID!): Boolean!
+  deleteProduct(id: UUID!): Boolean!
 }
 
 type MyEinvoiceCompany {
@@ -1137,6 +1137,7 @@ type ProductCategory {
   revision: Int!
   createdBy: User
   updatedBy: User
+  productCount: Int!
 }
 
 type ProductCategoryEdge {
@@ -1161,6 +1162,7 @@ type ProductGroup {
   Get all members (products) in this group
   """
   members: [ProductGroupMember!]!
+  productCount: Int!
 }
 
 type ProductGroupMember {
@@ -1208,6 +1210,7 @@ type ProductType {
   revision: Int!
   createdBy: User
   updatedBy: User
+  productCount: Int!
 }
 
 type ProductTypeEdge {
@@ -1350,9 +1353,17 @@ type Query {
   """
   listProductCategoriesCursor(input: ListProductCategoriesCursorInput!): ProductCategoriesConnection!
   """
+  Get a product group by ID
+  """
+  productGroup(id: UUID!): ProductGroup!
+  """
   List product groups for a company
   """
   listProductGroups(input: ListProductGroupsInput!): [ProductGroup!]!
+  """
+  Get a product relation by ID
+  """
+  productRelation(id: UUID!): ProductRelation!
   """
   List product relations for a product
   """
@@ -1369,7 +1380,10 @@ type Query {
   List product types with cursor-based pagination (Relay-compliant)
   """
   listProductTypesCursor(input: ListProductTypesCursorInput!): ProductTypesConnection!
-  getProductType(id: UUID!): ProductType
+  """
+  Get a product type by ID
+  """
+  productType(id: UUID!): ProductType!
   """
   Get a product by ID
   """
@@ -1529,6 +1543,7 @@ input UpdateProductTypeInput {
   name: String!
   description: String
   detailsUi: UI!
+  revision: Int!
 }
 
 type User {

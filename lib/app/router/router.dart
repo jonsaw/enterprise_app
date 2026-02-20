@@ -8,17 +8,22 @@ import 'package:enterprise/app/pages/company_invite_detail_page.dart';
 import 'package:enterprise/app/pages/company_invites_page.dart';
 import 'package:enterprise/app/pages/company_product_categories_page.dart';
 import 'package:enterprise/app/pages/company_product_category_detail_page.dart';
+import 'package:enterprise/app/pages/company_product_type_detail_page.dart';
+import 'package:enterprise/app/pages/company_product_types_page.dart';
 import 'package:enterprise/app/pages/company_profile_page.dart';
 import 'package:enterprise/app/pages/company_shell_page.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/pages/company_users_page.dart';
 import 'package:enterprise/app/pages/create_company_invite_page.dart';
 import 'package:enterprise/app/pages/create_product_category_page.dart';
+import 'package:enterprise/app/pages/create_product_type_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
 import 'package:enterprise/app/pages/update_product_category_page.dart';
+import 'package:enterprise/app/pages/update_product_type_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:enterprise/app/state/product_category_detail_controller.dart';
+import 'package:enterprise/app/state/product_type_detail_controller.dart';
 import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
@@ -171,6 +176,26 @@ class SignInRoute extends GoRouteData with $SignInRoute {
                           path: ':categoryId',
                           routes: [
                             TypedGoRoute<EditProductCategoryRoute>(
+                              path: 'edit',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyProductTypesRoute>(
+                      path: 'product-types',
+                      routes: [
+                        TypedGoRoute<CreateProductTypeRoute>(
+                          path: 'create',
+                        ),
+                        TypedGoRoute<CompanyProductTypeDetailRoute>(
+                          path: ':typeId',
+                          routes: [
+                            TypedGoRoute<EditProductTypeRoute>(
                               path: 'edit',
                             ),
                           ],
@@ -532,6 +557,168 @@ class _EditProductCategoryPageLoader extends ConsumerWidget {
                     productCategoryDetailControllerProvider(
                       companyId,
                       categoryId,
+                    ),
+                  );
+                },
+                child: Text(context.tr.retry),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Company product types list route - displays all product types
+class CompanyProductTypesRoute extends GoRouteData
+    with $CompanyProductTypesRoute {
+  /// Creates a [CompanyProductTypesRoute].
+  const CompanyProductTypesRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyProductTypesPage(companyId: companyId);
+  }
+}
+
+/// Company product type detail route - displays a single type's details
+class CompanyProductTypeDetailRoute extends GoRouteData
+    with $CompanyProductTypeDetailRoute {
+  /// Creates a [CompanyProductTypeDetailRoute].
+  const CompanyProductTypeDetailRoute({
+    required this.companyId,
+    required this.typeId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the type.
+  final String typeId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyProductTypeDetailPage(
+      companyId: companyId,
+      typeId: typeId,
+    );
+  }
+}
+
+/// Create product type route - shows form to create a new product type
+class CreateProductTypeRoute extends GoRouteData with $CreateProductTypeRoute {
+  /// Creates a [CreateProductTypeRoute].
+  const CreateProductTypeRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreateProductTypePage(
+      companyId: companyId,
+      onSuccess: () {
+        // No need to pop - the create page already does that
+      },
+    );
+  }
+}
+
+/// Edit product type route - shows form to edit an existing product type
+class EditProductTypeRoute extends GoRouteData with $EditProductTypeRoute {
+  /// Creates an [EditProductTypeRoute].
+  const EditProductTypeRoute({
+    required this.companyId,
+    required this.typeId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the type to edit.
+  final String typeId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return _EditProductTypePageLoader(
+      companyId: companyId,
+      typeId: typeId,
+    );
+  }
+}
+
+/// Loader widget that fetches type data before showing the edit page
+class _EditProductTypePageLoader extends ConsumerWidget {
+  const _EditProductTypePageLoader({
+    required this.companyId,
+    required this.typeId,
+  });
+
+  final String companyId;
+  final String typeId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final typeAsync = ref.watch(
+      productTypeDetailControllerProvider(companyId, typeId),
+    );
+
+    return typeAsync.when(
+      data: (type) {
+        if (type == null) {
+          return FScaffold(
+            header: AppHeader.nested(
+              title: Text(context.tr.editType),
+              prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+            ),
+            child: Center(
+              child: Text(context.tr.typeNotFound),
+            ),
+          );
+        }
+
+        return UpdateProductTypePage(
+          companyId: companyId,
+          typeId: typeId,
+          initialName: type.name,
+          initialDescription: type.description,
+          initialDetailsUi: type.detailsUi ?? '{}',
+          revision: type.revision ?? 0,
+          onSuccess: () {
+            // Refresh the detail page after update
+            // No need to pop - the update page already does that
+          },
+        );
+      },
+      loading: () => FScaffold(
+        header: AppHeader.nested(
+          title: Text(context.tr.editType),
+          prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        ),
+        child: const Center(child: FCircularProgress()),
+      ),
+      error: (error, stack) => FScaffold(
+        header: AppHeader.nested(
+          title: Text(context.tr.editType),
+          prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              Text(context.tr.errorLoadingTypes),
+              FButton(
+                style: FButtonStyle.outline(),
+                onPress: () {
+                  ref.invalidate(
+                    productTypeDetailControllerProvider(
+                      companyId,
+                      typeId,
                     ),
                   );
                 },
