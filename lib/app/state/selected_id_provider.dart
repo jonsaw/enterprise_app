@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'selected_id_provider.g.dart';
@@ -15,6 +16,13 @@ enum SelectedIdType {
 
   /// Selected product type ID
   productType,
+}
+
+/// Clears all selected IDs by resetting each [SelectedIdType] to `null`.
+void clearAllSelectedIds(WidgetRef ref) {
+  for (final type in SelectedIdType.values) {
+    ref.read(selectedIdProvider(type).notifier).id = null;
+  }
 }
 
 /// Notifier for managing a selected ID.

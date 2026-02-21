@@ -32,9 +32,7 @@ class CompaniesPage extends ConsumerWidget {
                 child: CompanyDropdown(
                   onChange: (cu) {
                     if (cu != null && cu.company != null) {
-                      for (final type in SelectedIdType.values) {
-                        ref.read(selectedIdProvider(type).notifier).id = null;
-                      }
+                      clearAllSelectedIds(ref);
                       context.go('/companies/${cu.company?.id}');
                     }
                   },

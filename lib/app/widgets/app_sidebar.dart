@@ -84,7 +84,7 @@ class AppSidebar extends ConsumerWidget {
                     initialValue: value,
                     onChange: (cu) {
                       if (cu != null && cu.company != null) {
-                        _clearAllSelectedIds(ref);
+                        clearAllSelectedIds(ref);
                         context.go('/companies/${cu.company?.id}');
                         unawaited(Navigator.of(context).maybePop());
                       }
@@ -337,7 +337,7 @@ class AppSidebar extends ConsumerWidget {
 
     if (branchHasDifferentCompany) {
       // Branch has cached routes from a different company, use context.go() to reset
-      _clearAllSelectedIds(ref);
+      clearAllSelectedIds(ref);
       context.go(path);
     } else {
       // Same company or first time, use goBranch() to preserve state
@@ -362,12 +362,6 @@ class AppSidebar extends ConsumerWidget {
     }
 
     unawaited(Navigator.of(context).maybePop());
-  }
-
-  void _clearAllSelectedIds(WidgetRef ref) {
-    for (final type in SelectedIdType.values) {
-      ref.read(selectedIdProvider(type).notifier).id = null;
-    }
   }
 
   bool _sidebarItemSelected(String currentPath, String targetPath) {
