@@ -1,3 +1,4 @@
+import 'package:enterprise/app/state/selected_id_provider.dart';
 import 'package:enterprise/app/utils/auth_dialogs.dart';
 import 'package:enterprise/app/widgets/company_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class CompaniesPage extends ConsumerWidget {
                 child: CompanyDropdown(
                   onChange: (cu) {
                     if (cu != null && cu.company != null) {
+                      clearAllSelectedIds(ref);
                       context.go('/companies/${cu.company?.id}');
                     }
                   },

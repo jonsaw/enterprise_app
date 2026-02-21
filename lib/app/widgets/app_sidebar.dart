@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:enterprise/app/pages/company_app_shell_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:enterprise/app/state/company_controller.dart';
+import 'package:enterprise/app/state/selected_id_provider.dart';
 import 'package:enterprise/app/widgets/company_dropdown.dart';
 import 'package:enterprise/l10n.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,9 @@ class AppSidebar extends ConsumerWidget {
                     initialValue: value,
                     onChange: (cu) {
                       if (cu != null && cu.company != null) {
+                        clearAllSelectedIds(ref);
                         context.go('/companies/${cu.company?.id}');
+                        unawaited(Navigator.of(context).maybePop());
                       }
                     },
                   ),
@@ -334,6 +337,7 @@ class AppSidebar extends ConsumerWidget {
 
     if (branchHasDifferentCompany) {
       // Branch has cached routes from a different company, use context.go() to reset
+      clearAllSelectedIds(ref);
       context.go(path);
     } else {
       // Same company or first time, use goBranch() to preserve state
