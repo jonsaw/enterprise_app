@@ -54,16 +54,20 @@ class SelectableTile extends StatelessWidget {
       onPress: onPress,
       onLongPress: onLongPress,
       style: selected
-          ? (style) => style.copyWith(
-              decoration: FWidgetStateMap({
-                WidgetState.any: BoxDecoration(
-                  color: context.theme.colors.primary.withAlpha(25),
-                  border: Border.all(color: context.theme.colors.primary),
-                  borderRadius: context.theme.style.borderRadius,
+          ? .delta(
+              decoration: .delta([
+                .all(
+                  .value(
+                    BoxDecoration(
+                      color: context.theme.colors.primary.withAlpha(25),
+                      border: Border.all(color: context.theme.colors.primary),
+                      borderRadius: context.theme.style.borderRadius,
+                    ),
+                  ),
                 ),
-              }),
+              ]),
             )
-          : null,
+          : const .context(),
       selected: selected,
     );
   }

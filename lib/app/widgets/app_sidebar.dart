@@ -110,10 +110,8 @@ class AppSidebar extends ConsumerWidget {
                   ),
                 },
               ),
-              FDivider(
-                style: theme.dividerStyles.horizontalStyle
-                    .copyWith(padding: EdgeInsets.zero)
-                    .call,
+              const FDivider(
+                style: .delta(padding: .value(.zero)),
               ),
             ],
           ),

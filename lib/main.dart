@@ -80,7 +80,7 @@ class MainApp extends ConsumerWidget {
       builder: (context, child) {
         // check the current theme mode from the system
         final brightness = MediaQuery.platformBrightnessOf(context);
-        return FAnimatedTheme(
+        return FTheme(
           data: brightness == Brightness.dark
               ? FThemes.zinc.dark
               : FThemes.zinc.light,

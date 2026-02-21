@@ -31,7 +31,7 @@ class UnsavedChangesScope extends StatelessWidget {
       useRootNavigator: true,
       builder: (context, style, animation) {
         return FDialog(
-          style: style.call,
+          style: style,
           animation: animation,
           title: Text(context.tr.unsavedChanges),
           body: Column(
@@ -45,13 +45,13 @@ class UnsavedChangesScope extends StatelessWidget {
           actions: [
             // Mobile: [Discard] [Cancel]
             FButton(
-              style: FButtonStyle.destructive(),
+              variant: .destructive,
               onPress: () =>
                   Navigator.of(context, rootNavigator: true).pop(true),
               child: Text(context.tr.discard),
             ),
             FButton(
-              style: FButtonStyle.outline(),
+              variant: .outline,
               onPress: () =>
                   Navigator.of(context, rootNavigator: true).pop(false),
               child: Text(context.tr.cancel),

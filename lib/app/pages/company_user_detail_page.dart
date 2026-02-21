@@ -82,7 +82,7 @@ class CompanyUserDetailPage extends ConsumerWidget {
                     style: const TextStyle(fontSize: 16),
                   ),
                   FButton(
-                    style: FButtonStyle.outline(),
+                    variant: .outline,
                     onPress: () => context.go('/companies/$companyId/users'),
                     child: Text(context.tr.backToUsers),
                   ),
@@ -213,7 +213,7 @@ class CompanyUserDetailPage extends ConsumerWidget {
                 style: const TextStyle(fontSize: 16),
               ),
               FButton(
-                style: FButtonStyle.outline(),
+                variant: .outline,
                 onPress: () {
                   ref.invalidate(
                     companyUserDetailControllerProvider(
@@ -235,22 +235,21 @@ class CompanyUserDetailPage extends ConsumerWidget {
     switch (role) {
       case Owner():
         return FBadge(
-          style: FBadgeStyle.primary(),
           child: Text(context.tr.owner),
         );
       case Manager():
         return FBadge(
-          style: FBadgeStyle.secondary(),
+          variant: .secondary,
           child: Text(context.tr.manager),
         );
       case UserMember():
         return FBadge(
-          style: FBadgeStyle.outline(),
+          variant: .outline,
           child: Text(context.tr.user),
         );
       case None():
         return FBadge(
-          style: FBadgeStyle.outline(),
+          variant: .outline,
           child: Text(context.tr.none),
         );
     }

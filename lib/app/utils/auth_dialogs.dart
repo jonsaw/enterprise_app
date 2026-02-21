@@ -13,20 +13,19 @@ Future<void> showSignOutDialog(BuildContext context, WidgetRef ref) async {
     context: context,
     useRootNavigator: true,
     builder: (context, style, animation) => FDialog(
-      style: style.call,
+      style: style,
       animation: animation,
       title: Text(context.tr.signOutConfirmTitle),
       body: Text(context.tr.signOutConfirmMessage),
       actions: [
         FButton(
-          style: FButtonStyle.destructive(),
+          variant: .destructive,
           onPress: () => Navigator.of(context, rootNavigator: true).pop(true),
           child: Text(context.tr.signOut),
         ),
         FButton(
-          style: FButtonStyle.outline(),
-          onPress: () =>
-              Navigator.of(context, rootNavigator: true).pop(false),
+          variant: .outline,
+          onPress: () => Navigator.of(context, rootNavigator: true).pop(false),
           child: Text(context.tr.cancel),
         ),
       ],

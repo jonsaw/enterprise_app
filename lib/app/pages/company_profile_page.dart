@@ -67,7 +67,7 @@ class CompanyProfilePage extends ConsumerWidget {
             description: context.tr.sessionManagementDescription,
             children: [
               FButton(
-                style: FButtonStyle.destructive(),
+                variant: .destructive,
                 mainAxisSize: .min,
                 onPress: () => showSignOutDialog(context, ref),
                 child: Row(

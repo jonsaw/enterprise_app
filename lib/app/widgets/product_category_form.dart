@@ -89,12 +89,11 @@ class ProductCategoryForm extends StatelessWidget {
                   spacing: 8,
                   children: [
                     FButton(
-                      style: FButtonStyle.outline(),
+                      variant: .outline,
                       onPress: isLoading ? null : onCancel,
                       child: Text(context.tr.cancel),
                     ),
                     FButton(
-                      style: FButtonStyle.primary(),
                       onPress: isLoading ? null : onSubmit,
                       child: Text(
                         isEditing ? context.tr.update : context.tr.create,
@@ -109,14 +108,13 @@ class ProductCategoryForm extends StatelessWidget {
                   spacing: 8,
                   children: [
                     FButton(
-                      style: FButtonStyle.primary(),
                       onPress: isLoading ? null : onSubmit,
                       child: Text(
                         isEditing ? context.tr.update : context.tr.create,
                       ),
                     ),
                     FButton(
-                      style: FButtonStyle.outline(),
+                      variant: .outline,
                       onPress: isLoading ? null : onCancel,
                       child: Text(context.tr.cancel),
                     ),
