@@ -134,7 +134,7 @@ class _CompanyProductTypeDetailPageState
       context: context,
       useRootNavigator: true,
       builder: (context, style, animation) => FDialog(
-        style: style.call,
+        style: style,
         animation: animation,
         title: Text(context.tr.deleteType),
         body: Column(
@@ -153,12 +153,12 @@ class _CompanyProductTypeDetailPageState
         ),
         actions: [
           FButton(
-            style: FButtonStyle.destructive(),
+            variant: .destructive,
             onPress: () => Navigator.of(context, rootNavigator: true).pop(true),
             child: Text(context.tr.delete),
           ),
           FButton(
-            style: FButtonStyle.outline(),
+            variant: .outline,
             onPress: () =>
                 Navigator.of(context, rootNavigator: true).pop(false),
             child: Text(context.tr.cancel),
@@ -323,7 +323,7 @@ class _CompanyProductTypeDetailPageState
                 ),
                 Text(context.tr.typeNotFound),
                 FButton(
-                  style: FButtonStyle.outline(),
+                  variant: .outline,
                   onPress: () => context.go(
                     '/companies/${widget.companyId}/product-types',
                   ),
@@ -363,7 +363,7 @@ class _CompanyProductTypeDetailPageState
           children: [
             Text(context.tr.errorLoadingTypes),
             FButton(
-              style: FButtonStyle.outline(),
+              variant: .outline,
               onPress: () {
                 ref.invalidate(
                   productTypeDetailControllerProvider(

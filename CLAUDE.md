@@ -2,6 +2,21 @@
 
 For detailed architecture, see ARCHITECTURE.md.
 
+## Style Guide
+
+- Prefer [dot-shorthands](https://dart.dev/language/dot-shorthands) where possible except for unnamed constructors.
+  ```dart
+  // Good - dot-shorthand for named constructors, static methods, and enum values
+  FAccordionControl control = .managed(min: 1);
+  EdgeInsetsGeometry padding = .all(8);
+
+  // Bad - don't use dot-shorthand for unnamed constructors (hurts readability)
+  FWidgetStyle style = .new(...);  // Don't do this
+  FWidgetStyle style = FWidgetStyle(...);  // Do this instead
+  ```
+- Prefer `AlignmentGeometry`/`BorderRadiusGeometry`/`EdgeInsetsGeometry` over `Alignment`/`BorderRadius`/`EdgeInsets`. 
+- Use ForUI. Minimize dependency on Cupertino/Material.
+
 ## Key Commands
 
 - Code generation: `./build_runner.sh`

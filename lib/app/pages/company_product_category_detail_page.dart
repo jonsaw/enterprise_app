@@ -108,7 +108,7 @@ class CompanyProductCategoryDetailPage extends ConsumerWidget {
       context: context,
       useRootNavigator: true,
       builder: (context, style, animation) => FDialog(
-        style: style.call,
+        style: style,
         animation: animation,
         title: Text(context.tr.deleteCategory),
         body: Column(
@@ -127,12 +127,12 @@ class CompanyProductCategoryDetailPage extends ConsumerWidget {
         ),
         actions: [
           FButton(
-            style: FButtonStyle.destructive(),
+            variant: .destructive,
             onPress: () => Navigator.of(context, rootNavigator: true).pop(true),
             child: Text(context.tr.deleteCategory),
           ),
           FButton(
-            style: FButtonStyle.outline(),
+            variant: .outline,
             onPress: () =>
                 Navigator.of(context, rootNavigator: true).pop(false),
             child: Text(context.tr.cancel),
@@ -286,7 +286,7 @@ class CompanyProductCategoryDetailPage extends ConsumerWidget {
                 ),
                 Text(context.tr.categoryNotFound),
                 FButton(
-                  style: FButtonStyle.outline(),
+                  variant: .outline,
                   onPress: () => context.go(
                     '/companies/$companyId/product-categories',
                   ),
@@ -323,7 +323,7 @@ class CompanyProductCategoryDetailPage extends ConsumerWidget {
           children: [
             Text(context.tr.errorLoadingCategories),
             FButton(
-              style: FButtonStyle.outline(),
+              variant: .outline,
               onPress: () {
                 ref.invalidate(
                   productCategoryDetailControllerProvider(

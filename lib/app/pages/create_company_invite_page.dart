@@ -200,7 +200,6 @@ class _CreateCompanyInvitePageState
                 // Submit button
                 Builder(
                   builder: (context) => FButton(
-                    style: FButtonStyle.primary(),
                     onPress: isLoading ? null : () => _handleSubmit(context),
                     child: Text(
                       isLoading ? context.tr.creating : context.tr.createInvite,

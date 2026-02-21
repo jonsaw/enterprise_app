@@ -100,10 +100,10 @@ class AppHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final headerStyle = nested
-        ? (style?.call(context.theme.headerStyles.nestedStyle) ??
-              context.theme.headerStyles.nestedStyle)
-        : (style?.call(context.theme.headerStyles.rootStyle) ??
-              context.theme.headerStyles.rootStyle);
+        ? (style?.call(context.theme.headerStyles.nested) ??
+              context.theme.headerStyles.nested)
+        : (style?.call(context.theme.headerStyles.root) ??
+              context.theme.headerStyles.root);
 
     var header = _buildHeader(context, headerStyle);
 

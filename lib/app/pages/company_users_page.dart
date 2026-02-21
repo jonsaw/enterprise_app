@@ -160,7 +160,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                       spacing: 16,
                       children: [
                         FButton(
-                          style: FButtonStyle.outline(),
+                          variant: .outline,
                           onPress: paginatedUsers.hasPreviousPage
                               ? _onPreviousPage
                               : null,
@@ -171,7 +171,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                           style: const TextStyle(fontSize: 14),
                         ),
                         FButton(
-                          style: FButtonStyle.outline(),
+                          variant: .outline,
                           onPress: paginatedUsers.hasNextPage
                               ? _onNextPage
                               : null,
@@ -196,7 +196,7 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
                     style: const TextStyle(fontSize: 16),
                   ),
                   FButton(
-                    style: FButtonStyle.outline(),
+                    variant: .outline,
                     onPress: () {
                       ref.invalidate(
                         companyUsersControllerProvider(
@@ -291,22 +291,21 @@ class _CompanyUsersPageState extends ConsumerState<CompanyUsersPage> {
     switch (role) {
       case Owner():
         return FBadge(
-          style: FBadgeStyle.primary(),
           child: Text(context.tr.owner),
         );
       case Manager():
         return FBadge(
-          style: FBadgeStyle.secondary(),
+          variant: .secondary,
           child: Text(context.tr.manager),
         );
       case UserMember():
         return FBadge(
-          style: FBadgeStyle.outline(),
+          variant: .outline,
           child: Text(context.tr.user),
         );
       case None():
         return FBadge(
-          style: FBadgeStyle.outline(),
+          variant: .outline,
           child: Text(context.tr.none),
         );
     }

@@ -551,7 +551,7 @@ class _EditProductCategoryPageLoader extends ConsumerWidget {
             children: [
               Text(context.tr.errorLoadingCategories),
               FButton(
-                style: FButtonStyle.outline(),
+                variant: .outline,
                 onPress: () {
                   ref.invalidate(
                     productCategoryDetailControllerProvider(
@@ -713,7 +713,7 @@ class _EditProductTypePageLoader extends ConsumerWidget {
             children: [
               Text(context.tr.errorLoadingTypes),
               FButton(
-                style: FButtonStyle.outline(),
+                variant: .outline,
                 onPress: () {
                   ref.invalidate(
                     productTypeDetailControllerProvider(

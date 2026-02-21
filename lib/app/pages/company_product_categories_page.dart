@@ -168,7 +168,7 @@ class _CompanyProductCategoriesPageState
                       spacing: 16,
                       children: [
                         FButton(
-                          style: FButtonStyle.outline(),
+                          variant: .outline,
                           onPress: paginatedCategories.hasPreviousPage
                               ? _onPreviousPage
                               : null,
@@ -179,7 +179,7 @@ class _CompanyProductCategoriesPageState
                           style: const TextStyle(fontSize: 14),
                         ),
                         FButton(
-                          style: FButtonStyle.outline(),
+                          variant: .outline,
                           onPress: paginatedCategories.hasNextPage
                               ? _onNextPage
                               : null,
@@ -204,7 +204,7 @@ class _CompanyProductCategoriesPageState
                     style: const TextStyle(fontSize: 16),
                   ),
                   FButton(
-                    style: FButtonStyle.outline(),
+                    variant: .outline,
                     onPress: () {
                       ref.invalidate(
                         productCategoriesControllerProvider(
@@ -246,7 +246,7 @@ class _CompanyProductCategoriesPageState
             suffixes: [
               if (canManage)
                 FButton.icon(
-                  style: FButtonStyle.ghost(),
+                  variant: .ghost,
                   onPress: () {
                     if (isMediumOrLargeScreen(context)) {
                       // Show as sheet on larger screens

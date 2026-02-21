@@ -102,7 +102,7 @@ class _CompanyInviteDetailPageState
                 const Icon(Icons.mail_outline, size: 64, color: Colors.grey),
                 Text(context.tr.inviteNotFound),
                 FButton(
-                  style: FButtonStyle.outline(),
+                  variant: .outline,
                   onPress: () =>
                       context.go('/companies/${widget.companyId}/invites'),
                   child: Text(context.tr.backToInvites),
@@ -141,7 +141,7 @@ class _CompanyInviteDetailPageState
           children: [
             Text(context.tr.errorLoadingInvites),
             FButton(
-              style: FButtonStyle.outline(),
+              variant: .outline,
               onPress: () {
                 ref.invalidate(
                   companyInviteDetailControllerProvider(
@@ -239,7 +239,7 @@ class _CompanyInviteDetailPageState
                 spacing: 8,
                 children: [
                   FButton(
-                    style: FButtonStyle.outline(),
+                    variant: .outline,
                     onPress: () {
                       setState(() {
                         _tokenVisible = !_tokenVisible;
@@ -251,7 +251,7 @@ class _CompanyInviteDetailPageState
                     ),
                   ),
                   FButton(
-                    style: FButtonStyle.outline(),
+                    variant: .outline,
                     onPress: () => _copyToken(context, invite.token!),
                     child: const Icon(FIcons.copy, size: 16),
                   ),
@@ -334,13 +334,12 @@ class _CompanyInviteDetailPageState
 
     if (isExpired) {
       return FBadge(
-        style: FBadgeStyle.destructive(),
+        variant: .destructive,
         child: Text(context.tr.expired),
       );
     }
 
     return FBadge(
-      style: FBadgeStyle.primary(),
       child: Text(context.tr.pending),
     );
   }
@@ -349,22 +348,21 @@ class _CompanyInviteDetailPageState
     switch (role) {
       case Owner():
         return FBadge(
-          style: FBadgeStyle.primary(),
           child: Text(context.tr.owner),
         );
       case Manager():
         return FBadge(
-          style: FBadgeStyle.secondary(),
+          variant: .secondary,
           child: Text(context.tr.manager),
         );
       case UserMember():
         return FBadge(
-          style: FBadgeStyle.outline(),
+          variant: .outline,
           child: Text(context.tr.user),
         );
       case None():
         return FBadge(
-          style: FBadgeStyle.outline(),
+          variant: .outline,
           child: Text(context.tr.none),
         );
     }
