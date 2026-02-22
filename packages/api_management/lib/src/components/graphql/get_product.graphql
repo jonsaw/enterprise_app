@@ -1,0 +1,30 @@
+query GetProduct($id: UUID!) {
+    product(id: $id) {
+        id
+        companyId
+        sku
+        brand
+        model
+        categoryId
+        typeId
+        description
+        detailsData
+        affectsInventory
+        createdAt
+        updatedAt
+        readAt
+        createdById
+        updatedById
+        revision
+        createdBy {
+            id
+            name
+            email
+        }
+        updatedBy {
+            id
+            name
+            email
+        }
+    }
+}
