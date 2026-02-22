@@ -8,21 +8,26 @@ import 'package:enterprise/app/pages/company_invite_detail_page.dart';
 import 'package:enterprise/app/pages/company_invites_page.dart';
 import 'package:enterprise/app/pages/company_product_categories_page.dart';
 import 'package:enterprise/app/pages/company_product_category_detail_page.dart';
+import 'package:enterprise/app/pages/company_product_detail_page.dart';
 import 'package:enterprise/app/pages/company_product_type_detail_page.dart';
 import 'package:enterprise/app/pages/company_product_types_page.dart';
+import 'package:enterprise/app/pages/company_products_page.dart';
 import 'package:enterprise/app/pages/company_profile_page.dart';
 import 'package:enterprise/app/pages/company_shell_page.dart';
 import 'package:enterprise/app/pages/company_user_detail_page.dart';
 import 'package:enterprise/app/pages/company_users_page.dart';
 import 'package:enterprise/app/pages/create_company_invite_page.dart';
 import 'package:enterprise/app/pages/create_product_category_page.dart';
+import 'package:enterprise/app/pages/create_product_page.dart';
 import 'package:enterprise/app/pages/create_product_type_page.dart';
 import 'package:enterprise/app/pages/signin_page.dart';
 import 'package:enterprise/app/pages/splash_page.dart';
 import 'package:enterprise/app/pages/update_product_category_page.dart';
+import 'package:enterprise/app/pages/update_product_page.dart';
 import 'package:enterprise/app/pages/update_product_type_page.dart';
 import 'package:enterprise/app/state/auth_controller.dart';
 import 'package:enterprise/app/state/product_category_detail_controller.dart';
+import 'package:enterprise/app/state/product_detail_controller.dart';
 import 'package:enterprise/app/state/product_type_detail_controller.dart';
 import 'package:enterprise/app/widgets/app_header.dart';
 import 'package:enterprise/l10n.dart';
@@ -196,6 +201,26 @@ class SignInRoute extends GoRouteData with $SignInRoute {
                           path: ':typeId',
                           routes: [
                             TypedGoRoute<EditProductTypeRoute>(
+                              path: 'edit',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                TypedStatefulShellBranch(
+                  routes: [
+                    TypedGoRoute<CompanyProductsRoute>(
+                      path: 'products',
+                      routes: [
+                        TypedGoRoute<CreateProductRoute>(
+                          path: 'create',
+                        ),
+                        TypedGoRoute<CompanyProductDetailRoute>(
+                          path: ':productId',
+                          routes: [
+                            TypedGoRoute<EditProductRoute>(
                               path: 'edit',
                             ),
                           ],
@@ -719,6 +744,167 @@ class _EditProductTypePageLoader extends ConsumerWidget {
                     productTypeDetailControllerProvider(
                       companyId,
                       typeId,
+                    ),
+                  );
+                },
+                child: Text(context.tr.retry),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Company products route - displays the products page
+class CompanyProductsRoute extends GoRouteData with $CompanyProductsRoute {
+  /// Creates a [CompanyProductsRoute].
+  const CompanyProductsRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyProductsPage(companyId: companyId);
+  }
+}
+
+/// Company product detail route - displays a single product's details
+class CompanyProductDetailRoute extends GoRouteData
+    with $CompanyProductDetailRoute {
+  /// Creates a [CompanyProductDetailRoute].
+  const CompanyProductDetailRoute({
+    required this.companyId,
+    required this.productId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the product.
+  final String productId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CompanyProductDetailPage(
+      companyId: companyId,
+      productId: productId,
+    );
+  }
+}
+
+/// Create product route - displays the create product page
+class CreateProductRoute extends GoRouteData with $CreateProductRoute {
+  /// Creates a [CreateProductRoute].
+  const CreateProductRoute({required this.companyId});
+
+  /// The ID of the company.
+  final String companyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreateProductPage(
+      companyId: companyId,
+      onSuccess: () {
+        context.pop();
+      },
+    );
+  }
+}
+
+/// Edit product route - edits an existing product
+class EditProductRoute extends GoRouteData with $EditProductRoute {
+  /// Creates an [EditProductRoute].
+  const EditProductRoute({
+    required this.companyId,
+    required this.productId,
+  });
+
+  /// The ID of the company.
+  final String companyId;
+
+  /// The ID of the product to edit.
+  final String productId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return _EditProductPageLoader(
+      companyId: companyId,
+      productId: productId,
+    );
+  }
+}
+
+/// Loader widget that fetches product data before showing the edit page
+class _EditProductPageLoader extends ConsumerWidget {
+  const _EditProductPageLoader({
+    required this.companyId,
+    required this.productId,
+  });
+
+  final String companyId;
+  final String productId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productAsync = ref.watch(
+      productDetailControllerProvider(companyId, productId),
+    );
+
+    return productAsync.when(
+      data: (product) {
+        if (product == null) {
+          return FScaffold(
+            header: AppHeader.nested(
+              title: Text(context.tr.editProduct),
+              prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+            ),
+            child: Center(
+              child: Text(context.tr.productNotFound),
+            ),
+          );
+        }
+
+        return UpdateProductPage(
+          companyId: companyId,
+          productId: productId,
+          initialSku: product.sku,
+          initialBrand: product.brand,
+          initialModel: product.model,
+          initialAffectsInventory: product.affectsInventory,
+          revision: product.revision,
+          onSuccess: () {
+            context.pop();
+          },
+        );
+      },
+      loading: () => FScaffold(
+        header: AppHeader.nested(
+          title: Text(context.tr.editProduct),
+          prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        ),
+        child: const Center(child: FCircularProgress()),
+      ),
+      error: (error, stack) => FScaffold(
+        header: AppHeader.nested(
+          title: Text(context.tr.editProduct),
+          prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              Text(context.tr.errorLoadingProducts),
+              FButton(
+                variant: .outline,
+                onPress: () {
+                  ref.invalidate(
+                    productDetailControllerProvider(
+                      companyId,
+                      productId,
                     ),
                   );
                 },
