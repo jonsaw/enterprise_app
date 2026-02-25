@@ -1035,6 +1035,17 @@ type PaginatedProductTypes {
   pageInfo: PageBasedInfo
 }
 
+type PaginatedProducts {
+  """
+  The items in this page
+  """
+  items: [Product!]!
+  """
+  Page-based pagination info (present for offset/limit queries)
+  """
+  pageInfo: PageBasedInfo
+}
+
 type PendingCompanyInvite {
   id: UUID!
   name: String!
@@ -1392,6 +1403,10 @@ type Query {
   List products for a company
   """
   listProducts(input: ListProductsInput!): [Product!]!
+  """
+  List products with pagination metadata
+  """
+  listProductsPaginated(input: ListProductsInput!): PaginatedProducts!
 }
 
 """

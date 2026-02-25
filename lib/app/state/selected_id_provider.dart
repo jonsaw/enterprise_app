@@ -16,6 +16,9 @@ enum SelectedIdType {
 
   /// Selected product type ID
   productType,
+
+  /// Selected product ID
+  product,
 }
 
 /// Clears all selected IDs by resetting each [SelectedIdType] to `null`.

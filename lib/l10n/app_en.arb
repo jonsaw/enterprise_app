@@ -663,5 +663,129 @@
     "productTypes": "Product Types",
     "@productTypes": {
         "description": "Full product types label"
+    },
+    "productsList": "Products",
+    "@productsList": {
+        "description": "Products list page title"
+    },
+    "productDetails": "Product Details",
+    "@productDetails": {
+        "description": "Product details title"
+    },
+    "createProduct": "Create Product",
+    "@createProduct": {
+        "description": "Create product page title"
+    },
+    "editProduct": "Edit Product",
+    "@editProduct": {
+        "description": "Edit product page title"
+    },
+    "deleteProduct": "Delete Product",
+    "@deleteProduct": {
+        "description": "Delete product action"
+    },
+    "searchProducts": "Search products",
+    "@searchProducts": {
+        "description": "Search products placeholder"
+    },
+    "noProductsFound": "No products found",
+    "@noProductsFound": {
+        "description": "Empty state when no products found"
+    },
+    "errorLoadingProducts": "Error loading products",
+    "@errorLoadingProducts": {
+        "description": "Error message when products fail to load"
+    },
+    "selectProductToViewDetails": "Select a product to view details",
+    "@selectProductToViewDetails": {
+        "description": "Placeholder for split view when no product selected"
+    },
+    "productNotFound": "Product not found",
+    "@productNotFound": {
+        "description": "Error when product not found"
+    },
+    "backToProducts": "Back to products",
+    "@backToProducts": {
+        "description": "Navigation label to go back to products list"
+    },
+    "productSku": "SKU",
+    "@productSku": {
+        "description": "Product SKU field label"
+    },
+    "productBrand": "Brand",
+    "@productBrand": {
+        "description": "Product brand field label"
+    },
+    "productModel": "Model",
+    "@productModel": {
+        "description": "Product model field label"
+    },
+    "enterProductSku": "Enter product SKU",
+    "@enterProductSku": {
+        "description": "Product SKU field hint"
+    },
+    "enterProductBrand": "Enter product brand",
+    "@enterProductBrand": {
+        "description": "Product brand field hint"
+    },
+    "enterProductModel": "Enter product model",
+    "@enterProductModel": {
+        "description": "Product model field hint"
+    },
+    "skuRequired": "SKU is required",
+    "@skuRequired": {
+        "description": "Validation message when SKU is empty"
+    },
+    "affectsInventory": "Affects Inventory",
+    "@affectsInventory": {
+        "description": "Label for affects inventory toggle"
+    },
+    "productInformation": "Product Information",
+    "@productInformation": {
+        "description": "Section title for product information"
+    },
+    "productId": "Product ID",
+    "@productId": {
+        "description": "Product ID label"
+    },
+    "productCreatedSuccessfully": "Product created successfully",
+    "@productCreatedSuccessfully": {
+        "description": "Success message after creating product"
+    },
+    "failedToCreateProduct": "Failed to create product",
+    "@failedToCreateProduct": {
+        "description": "Error message when product creation fails"
+    },
+    "productUpdatedSuccessfully": "Product updated successfully",
+    "@productUpdatedSuccessfully": {
+        "description": "Success message after updating product"
+    },
+    "failedToUpdateProduct": "Failed to update product",
+    "@failedToUpdateProduct": {
+        "description": "Error message when product update fails"
+    },
+    "productDeletedSuccessfully": "Product deleted successfully",
+    "@productDeletedSuccessfully": {
+        "description": "Success message after deleting product"
+    },
+    "failedToDeleteProduct": "Failed to delete product",
+    "@failedToDeleteProduct": {
+        "description": "Error message when product deletion fails"
+    },
+    "deleteProductConfirmation": "Are you sure you want to delete this product?",
+    "@deleteProductConfirmation": {
+        "description": "Delete product confirmation message"
+    },
+    "deleteProductWarning": "This action cannot be undone.",
+    "@deleteProductWarning": {
+        "description": "Delete product warning message"
+    },
+    "yes": "Yes",
+    "@yes": {
+        "description": "Yes label"
+    },
+    "no": "No",
+    "@no": {
+        "description": "No label"
     }
 }

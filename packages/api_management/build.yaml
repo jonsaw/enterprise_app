@@ -8,6 +8,10 @@ targets:
           type_overrides:
             UI:
               name: String
+            LanguageMap:
+              name: String
+            DetailsData:
+              name: String
       ferry_generator|serializer_builder:
         enabled: true
         options:
@@ -15,6 +19,14 @@ targets:
           type_overrides:
             UI:
               name: String
+            LanguageMap:
+              name: String
+            DetailsData:
+              name: String
           custom_serializers:
             - import: "package:api_management/src/scalars/ui_string_serializer.dart"
               name: UIStringSerializer
+            - import: "package:api_management/src/scalars/language_map_serializer.dart"
+              name: LanguageMapSerializer
+            - import: "package:api_management/src/scalars/details_data_serializer.dart"
+              name: DetailsDataSerializer
